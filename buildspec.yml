@@ -5,9 +5,10 @@ phases:
     runtime-version:
       java: corretto8
   build:
-    - echo build start on `date`
-    - chmod u+x gradlew
-    - ./gradlew clean build
+    commands:
+      - echo build start on `date`
+      - chmod u+x gradlew
+      - ./gradlew clean build
   post_build:
     commands:
       - echo build completed on `date`
