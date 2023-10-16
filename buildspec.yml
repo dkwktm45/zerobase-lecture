@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-version:
+      java: corretto8
+  build:
+    - echo build start on 'date'
+    - chmod u+x gradlew
+    - ./gradlew clean build
+  post_build:
+    commands:
+      -echo build completed on 'date'
+artifacts:
+  files:
+    - build/libs/lecture-0.0.1-SNAPSHOT.jar
+  discard-paths: yes
