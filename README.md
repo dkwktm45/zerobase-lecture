@@ -1,4 +1,4 @@
-# Plan Learn
+# 📌Plan Learn
 나만의 강의 계획 서비스(진행중)
 
 제약 사항 : 학습은 유튜브 영상을 토대로 학습 플랫폼 구축
@@ -10,7 +10,7 @@
 사용 스텍
 - Vue Js , Java 11 , Gradle , MySQL, JPA , Redis , Security , Naver Cloud Platfrom , Git Action
 
-## 기능 정의 사항(해당 사항은 변경될 수 있습니다.)
+## 📌기능 정의 사항(해당 사항은 변경될 수 있습니다.)
 **[공통]**
 - 사용자는 email과 password를 통해서 로그인이 가능하다.
 - 사용자는 Kakao, Naver, Google를 통해서 로그인이 가능하다.
@@ -80,6 +80,6 @@
 - 관리자는 게시글을 추가 , 수정 삭제가 가능하다.
 
 
-## ERD(해당 사항은 변경이 될 수 있습니다.)
+## 📌ERD(해당 사항은 변경이 될 수 있습니다.)
 ![Plan Learn](https://github.com/dkwktm45/zerobase-lecture/assets/48014869/6c18e857-d259-4320-810f-72d3279f3f34)
 
