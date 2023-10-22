@@ -10,13 +10,13 @@ public class ExistUser extends SuperException {
     super(MESSAGE);
   }
 
-  public ExistUser(String name, String message){
+  public ExistUser(String name){
     super(MESSAGE);
-    addValidation(name,message);
+    addValidation(name,MESSAGE);
   }
 
   @Override
   public int getStatusCode() {
-    return 0;
+    return 500;
   }
 }

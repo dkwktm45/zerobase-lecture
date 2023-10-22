@@ -2,6 +2,7 @@ package com.project.lecture.user.dto;
 
 import com.project.lecture.entity.Member;
 import com.project.lecture.type.AuthType;
+import com.project.lecture.type.valid.ValidEnum;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -30,8 +31,7 @@ public class UserRequest {
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")
     private String nickName;
 
-    @Max(4)
-    @NotBlank(message = "빈 값은 들어올 수 없습니다.")
+    @ValidEnum(enumClass = AuthType.class)
     private AuthType authType;
     public Member toEntity(){
       return Member.builder()

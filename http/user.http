@@ -1,0 +1,9 @@
+POST http://localhost:8080/join
+Content-Type: application/json
+
+{
+  "email": "wpekdl153@gmail.com",
+  "password": "123144",
+  "nickName": "planner",
+  "authType": "GUEST"
+}
