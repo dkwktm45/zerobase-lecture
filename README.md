@@ -21,6 +21,7 @@
   - 시간은 분 단위로 측정
   - 이러한 데이터는 Redis에 저장한다.
   - email을 기준으로 데이터를 저장한다.
+  - 이러한 티어정보 및 시간은 Redis에 저장한다.
 - 토큰에 대한 정보 또한 Redis에 저장을한다.
   - 토큰객체에는 만료시간이 있다.(2주)
   - 토큰에는 email, accessToken(key), refreshToken 데이터가 있으다.
@@ -90,7 +91,8 @@
 
 
 ## 📌ERD(해당 사항은 변경이 될 수 있습니다.)
-![Plan Learn Project (1)](https://github.com/dkwktm45/zerobase-lecture/assets/48014869/749feec1-dec8-4df7-9d35-bfc1d4f09b17)
+![Plan Learn Project](https://github.com/dkwktm45/zerobase-lecture/assets/48014869/e0dd564b-a1af-4983-b3f6-9ee95579788d)
+
 
 
 
