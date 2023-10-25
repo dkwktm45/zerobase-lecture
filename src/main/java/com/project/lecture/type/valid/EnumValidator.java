@@ -1,5 +1,6 @@
 package com.project.lecture.type.valid;
 
+import java.util.Arrays;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -13,16 +14,12 @@ public class EnumValidator implements ConstraintValidator<ValidEnum, Enum> {
 
   @Override
   public boolean isValid(Enum value, ConstraintValidatorContext context) {
-    boolean result = false;
     Object[] enumValues = this.annotation.enumClass().getEnumConstants();
-    if (enumValues != null) {
-      for (Object enumValue : enumValues) {
-        if (value == enumValue) {
-          result = true;
-          break;
-        }
-      }
+
+    if(enumValues == null){
+      return false;
     }
-    return result;
+
+    return Arrays.stream(enumValues).anyMatch(it -> it == value);
   }
 }
