@@ -1,14 +1,16 @@
 package com.project.lecture.type;
 
 import com.project.lecture.type.converter.legacy.LegacyCodeCommonType;
+import lombok.Getter;
 
-public enum SocialType implements LegacyCodeCommonType {
-  KAKAO("0","KAKAO"), NAVER("1","NAVER"), GOOGLE("2", "GOOGLE");
+@Getter
+public enum StudyType implements LegacyCodeCommonType {
+  LECTURE("1","강의"),REMINDER("2","리마인더"),STUDY("3","공부");
 
   private final String code;
   private final String description;
 
-  SocialType(String code, String description) {
+  StudyType(String code, String description) {
     this.code = code;
     this.description = description;
   }
