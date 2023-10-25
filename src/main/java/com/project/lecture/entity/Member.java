@@ -1,9 +1,11 @@
 package com.project.lecture.entity;
 
 import com.project.lecture.type.SocialType;
+import com.project.lecture.type.converter.SocialConverter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +34,7 @@ public class Member {
   private String password;
 
   private String authType;
+  @Convert(converter = SocialConverter.class)
   private SocialType socialType;
   private String socialId;
 

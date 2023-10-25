@@ -2,7 +2,6 @@ package com.project.lecture.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.lecture.exception.kind.NotFoundUser;
 import com.project.lecture.redis.dto.RefreshToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +47,7 @@ public class RedisClient {
     try {
       redisTemplate.opsForValue().set(key, mapper.writeValueAsString(refreshToken), TTL);
     } catch (JsonProcessingException e) {
-      throw new NotFoundUser();
-    } catch (RedisSystemException e) {
-      e.getMessage();
+      throw new RuntimeException();
     }
   }
 

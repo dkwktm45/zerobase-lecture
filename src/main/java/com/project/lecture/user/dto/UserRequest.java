@@ -19,6 +19,7 @@ public class UserRequest {
   @NoArgsConstructor
   @Builder
   @AllArgsConstructor
+  @Builder
   public static class SignUp{
 
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")

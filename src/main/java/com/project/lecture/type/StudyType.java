@@ -6,22 +6,24 @@ import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
-public enum SocialType implements LegacyCodeCommonType {
-  KAKAO("0","KAKAO"), NAVER("1","NAVER"), GOOGLE("2", "GOOGLE");
+public enum StudyType implements LegacyCodeCommonType {
+  LECTURE("1","강의"),REMINDER("2","리마인더"),STUDY("3","공부");
 
   private final String code;
   private final String description;
 
-  SocialType(String code, String description) {
+  StudyType(String code, String description) {
     this.code = code;
     this.description = description;
   }
-  public static SocialType ofCode(String code){
-    return Arrays.stream(SocialType.values())
+
+  public static StudyType ofCode(String code){
+    return Arrays.stream(StudyType.values())
         .filter(e -> e.getCode().equals(code))
         .findAny()
         .orElseThrow(() -> new ExceptionNotValidEnum());
   }
+
   @Override
   public String getLegacyCode() {
     return this.code;

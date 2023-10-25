@@ -1,5 +1,7 @@
 package com.project.lecture.entity;
 
+import com.project.lecture.type.converter.StudyConverter;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,7 +24,8 @@ public class Reminder {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long reminderId;
   private Long reminderTypeId;
-  private String reminderType;
+  @Convert(converter = StudyConverter.class)
+  private StudyConverter reminderType;
   private boolean reminderComplete;
 
   @ManyToOne(fetch = FetchType.LAZY)

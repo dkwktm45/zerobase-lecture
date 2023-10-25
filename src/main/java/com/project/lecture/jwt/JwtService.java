@@ -46,15 +46,12 @@ public class JwtService {
    */
   public String createAccessToken(String email) {
     Date now = new Date();
-    return JWT.create()
-        .withSubject(JwtDescription.ACCESS_TOKEN_SUBJECT.getValue())
-        .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
-        .withClaim(JwtDescription.EMAIL_CLAIM.getValue(), email)
-        .sign(Algorithm.HMAC512(secretKey));
-  }
+    return JWT.create() // JWT 토큰을 생성하는 빌더 반환
+        .withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
+        .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
 
-  public RefreshToken getTokenInfoByRedis(String accessToken) {
-    return redisClient.get(accessToken, RefreshToken.class);
+        .withClaim(EMAIL_CLAIM, email)
+        .sign(Algorithm.HMAC512(secretKey));
   }
 
   /**
