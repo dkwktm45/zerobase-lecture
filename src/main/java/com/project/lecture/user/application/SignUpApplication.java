@@ -1,6 +1,6 @@
 package com.project.lecture.user.application;
 
-import com.project.lecture.exception.kind.ExistUser;
+import com.project.lecture.exception.kind.ExceptionExistUser;
 import com.project.lecture.type.ResponseType;
 import com.project.lecture.user.dto.UserRequest;
 import com.project.lecture.user.service.MemberService;
@@ -15,7 +15,7 @@ public class SignUpApplication {
   private final MemberService memberService;
   public String saveUserByReq(UserRequest.SignUp sign) {
     if (memberService.hasEmail(sign.getEmail())) {
-      throw new ExistUser(sign.getEmail());
+      throw new ExceptionExistUser(sign.getEmail());
     }
     sign.setPassword(passwordEncoder.encode(sign.getPassword()));
 

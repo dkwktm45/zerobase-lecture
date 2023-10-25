@@ -7,6 +7,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class UserRequest {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
+  @Builder
   public static class SignUp{
 
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")

@@ -2,14 +2,14 @@ package com.project.lecture.exception.kind;
 
 import com.project.lecture.exception.SuperException;
 
-public class NotFoundUser extends SuperException {
+public class ExceptionNotFoundUser extends SuperException {
   private static final String MESSAGE = "존재하지 않습니다.";
 
-  public NotFoundUser(){
+  public ExceptionNotFoundUser(){
     super(MESSAGE);
   }
 
-  public NotFoundUser(String name, String message){
+  public ExceptionNotFoundUser(String name, String message){
     super(MESSAGE);
     addValidation(name,message);
   }

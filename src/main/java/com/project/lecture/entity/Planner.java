@@ -1,6 +1,9 @@
 package com.project.lecture.entity;
 
+import com.project.lecture.type.StudyType;
+import com.project.lecture.type.converter.StudyConverter;
 import java.time.LocalDate;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,9 +26,10 @@ public class Planner {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long plannerId;
   private Long plannerTypeId;
-  private String plannerType;
+
+  @Convert(converter = StudyConverter.class)
+  private StudyType plannerType;
   private LocalDate plannerDt;
-  private String type;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "memberId")

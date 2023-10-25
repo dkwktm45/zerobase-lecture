@@ -2,8 +2,8 @@ package com.project.lecture.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.lecture.entity.Member;
-import com.project.lecture.exception.kind.NotFoundUser;
-import com.project.lecture.exception.kind.NotValidPassword;
+import com.project.lecture.exception.kind.ExceptionNotFoundUser;
+import com.project.lecture.exception.kind.ExceptionNotValidPassword;
 import com.project.lecture.repository.MemberRepository;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -62,7 +62,7 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
     String password = usernamePasswordMap.get(PASSWORD_KEY);
 
     Member member = memberRepository.findByEmail(email)
-        .orElseThrow(NotFoundUser::new);
+        .orElseThrow(ExceptionNotFoundUser::new);
     isValidPassword(password, member);
 
     UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(email, password);
@@ -72,7 +72,7 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
 
   private void isValidPassword(String password, Member member) {
     if (!encoder.matches(password, member.getPassword())) {
-      throw new NotValidPassword();
+      throw new ExceptionNotValidPassword();
     }
   }
 }

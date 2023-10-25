@@ -2,15 +2,15 @@ package com.project.lecture.exception.kind;
 
 import com.project.lecture.exception.SuperException;
 
-public class NotValidUser extends SuperException {
+public class ExceptionNotValidUser extends SuperException {
 
   private static final String MESSAGE = "일치하지 않는 회원입니다.";
 
-  public NotValidUser(){
+  public ExceptionNotValidUser(){
     super(MESSAGE);
   }
 
-  public NotValidUser(String name, String message){
+  public ExceptionNotValidUser(String name, String message){
     super(MESSAGE);
     addValidation(name,message);
   }
