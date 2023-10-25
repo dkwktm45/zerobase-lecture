@@ -3,15 +3,16 @@ package com.project.lecture.security.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.lecture.jwt.JwtAuthenticationProcessingFilter;
 import com.project.lecture.jwt.JwtService;
-import com.project.lecture.oauth2.handler.OAuth2LoginFailureHandler;
-import com.project.lecture.oauth2.handler.OAuth2LoginSuccessHandler;
-import com.project.lecture.oauth2.service.CustomOAuth2UserService;
+import com.project.lecture.security.oauth2.cookie.HttpCookieOauth2AuthorizationRequestRepository;
+import com.project.lecture.security.oauth2.handler.OAuth2LoginFailureHandler;
+import com.project.lecture.security.oauth2.handler.OAuth2LoginSuccessHandler;
+import com.project.lecture.security.oauth2.service.CustomOAuth2UserService;
 import com.project.lecture.redis.RedisClient;
-import com.project.lecture.repository.MemberRepository;
 import com.project.lecture.security.CustomLoginFilter;
 import com.project.lecture.security.handler.LoginFailHandler;
 import com.project.lecture.security.handler.LoginSuccessHandler;
 import com.project.lecture.security.service.CustomUserDetailsService;
+import com.project.lecture.user.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,46 +38,44 @@ public class SecurityConfig {
 
   private final CustomUserDetailsService customUserDetailsService;
   private final JwtService jwtService;
-  private final MemberRepository memberRepository;
+  private final MemberService memberService;
   private final ObjectMapper objectMapper;
-  private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
   private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
   private final CustomOAuth2UserService customOAuth2UserService;
   private final RedisClient redisClient;
 
   @Bean
+  public HttpCookieOauth2AuthorizationRequestRepository cookieOauth2AuthorizationRequestRepository() {
+    return new HttpCookieOauth2AuthorizationRequestRepository();
+  }
+  @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        .formLogin().disable() // FormLogin 사용 X
-        .httpBasic().disable() // httpBasic 사용 X
-        .csrf().disable() // csrf 보안 사용 X
-        .headers().frameOptions().disable()
-        .and()
-
-        // 세션 사용하지 않으므로 STATELESS로 설정
+        .formLogin().disable()
+        .httpBasic().disable()
+        .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         .and()
 
-        //== URL별 권한 관리 옵션 ==//
         .authorizeRequests()
-
-        // 나중에 사용 가능성 보류
-//        .antMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
-        .antMatchers("/join", "/login").permitAll()
+        .antMatchers("/join").permitAll()
         .anyRequest().authenticated()
         .and()
-        //== 소셜 로그인 설정 ==//
         .oauth2Login()
-        .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
-        .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
-        .userInfoEndpoint().userService(customOAuth2UserService); // customUserService 설정
-
-    // 원래 스프링 시큐리티 필터 순서가 LogoutFilter 이후에 로그인 필터 동작
-    // 따라서, LogoutFilter 이후에 우리가 만든 필터 동작하도록 설정
-    // 순서 : LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
+          .authorizationEndpoint().baseUri("/oauth2/authorization")
+          .authorizationRequestRepository(cookieOauth2AuthorizationRequestRepository())
+        .and()
+          .redirectionEndpoint().baseUri("/*/oauth2/code/*")
+        .and()
+          .userInfoEndpoint().userService(customOAuth2UserService)
+        .and()
+          .successHandler(oAuth2LoginSuccessHandler())
+          .failureHandler(oAuth2LoginFailureHandler);
     http.addFilterAfter(customLoginFilter(), LogoutFilter.class);
     http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomLoginFilter.class);
+
+    http.cors();
 
     return http.build();
   }
@@ -85,6 +84,12 @@ public class SecurityConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  }
+
+  @Bean
+  public OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler() {
+    return new OAuth2LoginSuccessHandler(jwtService, memberService,
+        cookieOauth2AuthorizationRequestRepository());
   }
 
   /**
@@ -118,15 +123,12 @@ public class SecurityConfig {
   }
 
   /**
-   * CustomJsonUsernamePasswordAuthenticationFilter 빈 등록 커스텀 필터를 사용하기 위해 만든 커스텀 필터를 Bean으로 등록
-   * setAuthenticationManager(authenticationManager())로 위에서 등록한
-   * AuthenticationManager(ProviderManager) 설정 로그인 성공 시 호출할 handler, 실패 시 호출할 handler로 위에서 등록한
-   * handler 설정
+   * CustomJsonUsernamePasswordAuthenticationFilter
    */
   @Bean
   public CustomLoginFilter customLoginFilter() {
     CustomLoginFilter customJsonUsernamePasswordLoginFilter
-        = new CustomLoginFilter(objectMapper, memberRepository, passwordEncoder());
+        = new CustomLoginFilter(objectMapper, memberService, passwordEncoder());
     customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
     customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
     customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
@@ -135,6 +137,6 @@ public class SecurityConfig {
 
   @Bean
   public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
-    return new JwtAuthenticationProcessingFilter(jwtService, memberRepository, redisClient);
+    return new JwtAuthenticationProcessingFilter(jwtService,memberService);
   }
 }

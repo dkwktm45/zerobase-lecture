@@ -1,6 +1,7 @@
 package com.project.lecture.user.service;
 
 import com.project.lecture.entity.Member;
+import com.project.lecture.exception.kind.NotFoundUser;
 import com.project.lecture.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,10 @@ public class MemberService {
 
   public void createUser(Member entity) {
     memberRepository.save(entity);
+  }
+
+  public Member getEmail(String email) {
+    return memberRepository.findByEmail(email)
+        .orElseThrow(NotFoundUser::new);
   }
 }

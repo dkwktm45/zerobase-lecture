@@ -14,12 +14,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StreamUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-
 /**
  * 스프링 시큐리티의 폼 기반의 UsernamePasswordAuthenticationFilter를 참고하여 만든 커스텀 필터
  */
@@ -34,14 +28,14 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
       new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD);
 
   private final ObjectMapper objectMapper;
-  private final MemberRepository memberRepository;
+  private final MemberService memberService;
   private final PasswordEncoder encoder;
 
-  public CustomLoginFilter(ObjectMapper objectMapper, MemberRepository memberRepository,
+  public CustomLoginFilter(ObjectMapper objectMapper,  MemberService memberService,
       PasswordEncoder passwordEncoder) {
     super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
     this.objectMapper = objectMapper;
-    this.memberRepository = memberRepository;
+    this.memberService = memberService;
     this.encoder = passwordEncoder;
   }
 
@@ -60,6 +54,7 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     String email = usernamePasswordMap.get(USERNAME_KEY);
     String password = usernamePasswordMap.get(PASSWORD_KEY);
+
 
     Member member = memberRepository.findByEmail(email)
         .orElseThrow(ExceptionNotFoundUser::new);

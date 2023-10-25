@@ -6,6 +6,7 @@ import com.project.lecture.redis.dto.RefreshToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -43,8 +44,8 @@ public class RedisClient {
     putObject(accessToken,refreshToken);
   }
   private void putObject(String key, RefreshToken refreshToken) {
-    try{
-      redisTemplate.opsForValue().set(key, mapper.writeValueAsString(refreshToken),TTL);
+    try {
+      redisTemplate.opsForValue().set(key, mapper.writeValueAsString(refreshToken), TTL);
     } catch (JsonProcessingException e) {
       throw new RuntimeException();
     }

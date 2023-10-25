@@ -2,6 +2,7 @@ package com.project.lecture.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.project.lecture.jwt.descripton.JwtDescription;
 import com.project.lecture.redis.RedisClient;
 import com.project.lecture.redis.dto.RefreshToken;
 import com.project.lecture.repository.MemberRepository;
@@ -36,10 +37,6 @@ public class JwtService {
   @Value("${jwt.refresh.header}")
   private String refreshHeader;
 
-  private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
-  private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
-  private static final String EMAIL_CLAIM = "email";
-  private static final String BEARER = "Bearer ";
 
   private final MemberRepository memberRepository;
   private final RedisClient redisClient;
@@ -64,18 +61,9 @@ public class JwtService {
   public String createRefreshToken() {
     Date now = new Date();
     return JWT.create()
-        .withSubject(REFRESH_TOKEN_SUBJECT)
+        .withSubject(JwtDescription.REFRESH_TOKEN_SUBJECT.getValue())
         .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
         .sign(Algorithm.HMAC512(secretKey));
-  }
-
-  /**
-   * AccessToken 헤더에 실어서 보내기
-   */
-  public void sendAccessToken(HttpServletResponse response, String accessToken) {
-    response.setStatus(HttpServletResponse.SC_OK);
-    response.setHeader(accessHeader, accessToken);
-    log.info("재발급된 Access Token : {}", accessToken);
   }
 
   /**
@@ -94,8 +82,8 @@ public class JwtService {
    */
   public Optional<String> getRefreshtokenByReq(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(refreshHeader))
-        .filter(refreshToken -> refreshToken.startsWith(BEARER))
-        .map(refreshToken -> refreshToken.replace(BEARER, ""));
+        .filter(refreshToken -> refreshToken.startsWith(JwtDescription.BEARER.getValue()))
+        .map(refreshToken -> refreshToken.replace(JwtDescription.BEARER.getValue(), ""));
   }
 
   /**
@@ -103,8 +91,8 @@ public class JwtService {
    */
   public Optional<String> getAccesstokenByReq(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(accessHeader))
-        .filter(refreshToken -> refreshToken.startsWith(BEARER))
-        .map(refreshToken -> refreshToken.replace(BEARER, ""));
+        .filter(refreshToken -> refreshToken.startsWith(JwtDescription.BEARER.getValue()))
+        .map(refreshToken -> refreshToken.replace(JwtDescription.BEARER.getValue(), ""));
   }
 
   public Optional<String> getEmail(String accessToken) {
@@ -112,7 +100,7 @@ public class JwtService {
       return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
           .build()
           .verify(accessToken)
-          .getClaim(EMAIL_CLAIM)
+          .getClaim(JwtDescription.EMAIL_CLAIM.getValue())
           .asString());
     } catch (Exception e) {
       log.error("액세스 토큰이 유효하지 않습니다.");
@@ -145,6 +133,10 @@ public class JwtService {
       log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
       return false;
     }
+  }
+
+  public void saveToken(String newAccessToken, RefreshToken tokenInfo) {
+    redisClient.put(newAccessToken,tokenInfo);
   }
 }
 
