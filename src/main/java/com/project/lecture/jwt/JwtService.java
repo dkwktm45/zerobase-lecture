@@ -2,6 +2,7 @@ package com.project.lecture.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.project.lecture.jwt.descripton.JwtDescription;
 import com.project.lecture.redis.RedisClient;
 import com.project.lecture.redis.dto.RefreshToken;
 import com.project.lecture.repository.MemberRepository;
@@ -36,10 +37,6 @@ public class JwtService {
   @Value("${jwt.refresh.header}")
   private String refreshHeader;
 
-  private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
-  private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
-  private static final String EMAIL_CLAIM = "email";
-  private static final String BEARER = "Bearer ";
 
   private final MemberRepository memberRepository;
   private final RedisClient redisClient;
@@ -49,15 +46,15 @@ public class JwtService {
    */
   public String createAccessToken(String email) {
     Date now = new Date();
-    return JWT.create() // JWT 토큰을 생성하는 빌더 반환
-        .withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
-        .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
+    return JWT.create()
+        .withSubject(JwtDescription.ACCESS_TOKEN_SUBJECT.getValue())
+        .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
+        .withClaim(JwtDescription.EMAIL_CLAIM.getValue(), email)
+        .sign(Algorithm.HMAC512(secretKey));
+  }
 
-        //클레임으로는 저희는 email 하나만 사용합니다.
-        //추가적으로 식별자나, 이름 등의 정보를 더 추가하셔도 됩니다.
-        //추가하실 경우 .withClaim(클래임 이름, 클래임 값) 으로 설정해주시면 됩니다
-        .withClaim(EMAIL_CLAIM, email)
-        .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, application-jwt.yml에서 지정한 secret 키로 암호화
+  public RefreshToken getTokenInfoByRedis(String accessToken) {
+    return redisClient.get(accessToken, RefreshToken.class);
   }
 
   /**
@@ -67,18 +64,9 @@ public class JwtService {
   public String createRefreshToken() {
     Date now = new Date();
     return JWT.create()
-        .withSubject(REFRESH_TOKEN_SUBJECT)
+        .withSubject(JwtDescription.REFRESH_TOKEN_SUBJECT.getValue())
         .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
         .sign(Algorithm.HMAC512(secretKey));
-  }
-
-  /**
-   * AccessToken 헤더에 실어서 보내기
-   */
-  public void sendAccessToken(HttpServletResponse response, String accessToken) {
-    response.setStatus(HttpServletResponse.SC_OK);
-    response.setHeader(accessHeader, accessToken);
-    log.info("재발급된 Access Token : {}", accessToken);
   }
 
   /**
@@ -97,8 +85,8 @@ public class JwtService {
    */
   public Optional<String> getRefreshtokenByReq(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(refreshHeader))
-        .filter(refreshToken -> refreshToken.startsWith(BEARER))
-        .map(refreshToken -> refreshToken.replace(BEARER, ""));
+        .filter(refreshToken -> refreshToken.startsWith(JwtDescription.BEARER.getValue()))
+        .map(refreshToken -> refreshToken.replace(JwtDescription.BEARER.getValue(), ""));
   }
 
   /**
@@ -106,8 +94,8 @@ public class JwtService {
    */
   public Optional<String> getAccesstokenByReq(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(accessHeader))
-        .filter(refreshToken -> refreshToken.startsWith(BEARER))
-        .map(refreshToken -> refreshToken.replace(BEARER, ""));
+        .filter(refreshToken -> refreshToken.startsWith(JwtDescription.BEARER.getValue()))
+        .map(refreshToken -> refreshToken.replace(JwtDescription.BEARER.getValue(), ""));
   }
 
   public Optional<String> getEmail(String accessToken) {
@@ -115,7 +103,7 @@ public class JwtService {
       return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
           .build()
           .verify(accessToken)
-          .getClaim(EMAIL_CLAIM)
+          .getClaim(JwtDescription.EMAIL_CLAIM.getValue())
           .asString());
     } catch (Exception e) {
       log.error("액세스 토큰이 유효하지 않습니다.");
@@ -148,6 +136,10 @@ public class JwtService {
       log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
       return false;
     }
+  }
+
+  public void saveToken(String newAccessToken, RefreshToken tokenInfo) {
+    redisClient.put(newAccessToken,tokenInfo);
   }
 }
 

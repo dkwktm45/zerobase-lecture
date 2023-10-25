@@ -1,5 +1,6 @@
 package com.project.lecture.entity;
 
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,9 @@ public class Review {
   private Long reviewId;
   private String reviewContent;
   private int reviewRating;
+  private String createdEmail;
+  private LocalDate createdDt;
+  private LocalDate updatedDt;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "courseId")

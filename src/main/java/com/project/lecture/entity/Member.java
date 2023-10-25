@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Getter
@@ -28,7 +29,6 @@ public class Member {
   @Column(nullable = false, unique = true)
   private String email;
   private String nickName;
-  @Column(nullable = false)
   private String password;
 
   private String authType;
@@ -55,5 +55,18 @@ public class Member {
   @Builder.Default
   private List<Planner> planners = new ArrayList<>();
 
+  @Transactional
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
+  public Member updateBySocialLogin(String nickName, SocialType socialType) {
+    this.nickName = nickName;
+    this.socialType = socialType;
+    return this;
+  }
+
+  public void authToUser() {
+    this.authType = "USER";
+  }
 }

@@ -3,19 +3,21 @@ package com.project.lecture.user.dto;
 import com.project.lecture.entity.Member;
 import com.project.lecture.type.AuthType;
 import com.project.lecture.type.valid.ValidEnum;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 public class UserRequest {
 
   @Getter
   @Setter
   @NoArgsConstructor
+  @Builder
   @AllArgsConstructor
   public static class SignUp{
 
@@ -23,11 +25,11 @@ public class UserRequest {
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식이 올바르지 않습니다.")
     private String email;
 
-    @Max(15)
+    @Length(max = 15)
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")
     private String password;
 
-    @Max(10)
+    @Length(max = 10)
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")
     private String nickName;
 
