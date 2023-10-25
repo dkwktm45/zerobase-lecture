@@ -1,5 +1,8 @@
 package com.project.lecture.jwt;
 
+import static com.project.lecture.jwt.descripton.JwtDescription.ACCESS_TOKEN_SUBJECT;
+import static com.project.lecture.jwt.descripton.JwtDescription.EMAIL_CLAIM;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.project.lecture.jwt.descripton.JwtDescription;
@@ -47,16 +50,15 @@ public class JwtService {
   public String createAccessToken(String email) {
     Date now = new Date();
     return JWT.create() // JWT 토큰을 생성하는 빌더 반환
-        .withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
+        .withSubject(ACCESS_TOKEN_SUBJECT.getValue()) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
         .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
 
-        .withClaim(EMAIL_CLAIM, email)
+        .withClaim(EMAIL_CLAIM.getValue(), email)
         .sign(Algorithm.HMAC512(secretKey));
   }
 
   /**
    * RefreshToken 생성
-   * RefreshToken은 Claim에 email도 넣지 않으므로 withClaim() X
    */
   public String createRefreshToken() {
     Date now = new Date();
@@ -65,7 +67,9 @@ public class JwtService {
         .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
         .sign(Algorithm.HMAC512(secretKey));
   }
-
+  public RefreshToken getTokenInfoByRedis(String accessToken) {
+    return redisClient.get(accessToken, RefreshToken.class);
+  }
   /**
    * AccessToken + RefreshToken 헤더에 실어서 보내기
    */
@@ -100,7 +104,7 @@ public class JwtService {
       return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
           .build()
           .verify(accessToken)
-          .getClaim(JwtDescription.EMAIL_CLAIM.getValue())
+          .getClaim(EMAIL_CLAIM.getValue())
           .asString());
     } catch (Exception e) {
       log.error("액세스 토큰이 유효하지 않습니다.");

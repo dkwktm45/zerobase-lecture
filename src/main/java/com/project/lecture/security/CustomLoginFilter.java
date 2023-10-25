@@ -1,10 +1,15 @@
 package com.project.lecture.security;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.lecture.entity.Member;
-import com.project.lecture.exception.kind.ExceptionNotFoundUser;
 import com.project.lecture.exception.kind.ExceptionNotValidPassword;
-import com.project.lecture.repository.MemberRepository;
+import com.project.lecture.user.service.MemberService;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,7 +48,8 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
    * 인증 처리 메소드 (Json 방식)
    */
   @Override
-  public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
+  public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+      throws AuthenticationException, IOException{
     if(request.getContentType() == null || !request.getContentType().equals(CONTENT_TYPE)  ) {
       throw new AuthenticationServiceException("Authentication Content-Type not supported: " + request.getContentType());
     }
@@ -56,8 +62,7 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
     String password = usernamePasswordMap.get(PASSWORD_KEY);
 
 
-    Member member = memberRepository.findByEmail(email)
-        .orElseThrow(ExceptionNotFoundUser::new);
+    Member member = memberService.getEmail(email);
     isValidPassword(password, member);
 
     UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(email, password);
