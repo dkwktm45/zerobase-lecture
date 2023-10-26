@@ -7,7 +7,7 @@ import com.project.lecture.security.oauth2.cookie.HttpCookieOauth2AuthorizationR
 import com.project.lecture.security.oauth2.handler.OAuth2LoginFailureHandler;
 import com.project.lecture.security.oauth2.handler.OAuth2LoginSuccessHandler;
 import com.project.lecture.security.oauth2.service.CustomOAuth2UserService;
-import com.project.lecture.redis.RedisClient;
+import com.project.lecture.redis.TokenClient;
 import com.project.lecture.security.CustomLoginFilter;
 import com.project.lecture.security.handler.LoginFailHandler;
 import com.project.lecture.security.handler.LoginSuccessHandler;
@@ -42,7 +42,7 @@ public class SecurityConfig {
   private final ObjectMapper objectMapper;
   private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
   private final CustomOAuth2UserService customOAuth2UserService;
-  private final RedisClient redisClient;
+  private final TokenClient tokenClient;
 
   @Bean
   public HttpCookieOauth2AuthorizationRequestRepository cookieOauth2AuthorizationRequestRepository() {
@@ -111,7 +111,7 @@ public class SecurityConfig {
    */
   @Bean
   public LoginSuccessHandler loginSuccessHandler() {
-    return new LoginSuccessHandler(jwtService, redisClient);
+    return new LoginSuccessHandler(jwtService, tokenClient);
   }
 
   /**

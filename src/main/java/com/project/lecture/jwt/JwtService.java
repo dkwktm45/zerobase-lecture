@@ -6,8 +6,7 @@ import static com.project.lecture.jwt.descripton.JwtDescription.EMAIL_CLAIM;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.project.lecture.jwt.descripton.JwtDescription;
-import com.project.lecture.redis.RedisClient;
-import com.project.lecture.redis.dto.RefreshToken;
+import com.project.lecture.redis.TokenClient;
 import com.project.lecture.repository.MemberRepository;
 import java.util.Date;
 import java.util.Optional;
@@ -42,7 +41,7 @@ public class JwtService {
 
 
   private final MemberRepository memberRepository;
-  private final RedisClient redisClient;
+  private final TokenClient tokenClient;
 
   /**
    * AccessToken 생성 메소드
@@ -67,8 +66,8 @@ public class JwtService {
         .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
         .sign(Algorithm.HMAC512(secretKey));
   }
-  public RefreshToken getTokenInfoByRedis(String accessToken) {
-    return redisClient.get(accessToken, RefreshToken.class);
+  public String getTokenInfoByRedis(String accessToken) {
+    return tokenClient.get(accessToken);
   }
   /**
    * AccessToken + RefreshToken 헤더에 실어서 보내기
@@ -122,11 +121,9 @@ public class JwtService {
     response.setHeader(refreshHeader, refreshToken);
   }
 
-  public void updateRefreshToken(String accessToken, String email, String refreshToken) {
+  public void updateRefreshToken(String accessToken, String refreshToken) {
     log.info("토큰 업데이트");
-    redisClient.put(accessToken ,
-        new RefreshToken(email,accessToken,refreshToken)
-    );
+    tokenClient.put(accessToken ,refreshToken);
   }
 
   public boolean isTokenValid(String token) {
@@ -139,8 +136,8 @@ public class JwtService {
     }
   }
 
-  public void saveToken(String newAccessToken, RefreshToken tokenInfo) {
-    redisClient.put(newAccessToken,tokenInfo);
+  public void saveToken(String newAccessToken, String newRefreshToken) {
+    tokenClient.put(newAccessToken,newRefreshToken);
   }
 }
 

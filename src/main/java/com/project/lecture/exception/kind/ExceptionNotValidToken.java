@@ -2,14 +2,14 @@ package com.project.lecture.exception.kind;
 
 import com.project.lecture.exception.SuperException;
 
-public class EmptyTargetUrl extends SuperException {
-  private static final String MESSAGE = "비어 있는 반환 url이 있습니다.";
+public class ExceptionNotValidToken extends SuperException {
+  private static final String MESSAGE = "유효하지 않는 토큰입니다.";
 
-  public EmptyTargetUrl(){
+  public ExceptionNotValidToken(){
     super(MESSAGE);
   }
 
-  public EmptyTargetUrl(String name){
+  public ExceptionNotValidToken(String name){
     super(MESSAGE);
     addValidation(name,MESSAGE);
   }

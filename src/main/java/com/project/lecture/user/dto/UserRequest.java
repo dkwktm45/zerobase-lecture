@@ -17,7 +17,6 @@ public class UserRequest {
   @Getter
   @Setter
   @NoArgsConstructor
-  @Builder
   @AllArgsConstructor
   @Builder
   public static class SignUp{

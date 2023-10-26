@@ -5,7 +5,7 @@ import static com.project.lecture.type.UrlCheck.NO_CHECK_LOGIN;
 import static com.project.lecture.type.UrlCheck.NO_CHECK_OAUTH2;
 
 import com.project.lecture.entity.Member;
-import com.project.lecture.exception.kind.NotValidToken;
+import com.project.lecture.exception.kind.ExceptionNotValidToken;
 import com.project.lecture.jwt.descripton.JwtDescription;
 import com.project.lecture.redis.dto.RefreshToken;
 import com.project.lecture.user.service.MemberService;
@@ -82,20 +82,23 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
       String refreshToken,
       String accessToken) {
     log.info("토큰 재발급");
-    RefreshToken tokenInfo = jwtService.getTokenInfoByRedis(accessToken);
+    String getRefreshToken = jwtService.getTokenInfoByRedis(accessToken);
 
-    if (!tokenInfo.getRefreshToken().equals(refreshToken)
-        && !tokenInfo.getAccessToken().equals(accessToken)) {
-      throw new NotValidToken(JwtDescription.ACCESS_TOKEN_SUBJECT.getValue());
+    if (!getRefreshToken.equals(refreshToken)) {
+      throw new ExceptionNotValidToken(JwtDescription.ACCESS_TOKEN_SUBJECT.getValue());
     }
 
-    String email = tokenInfo.getEmail();
+    String email = jwtService.getEmail(accessToken)
+        .orElseGet(null);
+
+    if (email == null) {
+      throw new ExceptionNotValidToken(email);
+    }
+
     String newRefreshToken = jwtService.createRefreshToken();
     String newAccessToken = jwtService.createAccessToken(email);
 
-    RefreshToken reTokenInfo = new RefreshToken(email, newRefreshToken, newAccessToken);
-
-    jwtService.saveToken(newAccessToken, reTokenInfo);
+    jwtService.saveToken(newAccessToken, newRefreshToken);
     jwtService.sendAccessAndRefreshToken(response, newAccessToken, newRefreshToken);
   }
 

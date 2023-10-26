@@ -18,8 +18,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
   @Bean
-  public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-    RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
+  public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    RedisTemplate<String,String> redisTemplate = new RedisTemplate<>();
     StringRedisSerializer serializer = new StringRedisSerializer();
 
     redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -35,7 +35,5 @@ public class RedisConfig {
     container.setConnectionFactory(redisConnectionFactory);
     return container;
   }
-  private final RedisProperties redisProperties;
-
 
 }

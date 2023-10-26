@@ -25,7 +25,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-/src/main/resources/application-prod.yml
+/src/main/resources/application-oauth.yml
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

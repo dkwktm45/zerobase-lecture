@@ -1,8 +1,7 @@
 package com.project.lecture.security.handler;
 
 import com.project.lecture.jwt.JwtService;
-import com.project.lecture.redis.RedisClient;
-import com.project.lecture.redis.dto.RefreshToken;
+import com.project.lecture.redis.TokenClient;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
   private final JwtService jwtService;
-  private final RedisClient redisClient;
+  private final TokenClient tokenClient;
 
   @Value("${jwt.access.expiration}")
   private String accessTokenExpiration;
@@ -31,9 +30,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     String refreshToken = jwtService.createRefreshToken(); // JwtService의 createRefreshToken을 사용하여 RefreshToken 발급
 
     jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken); // 응답 헤더에 AccessToken, RefreshToken 실어서 응답
-    RefreshToken tokenInfo = new RefreshToken(email,accessToken,refreshToken);
 
-    redisClient.put(accessToken, tokenInfo);
+    tokenClient.put(accessToken, refreshToken);
     log.info("로그인에 성공하였습니다. 이메일 : {}", email);
     log.info("로그인에 성공하였습니다. AccessToken : {}", accessToken);
     log.info("발급된 AccessToken 만료 기간 : {}", accessTokenExpiration);

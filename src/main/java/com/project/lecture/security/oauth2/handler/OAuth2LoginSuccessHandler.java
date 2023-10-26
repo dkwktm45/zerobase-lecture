@@ -6,7 +6,7 @@ import static com.project.lecture.jwt.descripton.JwtDescription.REFRESH_TOKEN_SU
 import static com.project.lecture.security.oauth2.cookie.HttpCookieOauth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 import com.project.lecture.entity.Member;
-import com.project.lecture.exception.kind.EmptyTargetUrl;
+import com.project.lecture.exception.kind.ExceptionEmptyTargetUrl;
 import com.project.lecture.jwt.JwtService;
 import com.project.lecture.security.oauth2.CustomOAuth2User;
 import com.project.lecture.security.oauth2.cookie.HttpCookieOauth2AuthorizationRequestRepository;
@@ -38,7 +38,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
   /**
    * 토큰의 만료시간을 지정했기 때문에 해당 로그인을 다시 한번 더 한 경우 및 최소 로그인시 토큰을 다시 생성한다.
-   * */
+   */
   @Override
   @Transactional
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -59,7 +59,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
       String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
       String refreshToken = jwtService.createRefreshToken();
-      jwtService.updateRefreshToken(accessToken, oAuth2User.getEmail(), refreshToken);
+      jwtService.updateRefreshToken(accessToken, refreshToken);
       response.setHeader(ACCESS_TOKEN_SUBJECT.getValue(), accessToken);
       response.setHeader(REFRESH_TOKEN_SUBJECT.getValue(), refreshToken);
 
@@ -70,7 +70,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
   }
 
-  private String setUrlAndToken(String targetUrl, HttpServletResponse response, CustomOAuth2User oAuth2User) {
+  private String setUrlAndToken(String targetUrl, HttpServletResponse response,
+      CustomOAuth2User oAuth2User) {
 
     return UriComponentsBuilder.fromUriString(targetUrl)
         .build().toUriString();
@@ -81,7 +82,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         .map(Cookie::getValue).orElseGet(null);
 
     if (Objects.isNull(targetUrl)) {
-      throw new EmptyTargetUrl(REDIRECT_URI_PARAM_COOKIE_NAME);
+      throw new ExceptionEmptyTargetUrl(REDIRECT_URI_PARAM_COOKIE_NAME);
     }
 
     return targetUrl;

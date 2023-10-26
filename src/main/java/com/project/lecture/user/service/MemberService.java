@@ -1,7 +1,7 @@
 package com.project.lecture.user.service;
 
 import com.project.lecture.entity.Member;
-import com.project.lecture.exception.kind.NotFoundUser;
+import com.project.lecture.exception.kind.ExceptionNotFoundUser;
 import com.project.lecture.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,6 @@ public class MemberService {
 
   public Member getEmail(String email) {
     return memberRepository.findByEmail(email)
-        .orElseThrow(NotFoundUser::new);
+        .orElseThrow(ExceptionNotFoundUser::new);
   }
 }
