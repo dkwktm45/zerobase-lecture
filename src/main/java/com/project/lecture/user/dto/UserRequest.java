@@ -25,11 +25,11 @@ public class UserRequest {
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식이 올바르지 않습니다.")
     private String email;
 
-    @Length(max = 15)
+    @Length(max = 15, message = "비밀번호 길이를 초과했습니다.")
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")
     private String password;
 
-    @Length(max = 10)
+    @Length(max = 10, message = "닉네임 길이를 초과하셨습니다.")
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")
     private String nickName;
 

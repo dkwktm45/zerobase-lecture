@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class ExceptionController {
   @ExceptionHandler(SuperException.class)
-  public ResponseEntity<ErrorResponse> handle404(SuperException e){
+  public ResponseEntity<ErrorResponse> handle404(final SuperException e){
     return ResponseEntity.badRequest().
         body(ErrorResponse.builder()
         .code(String.valueOf(e.getStatusCode()))
@@ -22,12 +22,13 @@ public class ExceptionController {
         .build());
   }
   @ExceptionHandler({MethodArgumentNotValidException.class})
-  public ResponseEntity<ErrorResponse> notValidException(MethodArgumentNotValidException e) {
+  public ResponseEntity<ErrorResponse> notValidException(final MethodArgumentNotValidException e) {
     BindingResult bindingResult = e.getBindingResult();
     String detail = "";
 
     if (bindingResult.hasErrors()) {
       detail = bindingResult.getFieldError().getDefaultMessage();
+
       log.warn("잘못된 요청이 왔습니다. : {}",detail);
 
       return ResponseEntity.badRequest().body(
@@ -44,7 +45,7 @@ public class ExceptionController {
   }
 
   @ExceptionHandler({MissingRequestHeaderException.class})
-  public ResponseEntity<ErrorResponse> notValidException(MissingRequestHeaderException e) {
+  public ResponseEntity<ErrorResponse> notValidException(final MissingRequestHeaderException e) {
     String headerName = e.getHeaderName();
     log.warn("헤더값을 찾지 못하고 있습니다. : {}",headerName);
 

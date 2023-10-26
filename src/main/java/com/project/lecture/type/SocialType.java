@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 public enum SocialType implements LegacyCodeCommonType {
-  KAKAO("0","KAKAO"), NAVER("1","NAVER"), GOOGLE("2", "GOOGLE");
+  KAKAO("0","KAKAO"), NAVER("1","NAVER"), GOOGLE("2", "GOOGLE"),PLANNER("3","PLANNER");
 
   private final String code;
   private final String description;
