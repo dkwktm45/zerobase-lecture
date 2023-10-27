@@ -1,6 +1,5 @@
 package com.project.lecture.course.application;
 
-import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
 
 import com.project.lecture.course.dto.CourseRequest.Create;
 import com.project.lecture.course.dto.LectureDto;
@@ -20,7 +19,7 @@ public class CourseApplication {
 
   private final CourseService courseService;
   private final MemberService memberService;
-
+  private final LectureService lectureService;
   @Transactional
   public void createCourseAndLecture(Create request, String name) {
     Member member = memberService.getEmail(name);
