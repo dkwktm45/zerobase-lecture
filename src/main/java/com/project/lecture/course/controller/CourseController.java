@@ -41,7 +41,7 @@ public class CourseController {
   public ResponseEntity<String> deleteLectureRequest(
       @RequestParam Long courseId
   ){
-    log.info("createLectureRequest() 수행");
+    log.info("deleteLectureRequest() 수행");
     courseService.deleteCourseAndLectureById(courseId);
     return ResponseEntity.ok(DELETE_SUCCESS.getDescription());
   }

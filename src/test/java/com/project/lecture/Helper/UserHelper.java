@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserHelper {
-  public static UserRequest.SignUp createSignUpForm(){
+
+  public static UserRequest.SignUp createSignUpForm() {
     return UserRequest.SignUp.builder()
         .email("wpekdl153@gmail.com")
         .password("1234")
         .nickName("게드릉")
         .authType(AuthType.USER).build();
   }
-
 
 
   public static Member createMemberForm() {
@@ -47,16 +47,33 @@ public class UserHelper {
         .courseName("제로베이스")
         .courseContent("제로베이스 백앤드").build();
   }
+
   public static Create createCourseCreateForm() {
+    return CourseRequest.Create.builder()
+        .lectures(createLectureDtoForm())
+        .courseName("제로베이스")
+        .courseContent("제로베이스 백앤드").build();
+  }
+
+  public static List<LectureDto> createLectureDtoForm() {
     List<LectureDto> list = new ArrayList<>();
 
     for (int i = 1; i <= 3; i++) {
       list.add(new LectureDto(i + "name", i));
     }
+    return list;
+  }
 
-    return CourseRequest.Create.builder()
-        .lectures(list)
-        .courseName("제로베이스")
-        .courseContent("제로베이스 백앤드").build();
+  public static List<Lecture> createLectures() {
+    List<Lecture> list = new ArrayList<>();
+
+    for (int i = 1; i <= 3; i++) {
+      list.add(Lecture.builder()
+          .lectureComplete(false)
+          .lectureTime(i)
+          .lectureName(i + "name").build());
+    }
+
+    return list;
   }
 }

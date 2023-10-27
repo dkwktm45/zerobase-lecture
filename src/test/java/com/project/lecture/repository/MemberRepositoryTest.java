@@ -55,7 +55,7 @@ class MemberRepositoryTest {
 
     boolean result = memberRepository.existsByEmail(member.getEmail());
 
-    assertTrue(result);
+    assertFalse(result);
   }
 
   @Test
