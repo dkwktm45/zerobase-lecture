@@ -1,6 +1,6 @@
 package com.project.lecture.course.controller;
 
-import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
+import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
 
 import com.project.lecture.course.application.CourseApplication;
 import com.project.lecture.course.dto.CourseRequest;
@@ -33,7 +33,8 @@ public class CourseController {
       Principal principal
   ){
     log.info("createLectureRequest() 수행");
-    return ResponseEntity.ok(courseApplication.createCourseAndLecture(request,principal.getName()));
+    courseApplication.createCourseAndLecture(request, principal.getName());
+    return ResponseEntity.ok(COURSE_SUCCESS.getDescription());
   }
 
   @DeleteMapping("/delete")

@@ -3,7 +3,7 @@ package com.project.lecture.user.dto;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.project.lecture.Helper.UserHelper;
+import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.user.dto.UserRequest.SignUp;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -35,7 +35,7 @@ class UserRequestTest {
   @Test
   void dtoEmail_valid() {
     // given
-    UserRequest.SignUp signUpDto = UserHelper.createSignUpForm();
+    UserRequest.SignUp signUpDto = CommonHelper.createSignUpForm();
     signUpDto.setEmail(" ");
     // when
     Set<ConstraintViolation<SignUp>> violations = validator.validate(signUpDto);
@@ -50,7 +50,7 @@ class UserRequestTest {
   @Test
   void dtoPassword_valid() {
     // given
-    UserRequest.SignUp signUpDto = UserHelper.createSignUpForm();
+    UserRequest.SignUp signUpDto = CommonHelper.createSignUpForm();
     signUpDto.setPassword("");
     // when
     Set<ConstraintViolation<SignUp>> violations = validator.validate(signUpDto);
@@ -64,7 +64,7 @@ class UserRequestTest {
   @Test
   void dtoPassword_valid_length() {
     // given
-    UserRequest.SignUp signUpDto = UserHelper.createSignUpForm();
+    UserRequest.SignUp signUpDto = CommonHelper.createSignUpForm();
     signUpDto.setPassword("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
     // when
     Set<ConstraintViolation<SignUp>> violations = validator.validate(signUpDto);
@@ -78,7 +78,7 @@ class UserRequestTest {
   @Test
   void dtoNickName_valid() {
     // given
-    UserRequest.SignUp signUpDto = UserHelper.createSignUpForm();
+    UserRequest.SignUp signUpDto = CommonHelper.createSignUpForm();
     signUpDto.setNickName("");
     // when
     Set<ConstraintViolation<SignUp>> violations = validator.validate(signUpDto);
@@ -92,7 +92,7 @@ class UserRequestTest {
   @Test
   void dtoNickName_valid_length() {
     // given
-    UserRequest.SignUp signUpDto = UserHelper.createSignUpForm();
+    UserRequest.SignUp signUpDto = CommonHelper.createSignUpForm();
     signUpDto.setNickName("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
     // when
     Set<ConstraintViolation<SignUp>> violations = validator.validate(signUpDto);

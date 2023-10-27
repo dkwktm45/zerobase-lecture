@@ -1,5 +1,6 @@
 package com.project.lecture.user.controller;
 
+import com.project.lecture.type.ResponseType;
 import com.project.lecture.user.application.SignUpApplication;
 import com.project.lecture.user.dto.UserRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,9 @@ public class SignUpController {
       @RequestBody
       UserRequest.SignUp request
   ) {
-    return ResponseEntity.ok(signUpApplication.saveUserByReq(request));
+    signUpApplication.saveUserByReq(request);
+    return ResponseEntity.ok(
+        ResponseType.SIGNUP_SUCCESS.getDescription()
+    );
   }
 }
