@@ -62,7 +62,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     // 사용자의 요청 헤더에 RefreshToken이 있는 경우는,
     String refreshToken = jwtService.getRefreshtokenByReq(request)
         .filter(jwtService::isTokenValid)
-        .orElseGet(null);
+        .orElse(null);
 
     if (refreshToken != null) {
       jwtService.getAccesstokenByReq(request)
