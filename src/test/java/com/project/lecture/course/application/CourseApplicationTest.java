@@ -41,7 +41,6 @@ class CourseApplicationTest {
         .thenReturn(course);
     doNothing().when(lectureService).ListInsert(any());
 
-    // when
     courseApplication.createCourseAndLecture(req, member.getEmail());
 
     // then

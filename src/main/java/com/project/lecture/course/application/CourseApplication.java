@@ -20,6 +20,7 @@ public class CourseApplication {
   private final CourseService courseService;
   private final MemberService memberService;
   private final LectureService lectureService;
+
   @Transactional
   public void createCourseAndLecture(Create request, String name) {
     Member member = memberService.getEmail(name);
