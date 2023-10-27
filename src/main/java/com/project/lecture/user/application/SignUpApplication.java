@@ -1,7 +1,6 @@
 package com.project.lecture.user.application;
 
 import com.project.lecture.exception.kind.ExceptionExistUser;
-import com.project.lecture.type.ResponseType;
 import com.project.lecture.user.dto.UserRequest;
 import com.project.lecture.user.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class SignUpApplication {
   private final PasswordEncoder passwordEncoder;
   private final MemberService memberService;
-  public String saveUserByReq(UserRequest.SignUp sign) {
+  public void saveUserByReq(UserRequest.SignUp sign) {
     if (memberService.hasEmail(sign.getEmail())) {
       throw new ExceptionExistUser(sign.getEmail());
     }
@@ -22,7 +21,5 @@ public class SignUpApplication {
     memberService.createUser(
         sign.toEntity()
     );
-
-    return ResponseType.SIGNUP_SUCCESS.getDescription();
   }
 }

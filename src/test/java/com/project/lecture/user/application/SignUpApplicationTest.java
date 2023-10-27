@@ -12,7 +12,6 @@ import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.exception.SuperException;
-import com.project.lecture.type.ResponseType;
 import com.project.lecture.user.dto.UserRequest;
 import com.project.lecture.user.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
@@ -42,11 +41,10 @@ class SignUpApplicationTest {
     doNothing().when(memberService).createUser(any());
 
     // when
-    String message = signUpApplication.saveUserByReq(sign);
+    signUpApplication.saveUserByReq(sign);
 
 
     // then
-    assertEquals(message, ResponseType.SIGNUP_SUCCESS.getDescription());
     verify(memberService, timeout(1)).hasEmail(anyString());
     verify(passwordEncoder, timeout(1)).encode(anyString());
     verify(memberService, timeout(1)).createUser(any());
