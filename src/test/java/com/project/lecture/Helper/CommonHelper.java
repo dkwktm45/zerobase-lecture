@@ -12,7 +12,7 @@ import com.project.lecture.user.dto.UserRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserHelper {
+public class CommonHelper {
   public static UserRequest.SignUp createSignUpForm(){
     return UserRequest.SignUp.builder()
         .email("wpekdl153@gmail.com")

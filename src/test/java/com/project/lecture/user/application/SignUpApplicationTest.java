@@ -10,7 +10,7 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.project.lecture.Helper.UserHelper;
+import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.type.ResponseType;
 import com.project.lecture.user.dto.UserRequest;
@@ -33,7 +33,7 @@ class SignUpApplicationTest {
   @Test
   @DisplayName("회원 가입 - 성공")
   void saveUserByReq_success() {
-    UserRequest.SignUp sign = UserHelper.createSignUpForm();
+    UserRequest.SignUp sign = CommonHelper.createSignUpForm();
     // given
     when(memberService.hasEmail(anyString()))
         .thenReturn(false);
@@ -55,7 +55,7 @@ class SignUpApplicationTest {
   @Test
   @DisplayName("회원 가입 - 실패[이메일]")
   void saveUserByReq_fail_email() {
-    UserRequest.SignUp sign = UserHelper.createSignUpForm();
+    UserRequest.SignUp sign = CommonHelper.createSignUpForm();
     // given
     when(memberService.hasEmail(anyString()))
         .thenReturn(true);

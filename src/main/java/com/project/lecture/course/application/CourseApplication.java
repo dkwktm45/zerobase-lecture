@@ -1,6 +1,5 @@
 package com.project.lecture.course.application;
 
-import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
 
 import com.project.lecture.course.dto.CourseRequest.Create;
 import com.project.lecture.course.service.CourseService;
@@ -18,11 +17,9 @@ public class CourseApplication {
   private final MemberService memberService;
 
   @Transactional
-  public String createCourseAndLecture(Create request, String name) {
+  public void createCourseAndLecture(Create request, String name) {
     Member member = memberService.getEmail(name);
 
-    courseService.createCourse(request).setMember(member);
-
-    return COURSE_SUCCESS.getDescription();
+    courseService.createCourse(request,member);
   }
 }

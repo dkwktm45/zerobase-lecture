@@ -6,9 +6,10 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.project.lecture.Helper.UserHelper;
+import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.course.dto.CourseRequest;
 import com.project.lecture.entity.Course;
+import com.project.lecture.entity.Member;
 import com.project.lecture.repository.CourseRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,13 +29,13 @@ class CourseServiceTest {
   @Test
   @DisplayName("강좌 생성")
   void createCourse() {
-    CourseRequest.Create arg = UserHelper.createCourseCreateForm();
-    Course course = UserHelper.createCourseForm();
-
+    CourseRequest.Create arg = CommonHelper.createCourseCreateForm();
+    Course course = CommonHelper.createCourseForm();
+    Member member = CommonHelper.createMemberForm();
     when(courseRepository.save(any()))
         .thenReturn(course);
 
-    Course result = courseService.createCourse(arg);
+    Course result = courseService.createCourse(arg, member);
 
     assertEquals(result.getCourseContent(),course.getCourseContent());
     assertEquals(result.getCourseName(),course.getCourseName());
