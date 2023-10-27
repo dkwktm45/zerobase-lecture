@@ -15,4 +15,8 @@ public class CourseService {
   public Course createCourse(Create request) {
     return courseRepository.save(request.toEntity(request));
   }
+
+  public void deleteCourseAndLectureById(Long courseId) {
+    courseRepository.deleteById(courseId);
+  }
 }
