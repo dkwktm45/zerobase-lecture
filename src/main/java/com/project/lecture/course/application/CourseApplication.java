@@ -3,9 +3,13 @@ package com.project.lecture.course.application;
 import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
 
 import com.project.lecture.course.dto.CourseRequest.Create;
+import com.project.lecture.course.dto.LectureDto;
 import com.project.lecture.course.service.CourseService;
+import com.project.lecture.course.service.LectureService;
+import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
 import com.project.lecture.user.service.MemberService;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -25,4 +25,8 @@ public class CourseService {
   public void deleteCourseAndLectureById(Long courseId) {
     courseRepository.deleteById(courseId);
   }
+
+  public void deleteCourseAndLectureById(Long courseId) {
+    courseRepository.deleteById(courseId);
+  }
 }

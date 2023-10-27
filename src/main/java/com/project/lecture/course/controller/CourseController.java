@@ -1,7 +1,5 @@
 package com.project.lecture.course.controller;
 
-import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
-
 import com.project.lecture.course.application.CourseApplication;
 import com.project.lecture.course.dto.CourseRequest;
 import com.project.lecture.course.service.CourseService;
