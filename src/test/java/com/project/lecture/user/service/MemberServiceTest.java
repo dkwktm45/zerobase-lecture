@@ -6,7 +6,7 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.project.lecture.Helper.UserHelper;
+import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.repository.MemberRepository;
@@ -30,7 +30,7 @@ class MemberServiceTest {
   @DisplayName("이메일 가져오기 - 성공")
   void getEmail() {
     String email = "planner@email.com";
-    Member member = UserHelper.createMemberForm();
+    Member member = CommonHelper.createMemberForm();
 
     // given
     when(memberRepository.findByEmail(email))

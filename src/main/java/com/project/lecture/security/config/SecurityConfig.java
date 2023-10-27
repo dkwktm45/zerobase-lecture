@@ -3,14 +3,14 @@ package com.project.lecture.security.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.lecture.jwt.JwtAuthenticationProcessingFilter;
 import com.project.lecture.jwt.JwtService;
-import com.project.lecture.security.oauth2.cookie.HttpCookieOauth2AuthorizationRequestRepository;
-import com.project.lecture.security.oauth2.handler.OAuth2LoginFailureHandler;
-import com.project.lecture.security.oauth2.handler.OAuth2LoginSuccessHandler;
-import com.project.lecture.security.oauth2.service.CustomOAuth2UserService;
 import com.project.lecture.redis.TokenClient;
 import com.project.lecture.security.CustomLoginFilter;
 import com.project.lecture.security.handler.LoginFailHandler;
 import com.project.lecture.security.handler.LoginSuccessHandler;
+import com.project.lecture.security.oauth2.cookie.HttpCookieOauth2AuthorizationRequestRepository;
+import com.project.lecture.security.oauth2.handler.OAuth2LoginFailureHandler;
+import com.project.lecture.security.oauth2.handler.OAuth2LoginSuccessHandler;
+import com.project.lecture.security.oauth2.service.CustomOAuth2UserService;
 import com.project.lecture.security.service.CustomUserDetailsService;
 import com.project.lecture.user.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,8 @@ public class SecurityConfig {
         .and()
 
         .authorizeRequests()
-        .antMatchers("/join").permitAll()
+        .antMatchers("/join","/login","/oauth2").permitAll()
+        .antMatchers("/admin/**").hasAnyRole("ADMIN")
         .anyRequest().authenticated()
         .and()
         .oauth2Login()
@@ -88,7 +89,7 @@ public class SecurityConfig {
 
   @Bean
   public OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler() {
-    return new OAuth2LoginSuccessHandler(jwtService, memberService,
+    return new OAuth2LoginSuccessHandler(jwtService,
         cookieOauth2AuthorizationRequestRepository());
   }
 

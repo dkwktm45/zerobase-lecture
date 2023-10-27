@@ -42,6 +42,7 @@ public class Course {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "memberId")
   private Member member;
-
-
+  public void setMember(Member member) {
+    this.member = member;
+  }
 }
