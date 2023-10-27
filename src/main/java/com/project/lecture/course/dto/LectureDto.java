@@ -1,5 +1,6 @@
 package com.project.lecture.course.dto;
 
+import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -24,9 +25,10 @@ public class LectureDto {
   @Max(value = 1000, message = "강의 최대 시간을 준수 해야합니다.")
   private int lectureTime;
 
-  public static Lecture toEntity(LectureDto lectureDto){
+  public static Lecture toEntity(LectureDto lectureDto, Course course){
     return Lecture.builder()
         .lectureName(lectureDto.lectureName)
+        .course(course)
         .lectureTime(lectureDto.lectureTime).build();
   }
 }

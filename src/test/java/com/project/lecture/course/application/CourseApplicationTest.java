@@ -37,9 +37,15 @@ class CourseApplicationTest {
     // given
     when(memberService.getEmail(anyString()))
         .thenReturn(member);
-    when(courseService.createCourse(any(), member))
+    when(courseService.createCourse(any()))
         .thenReturn(course);
+    doNothing().when(lectureService).ListInsert(any());
 
     courseApplication.createCourseAndLecture(req, member.getEmail());
+
+    // then
+    verify(memberService, timeout(1)).getEmail(any());
+    verify(courseService, timeout(1)).createCourse(any());
+    verify(lectureService, timeout(1)).ListInsert(any());
   }
 }

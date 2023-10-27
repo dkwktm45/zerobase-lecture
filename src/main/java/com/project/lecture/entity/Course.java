@@ -31,11 +31,11 @@ public class Course {
   @Lob
   private String courseContent;
 
-  @OneToMany(mappedBy = "course", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
   @Builder.Default
   private List<Lecture> lectures = new ArrayList<>();
 
-  @OneToMany(mappedBy = "course", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
   @Builder.Default
   private List<Review> reviews = new ArrayList<>();
 
