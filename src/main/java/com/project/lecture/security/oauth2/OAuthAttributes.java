@@ -68,7 +68,7 @@ public class OAuthAttributes {
         .password(PasswordUtil.generateRandomPassword())
         .email(oauth2UserInfo.getEmail())
         .nickName(oauth2UserInfo.getNickname())
-        .authType(AuthType.GUEST.getDescription())
+        .authType(AuthType.USER.getDescription())
         .build();
   }
 }

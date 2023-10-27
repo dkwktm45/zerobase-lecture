@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -25,6 +26,8 @@ public class Lecture {
 
   private String lectureName;
   private int lectureTime;
+
+  @ColumnDefault("0")
   private boolean lectureComplete;
 
   @ManyToOne(fetch = FetchType.LAZY)

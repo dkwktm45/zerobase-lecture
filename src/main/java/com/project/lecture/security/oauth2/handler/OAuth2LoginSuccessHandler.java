@@ -33,7 +33,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
   private final JwtService jwtService;
-  private final MemberService memberService;
   private final HttpCookieOauth2AuthorizationRequestRepository cookieOauth2AuthorizationRequestRepository;
 
   /**
@@ -46,11 +45,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     log.info("OAuth2 Login 성공!");
     try {
       CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-      Member member = memberService.getEmail(oAuth2User.getEmail());
-
-      if (member.getAuthType().equals(AuthType.GUEST.getDescription())) {
-        member.authToUser();
-      }
 
       String result = setUrlAndToken(
           getTargetUrl(request), response, oAuth2User
