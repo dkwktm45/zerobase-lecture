@@ -38,7 +38,7 @@ public class AdminCourseController {
       @RequestBody @Valid CourseRequest.Create request,
       Principal principal
   ) {
-    log.info("createLectureRequest() 수행");
+    log.info("createCourseRequest() 수행");
     courseApplication.createCourseAndLecture(request, principal.getName());
     return ResponseEntity.ok(COURSE_SUCCESS.getDescription());
   }
@@ -47,7 +47,7 @@ public class AdminCourseController {
   public ResponseEntity<String> deleteCourseRequest(
       @RequestParam Long courseId
   ) {
-    log.info("deleteLectureRequest() 수행");
+    log.info("deleteCourseRequest() 수행");
     courseService.deleteCourseAndLectureById(courseId);
     return ResponseEntity.ok(DELETE_SUCCESS.getDescription());
   }
@@ -57,7 +57,7 @@ public class AdminCourseController {
       @RequestBody @Valid
       CourseRequest.Change request
   ) {
-    log.info("changeLectureRequest() 수행");
+    log.info("changeCourseRequest() 수행");
     courseService.changeCourseByForm(request);
     return ResponseEntity.ok(CHANGE_SUCCESS.getDescription());
   }
