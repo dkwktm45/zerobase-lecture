@@ -2,7 +2,7 @@ package com.project.lecture.Helper;
 
 import com.project.lecture.course.dto.CourseRequest;
 import com.project.lecture.course.dto.CourseRequest.Create;
-import com.project.lecture.course.dto.LectureDto;
+import com.project.lecture.course.dto.CreateLecture;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
@@ -48,10 +48,10 @@ public class CommonHelper {
         .courseContent("제로베이스 백앤드").build();
   }
   public static Create createCourseCreateForm() {
-    List<LectureDto> list = new ArrayList<>();
+    List<CreateLecture> list = new ArrayList<>();
 
     for (int i = 1; i <= 3; i++) {
-      list.add(new LectureDto(i + "name", i));
+      list.add(new CreateLecture(i + "name", i));
     }
 
     return CourseRequest.Create.builder()

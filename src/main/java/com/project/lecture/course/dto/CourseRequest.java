@@ -24,14 +24,14 @@ public class CourseRequest {
     private String courseName;
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")
     private String courseContent;
-    private List<LectureDto> lectures = new ArrayList<>();
+    private List<CreateLecture> lectures = new ArrayList<>();
 
     public Course toEntity(Create newCourse) {
       return Course.builder()
           .courseContent(newCourse.courseContent)
           .courseName(newCourse.courseName)
           .lectures(newCourse.getLectures()
-              .stream().map(LectureDto::toEntity)
+              .stream().map(CreateLecture::toEntity)
               .collect(Collectors.toList()))
           .build();
     }
