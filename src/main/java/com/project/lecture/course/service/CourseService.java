@@ -30,7 +30,7 @@ public class CourseService {
   }
 
   @Transactional
-  public void changeCourseById(Change course) {
+  public void changeCourseByForm(Change course) {
     Course fromEntity = courseRepository
         .findById(course.getCourseId())
         .orElseThrow(ExceptionNotFoundCourse::new);
