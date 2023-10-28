@@ -1,6 +1,5 @@
 package com.project.lecture.exception;
 
-import javax.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +19,6 @@ public class ExceptionController {
         .message(e.getMessage())
         .validation(e.getValidation())
         .build());
-  }
-  @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity<ErrorResponse> EntityNotFoundException
-      (final EntityNotFoundException e){
-    return ResponseEntity.badRequest().
-        body(ErrorResponse.builder()
-            .message(e.getMessage())
-            .build());
   }
   @ExceptionHandler({MethodArgumentNotValidException.class})
   public ResponseEntity<ErrorResponse> notValidException(final MethodArgumentNotValidException e) {

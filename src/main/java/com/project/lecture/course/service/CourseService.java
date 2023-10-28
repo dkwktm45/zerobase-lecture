@@ -4,6 +4,7 @@ import com.project.lecture.course.dto.CourseRequest.Change;
 import com.project.lecture.course.dto.CourseRequest.Create;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
+import com.project.lecture.exception.kind.ExceptionNotFoundCourse;
 import com.project.lecture.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,8 @@ public class CourseService {
   @Transactional
   public void changeCourseById(Change course) {
     Course fromEntity = courseRepository
-        .getReferenceById(course.getCourseId());
+        .findById(course.getCourseId())
+        .orElseThrow(ExceptionNotFoundCourse::new);
 
     fromEntity.changeValues(Change
         .toEntity(course));
