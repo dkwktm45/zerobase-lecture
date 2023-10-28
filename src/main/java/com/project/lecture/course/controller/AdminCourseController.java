@@ -8,9 +8,7 @@ import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
 import com.project.lecture.course.application.CourseApplication;
 import com.project.lecture.course.dto.CourseRequest;
 import com.project.lecture.course.service.CourseService;
-import com.project.lecture.entity.Course;
 import java.security.Principal;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +58,7 @@ public class AdminCourseController {
       CourseRequest.Change request
   ) {
     log.info("changeLectureRequest() 수행");
-    courseService.changeCourseById(request);
+    courseService.changeCourseByForm(request);
     return ResponseEntity.ok(CHANGE_SUCCESS.getDescription());
   }
 }

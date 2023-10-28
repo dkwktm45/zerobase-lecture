@@ -41,7 +41,7 @@ public class CourseRequest {
   @AllArgsConstructor
   public static class Change {
 
-    @NotNull(message = "빈 값은 들어올 수 없습니다.")
+    @NotNull(message = "ID가 빈 값은 들어올 수 없습니다.")
     private Long courseId;
     @NotBlank(message = "빈 값은 들어올 수 없습니다.")
     private String courseName;
