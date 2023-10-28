@@ -1,0 +1,25 @@
+POST http://localhost:8080/admin/lecture/create
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5ODQ4MzA4MCwiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.f6nq2Pa05zovtYZ0SGolf_04E9NIW0byuZU3MEkzS9lNzohR8_Wyy1BWhWyJ9-AqlnavIT0i5k4rVeKfzDlRfw
+Content-Type: application/json
+
+{
+  "courseName": "courseName_e57a0d313bc9",
+  "courseContent": "courseContent_0a06d0447670",
+  "lectures": [
+    {
+      "lectureName": "lectureName_0ec2e37579ab",
+      "lectureTime": 0
+    }
+  ]
+}
+
+### 강좌 수정
+PUT http://localhost:8080/admin/lecture/change
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5ODQ4MzA4MCwiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.f6nq2Pa05zovtYZ0SGolf_04E9NIW0byuZU3MEkzS9lNzohR8_Wyy1BWhWyJ9-AqlnavIT0i5k4rVeKfzDlRfw
+Content-Type: application/json
+
+{
+  "courseId" :  1,
+  "courseName": "수정",
+  "courseContent": "수정"
+}

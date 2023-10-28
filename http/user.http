@@ -7,3 +7,16 @@ Content-Type: application/json
   "nickName": "planner",
   "authType": "GUEST"
 }
+
+### 로그인
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "planner@gmail.com",
+  "password": "1111"
+}
+
+### 토큰
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5ODQ4MzA4MCwiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.f6nq2Pa05zovtYZ0SGolf_04E9NIW0byuZU3MEkzS9lNzohR8_Wyy1BWhWyJ9-AqlnavIT0i5k4rVeKfzDlRfw
+Authorization-refresh: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTk2ODkwODB9.dOc-6SYTeuho-AWV91M8sOuWbE5GRZSo-LhAAalaALROn5HrZf6L1MKRF-SJGl_QBe2sf_4go9hTlpD8JigZZg

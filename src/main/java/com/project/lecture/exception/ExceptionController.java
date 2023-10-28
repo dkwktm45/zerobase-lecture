@@ -1,5 +1,6 @@
 package com.project.lecture.exception;
 
+import javax.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +13,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class ExceptionController {
   @ExceptionHandler(SuperException.class)
-  public ResponseEntity<ErrorResponse> handle404(final SuperException e){
+  public ResponseEntity<ErrorResponse> customException(final SuperException e){
     return ResponseEntity.badRequest().
         body(ErrorResponse.builder()
         .code(String.valueOf(e.getStatusCode()))
         .message(e.getMessage())
         .validation(e.getValidation())
         .build());
+  }
+  @ExceptionHandler(EntityNotFoundException.class)
+  public ResponseEntity<ErrorResponse> EntityNotFoundException
+      (final EntityNotFoundException e){
+    return ResponseEntity.badRequest().
+        body(ErrorResponse.builder()
+            .message(e.getMessage())
+            .build());
   }
   @ExceptionHandler({MethodArgumentNotValidException.class})
   public ResponseEntity<ErrorResponse> notValidException(final MethodArgumentNotValidException e) {
