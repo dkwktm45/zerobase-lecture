@@ -2,11 +2,15 @@ package com.project.lecture.course.application;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.course.dto.CourseRequest;
 import com.project.lecture.course.service.CourseService;
+import com.project.lecture.course.service.LectureService;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
 import com.project.lecture.user.service.MemberService;
@@ -24,6 +28,8 @@ class CourseApplicationTest {
   private CourseService courseService;
   @Mock
   private MemberService memberService;
+  @Mock
+  private LectureService lectureService;
   @InjectMocks
   private CourseApplication courseApplication;
 
@@ -37,7 +43,7 @@ class CourseApplicationTest {
     // given
     when(memberService.getEmail(anyString()))
         .thenReturn(member);
-    when(courseService.createCourse(any()))
+    when(courseService.createCourse(any(),any()))
         .thenReturn(course);
     doNothing().when(lectureService).ListInsert(any());
 
@@ -45,7 +51,7 @@ class CourseApplicationTest {
 
     // then
     verify(memberService, timeout(1)).getEmail(any());
-    verify(courseService, timeout(1)).createCourse(any());
+    verify(courseService, timeout(1)).createCourse(any(),any());
     verify(lectureService, timeout(1)).ListInsert(any());
   }
 }

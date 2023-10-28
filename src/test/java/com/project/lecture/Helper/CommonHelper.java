@@ -34,6 +34,14 @@ public class CommonHelper {
   }
 
   public static Course createCourseForm() {
+
+    return Course.builder()
+        .lectures(createLecturesForm())
+        .courseName("제로베이스")
+        .courseContent("제로베이스 백앤드").build();
+  }
+
+  public static List<Lecture> createLecturesForm() {
     List<Lecture> list = new ArrayList<>();
 
     for (int i = 1; i <= 3; i++) {
@@ -41,12 +49,9 @@ public class CommonHelper {
           .lectureTime(i)
           .lectureName(i + "번째 강의").build());
     }
-
-    return Course.builder()
-        .lectures(list)
-        .courseName("제로베이스")
-        .courseContent("제로베이스 백앤드").build();
+    return list;
   }
+
   public static Create createCourseCreateForm() {
     List<CreateLecture> list = new ArrayList<>();
 

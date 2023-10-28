@@ -6,6 +6,7 @@ import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
 
 import com.project.lecture.course.application.CourseApplication;
 import com.project.lecture.course.dto.CourseRequest;
+import com.project.lecture.course.service.CourseService;
 import java.security.Principal;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

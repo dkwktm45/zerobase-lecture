@@ -2,7 +2,7 @@ package com.project.lecture.course.application;
 
 
 import com.project.lecture.course.dto.CourseRequest.Create;
-import com.project.lecture.course.dto.LectureDto;
+import com.project.lecture.course.dto.CreateLecture;
 import com.project.lecture.course.service.CourseService;
 import com.project.lecture.course.service.LectureService;
 import com.project.lecture.entity.Course;
@@ -29,7 +29,7 @@ public class CourseApplication {
 
     lectureService.ListInsert(
         request.getLectures()
-            .stream().map(dto -> LectureDto.toEntity(dto,course))
+            .stream().map(dto -> CreateLecture.toEntity(dto,course))
             .collect(Collectors.toList())
     );
   }

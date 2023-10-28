@@ -3,7 +3,6 @@ package com.project.lecture.course.dto;
 import com.project.lecture.entity.Course;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,9 +29,6 @@ public class CourseRequest {
       return Course.builder()
           .courseContent(newCourse.courseContent)
           .courseName(newCourse.courseName)
-          .lectures(newCourse.getLectures()
-              .stream().map(LectureDto::toEntity)
-              .collect(Collectors.toList()))
           .build();
     }
   }

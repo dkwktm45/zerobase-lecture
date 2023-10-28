@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -42,16 +41,5 @@ public class ExceptionController {
         ErrorResponse.builder()
             .code(HttpStatus.BAD_REQUEST.toString())
             .message(detail).build());
-  }
-
-  @ExceptionHandler({MissingRequestHeaderException.class})
-  public ResponseEntity<ErrorResponse> notValidException(final MissingRequestHeaderException e) {
-    String headerName = e.getHeaderName();
-    log.warn("헤더값을 찾지 못하고 있습니다. : {}",headerName);
-
-    return ResponseEntity.badRequest().body(
-        ErrorResponse.builder()
-            .code(HttpStatus.BAD_REQUEST.toString())
-            .message(headerName).build());
   }
 }

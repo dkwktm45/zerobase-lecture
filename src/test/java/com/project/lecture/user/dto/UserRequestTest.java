@@ -43,8 +43,8 @@ class UserRequestTest {
 
     // then
     assertThat(violations).isNotEmpty();
-    assertEquals(result[0].getMessage(), "이메일 형식이 올바르지 않습니다.");
-    assertEquals(result[1].getMessage(), "빈 값은 들어올 수 없습니다.");
+    assertEquals(result[1].getMessage(), "이메일 형식이 올바르지 않습니다.");
+    assertEquals(result[0].getMessage(), "빈 값은 들어올 수 없습니다.");
   }
   @DisplayName("비밀번호 빈값이 들어올 때 발생 에러")
   @Test
