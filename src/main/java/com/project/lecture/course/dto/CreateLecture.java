@@ -24,9 +24,9 @@ public class CreateLecture {
   @Max(value = 1000, message = "강의 최대 시간을 준수 해야합니다.")
   private int lectureTime;
 
-  public static Lecture toEntity(CreateLecture createLecture){
+  public static Lecture toEntity(LectureDto lectureDto){
     return Lecture.builder()
-        .lectureName(createLecture.lectureName)
-        .lectureTime(createLecture.lectureTime).build();
+        .lectureName(lectureDto.lectureName)
+        .lectureTime(lectureDto.lectureTime).build();
   }
 }

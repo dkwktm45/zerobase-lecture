@@ -31,7 +31,7 @@ public class CourseRequest {
           .courseContent(newCourse.courseContent)
           .courseName(newCourse.courseName)
           .lectures(newCourse.getLectures()
-              .stream().map(CreateLecture::toEntity)
+              .stream().map(LectureDto::toEntity)
               .collect(Collectors.toList()))
           .build();
     }
