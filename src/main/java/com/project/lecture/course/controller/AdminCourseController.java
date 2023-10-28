@@ -6,9 +6,11 @@ import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
 import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
 
 import com.project.lecture.course.application.CourseApplication;
+import com.project.lecture.course.dto.CourseDto;
 import com.project.lecture.course.dto.CourseRequest;
 import com.project.lecture.course.service.CourseService;
 import java.security.Principal;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,5 +62,15 @@ public class AdminCourseController {
     log.info("changeCourseRequest() 수행");
     courseService.changeCourseByForm(request);
     return ResponseEntity.ok(CHANGE_SUCCESS.getDescription());
+  }
+
+  @PostMapping("")
+  public ResponseEntity<List<CourseDto>> getCourseRequest(
+      Principal principal
+  ) {
+    log.info("getCourseRequest() 수행");
+    return ResponseEntity.ok(
+        courseApplication.getCourseList(principal.getName())
+    );
   }
 }
