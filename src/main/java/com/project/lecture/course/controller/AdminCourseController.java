@@ -2,13 +2,15 @@ package com.project.lecture.course.controller;
 
 
 import static com.project.lecture.type.ResponseType.CHANGE_SUCCESS;
-import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
+import static com.project.lecture.type.ResponseType.INSERT_SUCCESS;
 import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
 
 import com.project.lecture.course.application.CourseApplication;
+import com.project.lecture.course.dto.CourseDto;
 import com.project.lecture.course.dto.CourseRequest;
 import com.project.lecture.course.service.CourseService;
 import java.security.Principal;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/lecture")
+@RequestMapping("/admin/course")
 @Slf4j
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminCourseController {
@@ -38,16 +40,16 @@ public class AdminCourseController {
       @RequestBody @Valid CourseRequest.Create request,
       Principal principal
   ) {
-    log.info("createLectureRequest() 수행");
+    log.info("createCourseRequest() 수행");
     courseApplication.createCourseAndLecture(request, principal.getName());
-    return ResponseEntity.ok(COURSE_SUCCESS.getDescription());
+    return ResponseEntity.ok(INSERT_SUCCESS.getDescription());
   }
 
   @DeleteMapping("/delete")
   public ResponseEntity<String> deleteCourseRequest(
       @RequestParam Long courseId
   ) {
-    log.info("deleteLectureRequest() 수행");
+    log.info("deleteCourseRequest() 수행");
     courseService.deleteCourseAndLectureById(courseId);
     return ResponseEntity.ok(DELETE_SUCCESS.getDescription());
   }
@@ -57,8 +59,18 @@ public class AdminCourseController {
       @RequestBody @Valid
       CourseRequest.Change request
   ) {
-    log.info("changeLectureRequest() 수행");
+    log.info("changeCourseRequest() 수행");
     courseService.changeCourseByForm(request);
     return ResponseEntity.ok(CHANGE_SUCCESS.getDescription());
+  }
+
+  @PostMapping("")
+  public ResponseEntity<List<CourseDto>> getCourseRequest(
+      Principal principal
+  ) {
+    log.info("getCourseRequest() 수행");
+    return ResponseEntity.ok(
+        courseApplication.getCourseList(principal.getName())
+    );
   }
 }

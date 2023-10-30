@@ -1,6 +1,5 @@
 package com.project.lecture.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.kind.ExceptionNotValidPassword;
@@ -62,7 +61,7 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
     String password = usernamePasswordMap.get(PASSWORD_KEY);
 
 
-    Member member = memberService.getEmail(email);
+    Member member = memberService.getMemberByEmail(email);
     isValidPassword(password, member);
 
     UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(email, password);

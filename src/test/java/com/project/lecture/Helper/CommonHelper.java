@@ -40,6 +40,7 @@ public class CommonHelper {
         .nickName("게드릉")
         .socialType(SocialType.PLANNER)
         .socialId("1234")
+        .courses(createCourseListForm())
         .authType(AuthType.USER.getDescription()).build();
   }
 
@@ -49,6 +50,17 @@ public class CommonHelper {
         .lectures(createLecturesForm())
         .courseName("제로베이스")
         .courseContent("제로베이스 백앤드").build();
+  }
+
+
+  public static List<Course> createCourseListForm() {
+    List<Course> courses = new ArrayList<>();
+    for (int i = 0; i < 3; i++) {
+      Course.builder()
+          .courseName("제로베이스"+i)
+          .courseContent("제로베이스 백앤드"+i).build();
+    }
+    return courses;
   }
   public static Course createOnlyCourseForm() {
     return Course.builder()

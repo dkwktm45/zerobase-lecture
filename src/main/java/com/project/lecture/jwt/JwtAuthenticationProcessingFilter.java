@@ -7,7 +7,6 @@ import static com.project.lecture.type.UrlCheck.NO_CHECK_OAUTH2;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.kind.ExceptionNotValidToken;
 import com.project.lecture.jwt.descripton.JwtDescription;
-import com.project.lecture.redis.dto.RefreshToken;
 import com.project.lecture.user.service.MemberService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -113,7 +112,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     jwtService.getAccesstokenByReq(request)
         .filter(jwtService::isTokenValid)
         .ifPresent(accessToken -> jwtService.getEmail(accessToken)
-            .ifPresent(email -> Optional.of(memberService.getEmail(email))
+            .ifPresent(email -> Optional.of(memberService.getMemberByEmail(email))
                 .ifPresent(this::saveAuthentication)));
 
     filterChain.doFilter(request, response);
