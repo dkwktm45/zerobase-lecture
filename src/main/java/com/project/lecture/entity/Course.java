@@ -35,6 +35,9 @@ public class Course {
   @Builder.Default
   private List<Lecture> lectures = new ArrayList<>();
 
+  @OneToMany(mappedBy = "course")
+  private List<Listening> listenings = new ArrayList<>();
+
   @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
   @Builder.Default
   private List<Review> reviews = new ArrayList<>();
@@ -42,9 +45,7 @@ public class Course {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "memberId")
   private Member member;
-  public void setMember(Member member) {
-    this.member = member;
-  }
+  public void setMember(Member member) { this.member = member; }
   public void changeValues(Course change) {
     this.courseContent = change.getCourseContent();
     this.courseName = change.getCourseName();

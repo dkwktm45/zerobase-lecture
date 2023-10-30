@@ -47,6 +47,9 @@ public class Member {
   private List<Reminder> reminders = new ArrayList<>();
 
   @OneToMany(mappedBy = "member")
+  private List<Listening> listenings = new ArrayList<>();
+
+  @OneToMany(mappedBy = "member")
   @Builder.Default
   private List<Study> studies = new ArrayList<>();
 
