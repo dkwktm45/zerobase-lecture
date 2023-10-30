@@ -2,6 +2,7 @@ package com.project.lecture.entity;
 
 import com.project.lecture.entity.date.BaseEntity;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,11 +24,11 @@ public class Listening extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long listen_id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
   private Member member;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "course_id")
   private Course course;
 }

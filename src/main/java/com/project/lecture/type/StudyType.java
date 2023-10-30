@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 public enum StudyType implements LegacyCodeCommonType {
-  LECTURE("1","강의"),REMINDER("2","리마인더"),STUDY("3","공부");
+  LECTURE("1","강좌"),REMINDER("2","리마인더"),STUDY("3","공부"),COURSE("4","강의");
 
   private final String code;
   private final String description;

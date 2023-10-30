@@ -18,4 +18,8 @@ public class ListenService {
   public void saveListening(Listening listening) {
     listeningRepository.save(listening);
   }
+
+  public void deleteListing(Long courseId, Long memberId) {
+    listeningRepository.deleteByMemberIdAndCourseId(memberId, courseId);
+  }
 }
