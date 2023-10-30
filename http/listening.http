@@ -1,0 +1,3 @@
+### 수강신청
+PUT localhost:8080/user/course/listen/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5ODY0MjQ2MSwiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.cQpS3Tuy2Sq6ZKoDtn-qb4DDzPbGKXvbr8v2SzRnCsuIz3AMeZuTTJk-bTLimE6ukcpQfQxlKeN6IVHoqZDDNg

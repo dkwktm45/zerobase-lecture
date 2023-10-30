@@ -1,6 +1,6 @@
 package com.project.lecture.entity;
 
-import java.time.LocalDate;
+import com.project.lecture.entity.date.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Listening {
+public class Listening extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,4 @@ public class Listening {
   @ManyToOne
   @JoinColumn(name = "course_id")
   private Course course;
-
-  private LocalDate createDt;
 }
