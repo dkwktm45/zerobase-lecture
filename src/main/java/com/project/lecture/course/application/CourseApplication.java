@@ -25,11 +25,11 @@ public class CourseApplication {
   public void createCourseAndLecture(Create request, String name) {
     Member member = memberService.getEmail(name);
 
-    Course course = courseService.createCourse(request,member);
+    Course course = courseService.createCourse(request, member);
 
     lectureService.ListInsert(
         request.getLectures()
-            .stream().map(dto -> CreateLecture.toEntity(dto,course))
+            .stream().map(dto -> CreateLecture.toEntity(dto, course))
             .collect(Collectors.toList())
     );
   }

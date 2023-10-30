@@ -1,6 +1,7 @@
 package com.project.lecture.Helper;
 
 import com.project.lecture.course.dto.CourseRequest;
+import com.project.lecture.course.dto.CourseRequest.Change;
 import com.project.lecture.course.dto.CourseRequest.Create;
 import com.project.lecture.course.dto.CreateLecture;
 import com.project.lecture.entity.Course;
@@ -21,8 +22,17 @@ public class CommonHelper {
         .authType(AuthType.USER).build();
   }
 
+  public static Create createCourseRequest(){
+    return Create.builder()
+        .courseContent("제로베이스 백엔드과정")
+        .courseName("제로베이스").build();
+  }
 
-
+  public static Change changeCourseRequest(){
+    return Change.builder()
+        .courseContent("제로베이스 백엔드과정")
+        .courseName("제로베이스").build();
+  }
   public static Member createMemberForm() {
     return Member.builder()
         .email("planner@gmail.com")
@@ -37,6 +47,11 @@ public class CommonHelper {
 
     return Course.builder()
         .lectures(createLecturesForm())
+        .courseName("제로베이스")
+        .courseContent("제로베이스 백앤드").build();
+  }
+  public static Course createOnlyCourseForm() {
+    return Course.builder()
         .courseName("제로베이스")
         .courseContent("제로베이스 백앤드").build();
   }
@@ -61,6 +76,12 @@ public class CommonHelper {
 
     return CourseRequest.Create.builder()
         .lectures(list)
+        .courseName("제로베이스")
+        .courseContent("제로베이스 백앤드").build();
+  }
+
+  public static Change changeCourseForm() {
+    return CourseRequest.Change.builder()
         .courseName("제로베이스")
         .courseContent("제로베이스 백앤드").build();
   }

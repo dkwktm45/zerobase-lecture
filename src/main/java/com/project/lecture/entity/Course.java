@@ -45,4 +45,8 @@ public class Course {
   public void setMember(Member member) {
     this.member = member;
   }
+  public void changeValues(Course change) {
+    this.courseContent = change.getCourseContent();
+    this.courseName = change.getCourseName();
+  }
 }

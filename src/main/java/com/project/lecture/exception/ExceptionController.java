@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class ExceptionController {
   @ExceptionHandler(SuperException.class)
-  public ResponseEntity<ErrorResponse> handle404(final SuperException e){
+  public ResponseEntity<ErrorResponse> customException(final SuperException e){
     return ResponseEntity.badRequest().
         body(ErrorResponse.builder()
         .code(String.valueOf(e.getStatusCode()))
