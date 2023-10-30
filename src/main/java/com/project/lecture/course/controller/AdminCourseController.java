@@ -2,7 +2,7 @@ package com.project.lecture.course.controller;
 
 
 import static com.project.lecture.type.ResponseType.CHANGE_SUCCESS;
-import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
+import static com.project.lecture.type.ResponseType.INSERT_SUCCESS;
 import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
 
 import com.project.lecture.course.application.CourseApplication;
@@ -42,7 +42,7 @@ public class AdminCourseController {
   ) {
     log.info("createCourseRequest() 수행");
     courseApplication.createCourseAndLecture(request, principal.getName());
-    return ResponseEntity.ok(COURSE_SUCCESS.getDescription());
+    return ResponseEntity.ok(INSERT_SUCCESS.getDescription());
   }
 
   @DeleteMapping("/delete")
