@@ -37,7 +37,7 @@ class MemberServiceTest {
         .thenReturn(Optional.of(member));
 
     // when
-    Member result= memberService.getEmail(email);
+    Member result= memberService.getMemberByEmail(email);
 
     // then
     assertEquals(result.getEmail(), member.getEmail());
@@ -57,7 +57,7 @@ class MemberServiceTest {
 
     // when
     SuperException result = assertThrows(SuperException.class
-        ,() -> memberService.getEmail(email));
+        ,() -> memberService.getMemberByEmail(email));
     // then
     assertEquals(result.getMessage(), "이메일 존재하지 않습니다.");
     verify(memberRepository, timeout(1)).findByEmail(email);

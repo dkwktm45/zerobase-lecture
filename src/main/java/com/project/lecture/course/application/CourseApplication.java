@@ -25,7 +25,7 @@ public class CourseApplication {
 
   @Transactional
   public void createCourseAndLecture(Create request, String name) {
-    Member member = memberService.getEmail(name);
+    Member member = memberService.getMemberByEmail(name);
 
     Course course = courseService.createCourse(request, member);
 
@@ -37,8 +37,9 @@ public class CourseApplication {
   }
 
   public List<CourseDto> getCourseList(String name) {
-    return memberService.getEmail(name).getCourses()
+    return memberService.getMemberByEmail(name).getCourses()
         .stream().map(CourseDto::new)
         .collect(Collectors.toList());
   }
+
 }

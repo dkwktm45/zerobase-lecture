@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/lecture")
+@RequestMapping("/admin/course")
 @Slf4j
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminCourseController {

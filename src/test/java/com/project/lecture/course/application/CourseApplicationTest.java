@@ -44,7 +44,7 @@ class CourseApplicationTest {
     CourseRequest.Create req = CommonHelper.createCourseCreateForm();
 
     // given
-    when(memberService.getEmail(anyString()))
+    when(memberService.getMemberByEmail(anyString()))
         .thenReturn(member);
     when(courseService.createCourse(any(),any()))
         .thenReturn(course);
@@ -53,7 +53,7 @@ class CourseApplicationTest {
     courseApplication.createCourseAndLecture(req, member.getEmail());
 
     // then
-    verify(memberService, timeout(1)).getEmail(any());
+    verify(memberService, timeout(1)).getMemberByEmail(any());
     verify(courseService, timeout(1)).createCourse(any(),any());
     verify(lectureService, timeout(1)).ListInsert(any());
   }
@@ -66,7 +66,7 @@ class CourseApplicationTest {
     Member member = CommonHelper.createMemberForm();
     List<Course> courses = member.getCourses();
 
-    when(memberService.getEmail(anyString()))
+    when(memberService.getMemberByEmail(anyString()))
         .thenReturn(member);
 
     //when

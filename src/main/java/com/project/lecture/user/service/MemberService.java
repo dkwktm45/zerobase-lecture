@@ -20,7 +20,7 @@ public class MemberService {
     memberRepository.save(entity);
   }
 
-  public Member getEmail(String email) {
+  public Member getMemberByEmail(String email) {
     return memberRepository.findByEmail(email)
         .orElseThrow(ExceptionNotFoundUser::new);
   }
