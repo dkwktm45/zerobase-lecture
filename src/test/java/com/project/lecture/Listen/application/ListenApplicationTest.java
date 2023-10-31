@@ -41,7 +41,6 @@ class ListenApplicationTest {
   @InjectMocks
   private ListenApplication listenApplication;
 
-
   @Test
   @DisplayName("회원의 강의 수강 - 성공")
   void listenCourse() {
@@ -145,10 +144,10 @@ class ListenApplicationTest {
     when(listenService.existCheck(anyLong(), anyLong()))
         .thenReturn(true);
     doNothing().when(listenService).deleteListing(anyLong(), anyLong());
-    doNothing().when(plannerService).existCourseByPlanner(anyLong(), anyList());
+    doNothing().when(plannerService).deleteIfExistCourse(anyLong(), anyList());
     when(courseService.getCourseById(anyLong()))
         .thenReturn(lectures);
-    doNothing().when(plannerService).existLectureByPlanner(anyList(), anyList());
+    doNothing().when(plannerService).deleteIfExistLecture(anyLong(), anyList());
 
     // when
     listenApplication.deleteListenCourse(courseId, email);
@@ -157,8 +156,8 @@ class ListenApplicationTest {
     verify(memberService, timeout(1)).getMemberByEmail(any());
     verify(listenService, timeout(1)).existCheck(anyLong(), anyLong());
     verify(listenService, timeout(1)).deleteListing(anyLong(), anyLong());
-    verify(plannerService, timeout(1)).existCourseByPlanner(anyLong(), anyList());
+    verify(plannerService, timeout(1)).deleteIfExistCourse(anyLong(), anyList());
     verify(courseService, timeout(1)).getCourseById(anyLong());
-    verify(plannerService, timeout(1)).existLectureByPlanner(anyList(), anyList());
+    verify(plannerService, timeout(1)).deleteIfExistLecture(anyLong(), anyList());
   }
 }

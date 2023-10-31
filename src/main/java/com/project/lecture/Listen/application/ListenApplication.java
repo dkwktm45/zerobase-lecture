@@ -33,25 +33,24 @@ public class ListenApplication {
     Course course = Course.builder().courseId(courseId).build();
     Listening listening;
 
-    if (!listenService.existCheck(courseId, member.getMemberId())) {
-      listening = Listening.builder()
-          .course(course)
-          .member(member).build();
-      listenService.saveListening(listening);
-    } else {
+    if (listenService.existCheck(courseId, member.getMemberId())) {
       throw new ExceptionExistCourse();
     }
+
+    listening = Listening.builder()
+        .course(course)
+        .member(member).build();
+    listenService.saveListening(listening);
   }
 
-  // todo 더 나은 방안이 있는 고민하자!
   public void deleteListenCourse(Long courseId, String email) {
     log.info("deleteListenCourse() 진입");
     Member member = memberService.getMemberByEmail(email);
-    if (listenService.existCheck(courseId, member.getMemberId())) {
-      listenService.deleteListing(courseId, member.getMemberId());
-    } else {
+    if (!listenService.existCheck(courseId, member.getMemberId())) {
       throw new ExceptionNotFoundCourse();
     }
+
+    listenService.deleteListing(courseId, member.getMemberId());
 
     log.info("Planner에 강좌가 존재 하는지 확인");
 
@@ -60,11 +59,11 @@ public class ListenApplication {
     if (planners.isEmpty()) {
       return;
     }
-    plannerService.existCourseByPlanner(courseId, planners);
+    plannerService.deleteIfExistCourse(courseId, planners);
 
     List<Lecture> lectures = courseService.getCourseById(courseId).getLectures();
     log.info("Planner에 강의가 존재 하는지 확인");
 
-    plannerService.existLectureByPlanner(planners, lectures);
+    plannerService.deleteIfExistLecture(member.getMemberId(), lectures);
   }
 }

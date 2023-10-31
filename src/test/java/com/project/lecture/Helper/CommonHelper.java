@@ -59,7 +59,6 @@ public class CommonHelper {
         .socialId("1234")
         .authType(AuthType.USER.getDescription()).build();
   }
-
   public static Member createMemberAndPlannersForm() {
     return Member.builder()
         .memberId(1L)
@@ -72,6 +71,7 @@ public class CommonHelper {
         .courses(createCourseListForm())
         .authType(AuthType.USER.getDescription()).build();
   }
+
 
 
   public static Course createCourseForm() {
@@ -104,22 +104,27 @@ public class CommonHelper {
     }
     return planners;
   }
-  public static List<Planner> createPlannersAndLectureForm() {
-    List<Planner> planners = new ArrayList<>();
-    for (int i = 0; i < 3; i++) {
-      planners.add(
-          Planner.builder()
-              .plannerType(StudyType.LECTURE)
-              .plannerTypeId((long) i).build()
-      );
-    }
-    return planners;
-  }
 
   public static Planner createPlannerForm() {
     return Planner.builder()
         .plannerType(StudyType.COURSE)
         .plannerTypeId(1L).build();
+  }
+
+  public static List<Planner> createPlannersForm() {
+    List<Planner> planners = new ArrayList<>();
+
+    for (int i = 0; i < 3; i++) {
+      planners.add(
+          Planner.builder()
+              .plannerTypeId((long) i)
+              .member(createMemberForm())
+              .plannerType(StudyType.LECTURE)
+              .build()
+      );
+    }
+
+    return planners;
   }
 
   public static Course createOnlyCourseForm() {

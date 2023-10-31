@@ -4,10 +4,9 @@ import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.repository.PlannerRepository;
 import com.project.lecture.type.StudyType;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,7 @@ public class PlannerService {
     plannerRepository.deleteByPlannerTypeAndPlannerTypeId(studyType, id);
   }
 
-  public void existCourseByPlanner(Long courseId, List<Planner> planners) {
+  public void deleteIfExistCourse(Long courseId, List<Planner> planners) {
     Planner infoByPlanner = planners.stream()
         .filter(i ->
             i.getPlannerTypeId().equals(courseId) &&
@@ -37,18 +36,9 @@ public class PlannerService {
     }
   }
 
-  public void existLectureByPlanner(List<Planner> planners, List<Lecture> lectures) {
+  public void deleteIfExistLecture(Long memberId, List<Lecture> lectures) {
+    List<Long> lectureIdx = lectures.stream().map(Lecture::getLectureId).collect(Collectors.toList());
 
-    Map<Long, Planner> plannerMap = new HashMap<>();
-    for (Planner planner : planners) {
-      plannerMap.put(planner.getPlannerTypeId(), planner);
-    }
-
-    for (Lecture lecture : lectures) {
-      Planner planner = plannerMap.get(lecture.getLectureId());
-      if (planner != null && planner.getPlannerType().equals(StudyType.LECTURE)) {
-        deletePlanner(lecture.getLectureId(), StudyType.LECTURE);
-      }
-    }
+    plannerRepository.deleteLecturesById(lectureIdx,memberId);
   }
 }

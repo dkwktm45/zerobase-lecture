@@ -1,6 +1,7 @@
 package com.project.lecture.planner.service;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -15,13 +16,11 @@ import com.project.lecture.entity.Planner;
 import com.project.lecture.repository.PlannerRepository;
 import com.project.lecture.type.StudyType;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,15 +29,9 @@ class PlannerServiceTest {
   @Mock
   private PlannerRepository plannerRepository;
 
-  @Mock
-  private PlannerService mockPlannerService;
-
   @InjectMocks
   private PlannerService plannerService;
-  @BeforeEach
-  void setUp() {
-    mockPlannerService = Mockito.mock(PlannerService.class);
-  }
+
   @Test
   @DisplayName("플레너 테이블에서 타입에 맞는 컬럼 삭제")
   void deletePlanner() {
@@ -49,11 +42,11 @@ class PlannerServiceTest {
     doNothing().when(plannerRepository)
         .deleteByPlannerTypeAndPlannerTypeId(any(), anyLong());
     // when
-    plannerService.deletePlanner(id,studyType);
+    plannerService.deletePlanner(id, studyType);
 
     // then
-    verify(plannerRepository,timeout(1))
-        .deleteByPlannerTypeAndPlannerTypeId(any(),anyLong());
+    verify(plannerRepository, timeout(1))
+        .deleteByPlannerTypeAndPlannerTypeId(any(), anyLong());
   }
 
   @Test
@@ -63,7 +56,7 @@ class PlannerServiceTest {
     Long courseId = 1L;
     List<Planner> planners = CommonHelper.createPlannersAndCourseForm();
     // when
-    plannerService.existCourseByPlanner(courseId,planners);
+    plannerService.deleteIfExistCourse(courseId, planners);
 
     // then
     verify(plannerRepository, times(1))
@@ -77,7 +70,7 @@ class PlannerServiceTest {
     Long courseId = 10L;
     List<Planner> planners = CommonHelper.createPlannersAndCourseForm();
     // when
-    plannerService.existCourseByPlanner(courseId,planners);
+    plannerService.deleteIfExistCourse(courseId, planners);
 
     // then
     verify(plannerRepository, never())
@@ -89,26 +82,12 @@ class PlannerServiceTest {
   void existLectureByPlanner() {
     // given
     List<Lecture> lectures = CommonHelper.createLecturesForm();
-    List<Planner> planners = CommonHelper.createPlannersAndLectureForm();
+    Long memberId = 1L;
     // when
-    plannerService.existLectureByPlanner(planners,lectures);
+    plannerService.deleteIfExistLecture(memberId, lectures);
 
     // then
-    verify(plannerRepository, times(2))
-        .deleteByPlannerTypeAndPlannerTypeId(eq(StudyType.LECTURE), anyLong());
-  }
-
-  @Test
-  @DisplayName("플래너 테이블에서 강의에 맞는 컬럼을 삭제")
-  void existLectureByPlanner_null() {
-    // given
-    List<Lecture> lectures = CommonHelper.createLecturesForm();
-    List<Planner> planners = CommonHelper.createPlannersAndCourseForm();
-    // when
-    plannerService.existLectureByPlanner(planners,lectures);
-
-    // then
-    verify(plannerRepository, never())
-        .deleteByPlannerTypeAndPlannerTypeId(any(), anyLong());
+    verify(plannerRepository, times(1))
+        .deleteLecturesById(anyList(), anyLong());
   }
 }
