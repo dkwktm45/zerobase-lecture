@@ -38,4 +38,9 @@ public class CourseService {
     fromEntity.changeValues(Change
         .toEntity(course));
   }
+
+  public Course getCourseById(Long courseId) {
+    return courseRepository.findById(courseId)
+        .orElseThrow(ExceptionNotFoundCourse::new);
+  }
 }

@@ -34,4 +34,9 @@ public class Planner {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "memberId")
   private Member member;
+
+  public Planner(Long id, StudyType studyType) {
+    this.plannerTypeId = id;
+    this.plannerType = studyType;
+  }
 }
