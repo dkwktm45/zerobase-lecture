@@ -1,6 +1,7 @@
 package com.project.lecture.entity;
 
 import com.project.lecture.entity.date.BaseEntity;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,11 +25,11 @@ public class Listening extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long listen_id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "member_id")
   private Member member;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "course_id")
   private Course course;
 }
