@@ -11,7 +11,7 @@ public interface ListeningRepository extends JpaRepository<Listening,Long> {
       + "select 1 from listening "
       + "where member_id = :memberId "
       + "and course_id = :courseId)" , nativeQuery = true)
-  int existsByMemberIdAndCourseId(Long memberId, Long courseId);
+  boolean existsByMemberIdAndCourseId(Long memberId, Long courseId);
 
   @Query(value = "delete from listening "
       + "where member_id = :memberId "
