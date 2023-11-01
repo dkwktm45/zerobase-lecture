@@ -10,9 +10,9 @@ public class ExceptionNotValidUser extends SuperException {
     super(MESSAGE);
   }
 
-  public ExceptionNotValidUser(String name, String message){
+  public ExceptionNotValidUser(String name){
     super(MESSAGE);
-    addValidation(name,message);
+    addValidation(name,MESSAGE);
   }
 
   @Override

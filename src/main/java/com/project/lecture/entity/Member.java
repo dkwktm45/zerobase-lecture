@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class Member {
 
   @Id
-  @Column(name = "memberId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long memberId;
 
