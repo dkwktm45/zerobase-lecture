@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/course/")
+@RequestMapping("/user/listen/")
 @PreAuthorize("hasAuthority('USER')")
 public class ListenController {
 
   private final ListenApplication listenApplication;
 
-  @PutMapping("/listen/{courseId}")
+  @PutMapping("/course/{courseId}")
   public ResponseEntity<?> userListenRequest(
       @PathVariable("courseId") Long courseId,
       Principal principal
@@ -34,7 +34,7 @@ public class ListenController {
     );
   }
 
-  @DeleteMapping("/listen/{listenId}")
+  @DeleteMapping("/{listenId}")
   public ResponseEntity<?> deleteListenRequest(
       @PathVariable("listenId") Long courseId,
       Principal principal

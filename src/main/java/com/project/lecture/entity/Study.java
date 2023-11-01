@@ -18,13 +18,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "study")
-public class Study {
+public class Study extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long studyId;
+  private String studyTitle;
   private String studyContent;
+
+  @ColumnDefault("0")
   private boolean studyComplete;
 
 
