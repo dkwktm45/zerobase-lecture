@@ -26,7 +26,8 @@ public class StudyService {
 
     if (!study.getMember().getEmail().equals(email)) {
       throw new ExceptionNotValidUser(study.getStudyTitle());
-    } else if (study.isStudyComplete()) {
+    }
+    if (study.isStudyComplete()) {
       throw new ExceptionCompleteStudy();
     }
 
