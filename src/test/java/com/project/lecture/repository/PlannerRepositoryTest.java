@@ -37,10 +37,11 @@ class PlannerRepositoryTest {
 
   @Test
   @DisplayName("planner_type 과 planner_type_id에 맞는 컬럼 여러 개를 삭제한다. - lecture")
-  void deleteLecturesById() {
+  void deleteLecturesById() throws InterruptedException {
     // given
     List<Planner> planners = CommonHelper.createPlannersForm();
     memberRepository.save(CommonHelper.createOriginMemberForm());
+    Thread.sleep(10);
     plannerRepository.saveAll(planners);
     List<Long> longs = planners.stream().map(Planner::getPlannerTypeId)
         .collect(Collectors.toList());
