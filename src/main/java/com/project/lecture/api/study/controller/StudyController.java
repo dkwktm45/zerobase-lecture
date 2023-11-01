@@ -8,7 +8,10 @@ import java.security.Principal;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,23 +25,41 @@ public class StudyController {
 
   private final StudyApplication studyApplication;
   private final StudyService studyService;
-  @PutMapping("")
+
+  @PostMapping("")
   public ResponseEntity<String> createStudyRequest(
       @RequestBody
       @Valid
       StudyRequest.Create request,
       Principal principal
   ) {
-    studyApplication.createStudyByRequest(request,principal.getName());
+    studyApplication.createStudyByRequest(request, principal.getName());
     return ResponseEntity.ok(ResponseType.INSERT_SUCCESS.getDescription());
   }
 
   @GetMapping("")
-  public ResponseEntity<String> updateStudyRequest(
+  public ResponseEntity<String> completeStudyRequest(
       @RequestParam("studyId") Long id,
       Principal principal
   ) {
-    studyService.completeStudyById(id,principal.getName());
+    studyService.completeStudyById(id, principal.getName());
     return ResponseEntity.ok(ResponseType.COMPLETE_SUCCESS.getDescription());
+  }
+
+  @PutMapping("")
+  public ResponseEntity<String> updateStudyRequest(
+      @RequestBody
+      @Valid
+      StudyRequest.Change request
+  ) {
+    studyApplication.changeStudyByRequest(request);
+    return ResponseEntity.ok(ResponseType.CHANGE_SUCCESS.getDescription());
+  }
+  @DeleteMapping("{studyId}")
+  public ResponseEntity<String> deleteStudyRequest(
+      @PathVariable("studyId") Long studyId
+  ) {
+    studyApplication.deleteStudyById(studyId);
+    return ResponseEntity.ok(ResponseType.DELETE_SUCCESS.getDescription());
   }
 }

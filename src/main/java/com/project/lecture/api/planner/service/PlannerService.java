@@ -37,8 +37,13 @@ public class PlannerService {
   }
 
   public void deleteIfExistLecture(Long memberId, List<Lecture> lectures) {
-    List<Long> lectureIdx = lectures.stream().map(Lecture::getLectureId).collect(Collectors.toList());
+    List<Long> lectureIdx = lectures.stream().map(Lecture::getLectureId)
+        .collect(Collectors.toList());
 
-    plannerRepository.deleteLecturesById(lectureIdx,memberId);
+    plannerRepository.deleteLecturesById(lectureIdx, memberId);
+  }
+
+  public boolean existStudyId(Long id) {
+    return plannerRepository.existsByStudyId(id) >= 1;
   }
 }
