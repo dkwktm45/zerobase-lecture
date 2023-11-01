@@ -1,5 +1,8 @@
 package com.project.lecture.repository;
 
+import org.awaitility.Awaitility;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.project.lecture.Helper.CommonHelper;
@@ -37,11 +40,10 @@ class PlannerRepositoryTest {
 
   @Test
   @DisplayName("planner_type 과 planner_type_id에 맞는 컬럼 여러 개를 삭제한다. - lecture")
-  void deleteLecturesById() throws InterruptedException {
+  void deleteLecturesById(){
     // given
     List<Planner> planners = CommonHelper.createPlannersForm();
     memberRepository.save(CommonHelper.createOriginMemberForm());
-    Thread.sleep(10);
     plannerRepository.saveAll(planners);
     List<Long> longs = planners.stream().map(Planner::getPlannerTypeId)
         .collect(Collectors.toList());
@@ -50,6 +52,12 @@ class PlannerRepositoryTest {
     plannerRepository.deleteLecturesById(
         longs, planners.get(0).getMember().getMemberId()
     );
+
+    // then
+    Awaitility.await().atMost(100, SECONDS).until(() -> {
+      long count = plannerRepository.count();
+      return count == 0;
+    });
 
     Long count = plannerRepository.count();
     assertEquals(count, 0);

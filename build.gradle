@@ -35,6 +35,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     // test
+    testImplementation 'org.awaitility:awaitility:4.1.0'
     testCompileOnly 'org.projectlombok:lombok'
     testImplementation "com.h2database:h2"
     testAnnotationProcessor 'org.projectlombok:lombok'
