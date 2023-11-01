@@ -1,4 +1,4 @@
-package com.project.lecture.user.dto;
+package com.project.lecture.api.user.dto;
 
 import com.project.lecture.entity.Member;
 import com.project.lecture.type.AuthType;

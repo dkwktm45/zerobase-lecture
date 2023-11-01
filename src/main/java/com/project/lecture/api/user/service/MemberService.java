@@ -1,4 +1,4 @@
-package com.project.lecture.user.service;
+package com.project.lecture.api.user.service;
 
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.kind.ExceptionNotFoundUser;

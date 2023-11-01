@@ -1,14 +1,14 @@
-package com.project.lecture.course.controller;
+package com.project.lecture.api.course.controller;
 
 
 import static com.project.lecture.type.ResponseType.CHANGE_SUCCESS;
 import static com.project.lecture.type.ResponseType.INSERT_SUCCESS;
 import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
 
-import com.project.lecture.course.application.CourseApplication;
-import com.project.lecture.course.dto.CourseDto;
-import com.project.lecture.course.dto.CourseRequest;
-import com.project.lecture.course.service.CourseService;
+import com.project.lecture.api.course.application.CourseApplication;
+import com.project.lecture.api.course.dto.CourseDto;
+import com.project.lecture.api.course.dto.CourseRequest;
+import com.project.lecture.api.course.service.CourseService;
 import java.security.Principal;
 import java.util.List;
 import javax.validation.Valid;

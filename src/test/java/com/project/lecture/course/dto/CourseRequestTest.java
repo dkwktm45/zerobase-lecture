@@ -4,8 +4,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.project.lecture.Helper.CommonHelper;
-import com.project.lecture.course.dto.CourseRequest.Change;
-import com.project.lecture.course.dto.CourseRequest.Create;
+import com.project.lecture.api.course.dto.CourseRequest.Change;
+import com.project.lecture.api.course.dto.CourseRequest.Create;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

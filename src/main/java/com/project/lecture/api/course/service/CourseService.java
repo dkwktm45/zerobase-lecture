@@ -1,7 +1,7 @@
-package com.project.lecture.course.service;
+package com.project.lecture.api.course.service;
 
-import com.project.lecture.course.dto.CourseRequest.Change;
-import com.project.lecture.course.dto.CourseRequest.Create;
+import com.project.lecture.api.course.dto.CourseRequest.Change;
+import com.project.lecture.api.course.dto.CourseRequest.Create;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.kind.ExceptionNotFoundCourse;

@@ -1,9 +1,9 @@
-package com.project.lecture.Listen.controller;
+package com.project.lecture.api.Listen.controller;
 
-import static com.project.lecture.type.ResponseType.COURSE_SUCCESS;
 import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
+import static com.project.lecture.type.ResponseType.INSERT_SUCCESS;
 
-import com.project.lecture.Listen.application.ListenApplication;
+import com.project.lecture.api.Listen.application.ListenApplication;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class ListenController {
     listenApplication.listenCourse(courseId, principal.getName());
 
     return ResponseEntity.ok(
-        COURSE_SUCCESS.getDescription()
+        INSERT_SUCCESS.getDescription()
     );
   }
 

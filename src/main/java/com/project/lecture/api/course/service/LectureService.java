@@ -1,4 +1,4 @@
-package com.project.lecture.course.service;
+package com.project.lecture.api.course.service;
 
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.repository.LectureRepository;

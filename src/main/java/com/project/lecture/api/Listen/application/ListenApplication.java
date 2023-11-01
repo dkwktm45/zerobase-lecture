@@ -1,7 +1,7 @@
-package com.project.lecture.Listen.application;
+package com.project.lecture.api.Listen.application;
 
-import com.project.lecture.Listen.service.ListenService;
-import com.project.lecture.course.service.CourseService;
+import com.project.lecture.api.Listen.service.ListenService;
+import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Listening;
@@ -9,8 +9,8 @@ import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.exception.kind.ExceptionExistCourse;
 import com.project.lecture.exception.kind.ExceptionNotFoundCourse;
-import com.project.lecture.planner.service.PlannerService;
-import com.project.lecture.user.service.MemberService;
+import com.project.lecture.api.planner.service.PlannerService;
+import com.project.lecture.api.user.service.MemberService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
 package com.project.lecture.Helper;
 
-import com.project.lecture.course.dto.CourseRequest;
-import com.project.lecture.course.dto.CourseRequest.Change;
-import com.project.lecture.course.dto.CourseRequest.Create;
-import com.project.lecture.course.dto.CreateLecture;
+import com.project.lecture.api.course.dto.CourseRequest;
+import com.project.lecture.api.course.dto.CourseRequest.Change;
+import com.project.lecture.api.course.dto.CourseRequest.Create;
+import com.project.lecture.api.course.dto.CreateLecture;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Listening;
@@ -12,7 +12,7 @@ import com.project.lecture.entity.Planner;
 import com.project.lecture.type.AuthType;
 import com.project.lecture.type.SocialType;
 import com.project.lecture.type.StudyType;
-import com.project.lecture.user.dto.UserRequest;
+import com.project.lecture.api.user.dto.UserRequest;
 import java.util.ArrayList;
 import java.util.List;
 

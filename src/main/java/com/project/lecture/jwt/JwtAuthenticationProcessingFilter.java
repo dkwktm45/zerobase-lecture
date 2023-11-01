@@ -7,7 +7,7 @@ import static com.project.lecture.type.UrlCheck.NO_CHECK_OAUTH2;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.kind.ExceptionNotValidToken;
 import com.project.lecture.jwt.descripton.JwtDescription;
-import com.project.lecture.user.service.MemberService;
+import com.project.lecture.api.user.service.MemberService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

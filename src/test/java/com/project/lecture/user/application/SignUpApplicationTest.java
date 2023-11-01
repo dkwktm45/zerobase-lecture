@@ -11,9 +11,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
+import com.project.lecture.api.user.application.SignUpApplication;
 import com.project.lecture.exception.SuperException;
-import com.project.lecture.user.dto.UserRequest;
-import com.project.lecture.user.service.MemberService;
+import com.project.lecture.api.user.dto.UserRequest;
+import com.project.lecture.api.user.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
