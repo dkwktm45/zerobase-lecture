@@ -4,11 +4,13 @@ import com.project.lecture.api.course.dto.CourseRequest;
 import com.project.lecture.api.course.dto.CourseRequest.Change;
 import com.project.lecture.api.course.dto.CourseRequest.Create;
 import com.project.lecture.api.course.dto.CreateLecture;
+import com.project.lecture.api.study.dto.StudyRequest;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Listening;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Planner;
+import com.project.lecture.entity.Study;
 import com.project.lecture.type.AuthType;
 import com.project.lecture.type.SocialType;
 import com.project.lecture.type.StudyType;
@@ -58,6 +60,10 @@ public class CommonHelper {
         .socialType(SocialType.PLANNER)
         .socialId("1234")
         .authType(AuthType.USER.getDescription()).build();
+  }
+
+  public static StudyRequest.Create studyRequestCreate() {
+    return new StudyRequest.Create("title","content");
   }
   public static Member createMemberAndPlannersForm() {
     return Member.builder()
@@ -179,5 +185,20 @@ public class CommonHelper {
         .member(createOriginMemberForm())
         .course(createCourseForm())
         .build();
+  }
+
+  public static Study createStudy() {
+    return Study.builder()
+        .studyTitle("title")
+        .member(createMemberForm())
+        .studyComplete(false)
+        .studyContent("content").build();
+  }
+  public static Study createStudyCompleteTrue() {
+    return Study.builder()
+        .studyTitle("title")
+        .member(createMemberForm())
+        .studyComplete(true)
+        .studyContent("content").build();
   }
 }

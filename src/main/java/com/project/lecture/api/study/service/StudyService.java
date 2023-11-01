@@ -1,6 +1,7 @@
 package com.project.lecture.api.study.service;
 
 import com.project.lecture.entity.Study;
+import com.project.lecture.exception.kind.ExceptionCompleteStudy;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.exception.kind.ExceptionNotValidUser;
 import com.project.lecture.repository.StudyRepository;
@@ -25,6 +26,8 @@ public class StudyService {
 
     if (!study.getMember().getEmail().equals(email)) {
       throw new ExceptionNotValidUser(study.getStudyTitle());
+    } else if (study.isStudyComplete()) {
+      throw new ExceptionCompleteStudy();
     }
 
     study.completeStudy();
