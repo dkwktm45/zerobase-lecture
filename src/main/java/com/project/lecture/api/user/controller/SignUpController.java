@@ -1,8 +1,8 @@
-package com.project.lecture.user.controller;
+package com.project.lecture.api.user.controller;
 
+import com.project.lecture.api.user.application.SignUpApplication;
+import com.project.lecture.api.user.dto.UserRequest.SignUp;
 import com.project.lecture.type.ResponseType;
-import com.project.lecture.user.application.SignUpApplication;
-import com.project.lecture.user.dto.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ public class SignUpController {
   @PostMapping("")
   public ResponseEntity<String> joinRequest(
       @RequestBody
-      UserRequest.SignUp request
+      SignUp request
   ) {
     signUpApplication.saveUserByReq(request);
     return ResponseEntity.ok(

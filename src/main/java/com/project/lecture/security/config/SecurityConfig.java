@@ -12,7 +12,7 @@ import com.project.lecture.security.oauth2.handler.OAuth2LoginFailureHandler;
 import com.project.lecture.security.oauth2.handler.OAuth2LoginSuccessHandler;
 import com.project.lecture.security.oauth2.service.CustomOAuth2UserService;
 import com.project.lecture.security.service.CustomUserDetailsService;
-import com.project.lecture.user.service.MemberService;
+import com.project.lecture.api.user.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

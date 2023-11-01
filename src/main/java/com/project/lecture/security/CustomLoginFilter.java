@@ -3,7 +3,7 @@ package com.project.lecture.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.kind.ExceptionNotValidPassword;
-import com.project.lecture.user.service.MemberService;
+import com.project.lecture.api.user.service.MemberService;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;

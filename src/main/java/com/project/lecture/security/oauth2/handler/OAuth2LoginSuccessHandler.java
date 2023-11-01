@@ -5,14 +5,11 @@ import static com.project.lecture.jwt.descripton.JwtDescription.ACCESS_TOKEN_SUB
 import static com.project.lecture.jwt.descripton.JwtDescription.REFRESH_TOKEN_SUBJECT;
 import static com.project.lecture.security.oauth2.cookie.HttpCookieOauth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
-import com.project.lecture.entity.Member;
 import com.project.lecture.exception.kind.ExceptionEmptyTargetUrl;
 import com.project.lecture.jwt.JwtService;
 import com.project.lecture.security.oauth2.CustomOAuth2User;
 import com.project.lecture.security.oauth2.cookie.HttpCookieOauth2AuthorizationRequestRepository;
 import com.project.lecture.security.oauth2.cookie.CookieUtils;
-import com.project.lecture.type.AuthType;
-import com.project.lecture.user.service.MemberService;
 import java.io.IOException;
 import java.util.Objects;
 import javax.servlet.ServletException;

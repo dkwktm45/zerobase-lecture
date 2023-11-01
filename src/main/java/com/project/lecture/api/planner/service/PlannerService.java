@@ -1,4 +1,4 @@
-package com.project.lecture.planner.service;
+package com.project.lecture.api.planner.service;
 
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Planner;

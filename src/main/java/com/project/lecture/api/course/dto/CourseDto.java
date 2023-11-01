@@ -1,4 +1,4 @@
-package com.project.lecture.course.dto;
+package com.project.lecture.api.course.dto;
 
 import com.project.lecture.entity.Course;
 import lombok.AllArgsConstructor;

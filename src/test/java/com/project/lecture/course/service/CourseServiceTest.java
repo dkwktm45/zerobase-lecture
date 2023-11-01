@@ -11,8 +11,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
-import com.project.lecture.course.dto.CourseRequest;
-import com.project.lecture.course.dto.CourseRequest.Change;
+import com.project.lecture.api.course.dto.CourseRequest;
+import com.project.lecture.api.course.dto.CourseRequest.Change;
+import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.SuperException;

@@ -1,4 +1,4 @@
-package com.project.lecture.Listen.service;
+package com.project.lecture.api.Listen.service;
 
 import com.project.lecture.entity.Listening;
 import com.project.lecture.repository.ListeningRepository;
