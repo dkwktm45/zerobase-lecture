@@ -49,6 +49,21 @@ public class CommonHelper {
         .nickName("게드릉")
         .socialType(SocialType.PLANNER)
         .socialId("1234")
+        .studies(createStudyList())
+        .courses(createCourseListForm())
+        .authType(AuthType.USER.getDescription()).build();
+  }
+
+
+  public static Member createMemberFormByNoId() {
+    return Member.builder()
+        .planners(new ArrayList<>())
+        .email("planner@gmail.com")
+        .password("1234")
+        .nickName("게드릉")
+        .socialType(SocialType.PLANNER)
+        .socialId("1234")
+        .studies(createStudyList())
         .courses(createCourseListForm())
         .authType(AuthType.USER.getDescription()).build();
   }
@@ -111,12 +126,16 @@ public class CommonHelper {
     return planners;
   }
 
-  public static Planner createPlannerForm() {
+  public static Planner createPlannerByCourseForm() {
     return Planner.builder()
         .plannerType(StudyType.COURSE)
         .plannerTypeId(1L).build();
   }
-
+  public static Planner createPlannerByStudyForm() {
+    return Planner.builder()
+        .plannerType(StudyType.STUDY)
+        .plannerTypeId(1L).build();
+  }
   public static List<Planner> createPlannersForm() {
     List<Planner> planners = new ArrayList<>();
 
@@ -187,8 +206,16 @@ public class CommonHelper {
         .build();
   }
 
+  public static Study createStudyByNoId() {
+    return Study.builder()
+        .studyTitle("title")
+        .member(createMemberFormByNoId())
+        .studyComplete(false)
+        .studyContent("content").build();
+  }
   public static Study createStudy() {
     return Study.builder()
+        .studyId(1L)
         .studyTitle("title")
         .member(createMemberForm())
         .studyComplete(false)
@@ -200,5 +227,25 @@ public class CommonHelper {
         .member(createMemberForm())
         .studyComplete(true)
         .studyContent("content").build();
+  }
+
+  public static StudyRequest.Change changeStudyForm() {
+    return new StudyRequest.Change(1L,"title","content");
+  }
+
+  public static List<Study> createStudyList() {
+    List<Study> studies = new ArrayList<>();
+
+    for (int i = 1; i <= 3; i++) {
+      studies.add(
+          Study.builder()
+              .studyId((long) i)
+              .studyTitle("title" + i)
+              .studyComplete(false)
+              .studyContent("content" + i)
+              .build()
+      );
+    }
+    return studies;
   }
 }

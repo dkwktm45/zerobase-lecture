@@ -34,7 +34,7 @@ class ListenServiceTest {
     Long memberId = 1L;
 
     // given
-    when(listeningRepository.existsByMemberIdAndCourseId(anyLong(),anyLong()))
+    when(listeningRepository.existsByMember_MemberIdAndCourse_CourseId(any(),any()))
         .thenReturn(true);
 
     // when
@@ -50,7 +50,7 @@ class ListenServiceTest {
     Long memberId = 1L;
 
     // given
-    when(listeningRepository.existsByMemberIdAndCourseId(anyLong(),anyLong()))
+    when(listeningRepository.existsByMember_MemberIdAndCourse_CourseId(any(),any()))
         .thenReturn(false);
 
     // when

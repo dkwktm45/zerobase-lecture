@@ -1,5 +1,6 @@
 package com.project.lecture.entity;
 
+import com.project.lecture.api.study.dto.StudyRequest.Change;
 import com.project.lecture.entity.date.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,5 +38,10 @@ public class Study extends BaseEntity {
 
   public void completeStudy() {
     this.studyComplete = true;
+  }
+
+  public void changeComplete(Change request) {
+    this.studyTitle = request.getStudyTitle();
+    this.studyContent = request.getStudyContent();
   }
 }

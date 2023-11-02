@@ -33,7 +33,7 @@ public class ListenApplication {
     Course course = Course.builder().courseId(courseId).build();
     Listening listening;
 
-    if (listenService.existCheck(courseId, member.getMemberId())) {
+    if (listenService.existCheck(course.getCourseId(), member.getMemberId())) {
       throw new ExceptionExistCourse();
     }
 

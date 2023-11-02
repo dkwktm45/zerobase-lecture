@@ -21,8 +21,7 @@ public class StudyService {
   }
 
   public void completeStudyById(Long id, String email) {
-    Study study = studyRepository.findById(id)
-        .orElseThrow(ExceptionNotFoundStudy::new);
+    Study study = getStudyById(id);
 
     if (!study.getMember().getEmail().equals(email)) {
       throw new ExceptionNotValidUser(study.getStudyTitle());
@@ -33,4 +32,18 @@ public class StudyService {
 
     study.completeStudy();
   }
+
+  public Study getStudyById(Long id) {
+    return studyRepository.findById(id)
+        .orElseThrow(ExceptionNotFoundStudy::new);
+  }
+
+  public boolean existStudyByIdAndEmail(Long studyId, String email) {
+    return studyRepository.existsByStudyIdAndMember_Email(studyId,email);
+  }
+
+  public void deleteStudy(Long studyId) {
+    studyRepository.deleteById(studyId);
+  }
+
 }
