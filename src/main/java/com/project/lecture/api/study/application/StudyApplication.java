@@ -9,6 +9,7 @@ import com.project.lecture.api.user.service.MemberService;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Study;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
+import com.project.lecture.exception.kind.ExceptionNotValidUser;
 import com.project.lecture.type.StudyType;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,12 +48,29 @@ public class StudyApplication {
       throw new ExceptionNotFoundStudy();
     }
 
-
     studyService.deleteStudy(studyId);
 
     if (plannerService.existStudyId(studyId)) {
       plannerService.deletePlanner(studyId, StudyType.STUDY);
     }
 
+  }
+
+  public List<StudyDto> getStudiesByEmail(String email) {
+    Member member = memberService.getMemberByEmail(email);
+
+    return member.getStudies()
+        .stream().map(StudyDto::new)
+        .collect(Collectors.toList());
+  }
+
+  public StudyDto getStudyByEmail(Long id, String email) {
+    Study study = studyService.getStudyById(id);
+
+    if (!study.getMember().getEmail().equals(email)) {
+      throw new ExceptionNotValidUser();
+    }
+
+    return new StudyDto(study);
   }
 }

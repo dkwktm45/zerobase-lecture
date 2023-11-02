@@ -36,7 +36,7 @@ class StudyServiceTest {
   @DisplayName("Study 정보 저장")
   void createStudy() {
     // given
-    Study study = CommonHelper.createStudy();
+    Study study = CommonHelper.createStudyByNoId();
     when(studyRepository.save(any()))
         .thenReturn(study);
 
@@ -53,7 +53,7 @@ class StudyServiceTest {
     // given
     long id = 1L;
     String email = "planner@gmail.com";
-    Study study = CommonHelper.createStudy();
+    Study study = CommonHelper.createStudyByNoId();
 
     when(studyRepository.findById(anyLong()))
         .thenReturn(Optional.of(study));
@@ -121,7 +121,7 @@ class StudyServiceTest {
   @DisplayName("id값을 통해서 Study값을 가져오는 로직 - 성공")
   void getStudyById_success(){
     //given
-    Study study = CommonHelper.createStudy();
+    Study study = CommonHelper.createStudyByNoId();
     Long id = 1L;
 
     when(studyRepository.findById(anyLong()))
@@ -153,10 +153,12 @@ class StudyServiceTest {
   void existStudy_true(){
     //given
     Long id = 1L;
-    when(studyRepository.existsById(id))
+    String email = "planner@gmail.com";
+
+    when(studyRepository.existsByStudyIdAndMember_Email(id,email))
         .thenReturn(true);
     //when
-    boolean result = studyService.existStudy(id);
+    boolean result = studyService.existStudyByIdAndEmail(id,email);
 
     //then
     assertTrue(result);
@@ -166,10 +168,12 @@ class StudyServiceTest {
   void existStudy_false(){
     //given
     Long id = 1L;
-    when(studyRepository.existsById(id))
+    String email = "planner@gmail.com";
+
+    when(studyRepository.existsByStudyIdAndMember_Email(id,email))
         .thenReturn(false);
     //when
-    boolean result = studyService.existStudy(id);
+    boolean result = studyService.existStudyByIdAndEmail(id,email);
 
     //then
     assertFalse(result);

@@ -1,10 +1,12 @@
 package com.project.lecture.api.study.controller;
 
 import com.project.lecture.api.study.application.StudyApplication;
+import com.project.lecture.api.study.dto.StudyDto;
 import com.project.lecture.api.study.dto.StudyRequest;
 import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.type.ResponseType;
 import java.security.Principal;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -55,11 +57,32 @@ public class StudyController {
     studyApplication.changeStudyByRequest(request);
     return ResponseEntity.ok(ResponseType.CHANGE_SUCCESS.getDescription());
   }
+
   @DeleteMapping("{studyId}")
   public ResponseEntity<String> deleteStudyRequest(
-      @PathVariable("studyId") Long studyId
+      @PathVariable("studyId") Long studyId,
+      Principal principal
   ) {
-    studyApplication.deleteStudyById(studyId);
+    studyApplication.deleteStudyById(studyId, principal.getName());
     return ResponseEntity.ok(ResponseType.DELETE_SUCCESS.getDescription());
+  }
+
+  @GetMapping("/list")
+  public ResponseEntity<List<StudyDto>> getListRequest(
+      Principal principal
+  ) {
+    return ResponseEntity.ok(
+        studyApplication.getStudiesByEmail(principal.getName())
+    );
+  }
+
+  @GetMapping("{studyId}")
+  public ResponseEntity<StudyDto> getStudyRequest(
+      @PathVariable("studyId") Long id,
+      Principal principal
+  ) {
+    return ResponseEntity.ok(
+        studyApplication.getStudyByEmail(id, principal.getName())
+    );
   }
 }

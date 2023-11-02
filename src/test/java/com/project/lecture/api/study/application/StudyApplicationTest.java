@@ -1,6 +1,7 @@
 package com.project.lecture.api.study.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -21,6 +22,7 @@ import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Study;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
+import com.project.lecture.exception.kind.ExceptionNotValidUser;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
@@ -165,20 +167,39 @@ class StudyApplicationTest {
   }
 
   @Test
-  @DisplayName("Id를 통한 Study 단건 조회")
-  void getStudyByEmail(){
+  @DisplayName("Id를 통한 Study 단건 조회 - 성공")
+  void getStudyByEmail_success(){
     //given
     Long id = 1L;
+    String email = "planner@gmail.com";
     Study study = CommonHelper.createStudy();
     when(studyService.getStudyById(anyLong()))
         .thenReturn(study);
 
     //when
-    StudyDto result = studyApplication.getStudyByEmail(id);
+    StudyDto result = studyApplication.getStudyByEmail(id, email);
 
     //then
     assertEquals(result.getStudyTitle(),study.getStudyTitle());
     assertEquals(result.getId(),study.getStudyId());
     assertEquals(result.getStudyContent(),study.getStudyContent());
+  }
+
+  @Test
+  @DisplayName("Id를 통한 Study 단건 조회 - 실패")
+  void getStudyByEmail_false(){
+    //given
+    Long id = 1L;
+    String email = "12345@gmail.com";
+    Study study = CommonHelper.createStudy();
+    when(studyService.getStudyById(anyLong()))
+        .thenReturn(study);
+
+    //when
+    SuperException result = assertThrows(ExceptionNotValidUser.class,
+        () -> studyApplication.getStudyByEmail(id, email)) ;
+
+    //then
+    assertEquals(result.getMessage(),"일치하지 않는 회원입니다.");
   }
 }
