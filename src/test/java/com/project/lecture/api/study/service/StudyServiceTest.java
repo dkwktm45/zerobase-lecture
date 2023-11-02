@@ -189,11 +189,4 @@ class StudyServiceTest {
     //then
     verify(studyRepository,timeout(1)).deleteById(id);
   }
-  @Test
-  @DisplayName("Study 여러건 조회")
-  void getListByMember(){
-    //given
-    //when
-    //then
-  }
 }
