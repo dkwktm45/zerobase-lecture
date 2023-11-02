@@ -40,7 +40,7 @@ public class Study extends BaseEntity {
     this.studyComplete = true;
   }
 
-  public void changeDate(Change request) {
+  public void changeComplete(Change request) {
     this.studyTitle = request.getStudyTitle();
     this.studyContent = request.getStudyContent();
   }

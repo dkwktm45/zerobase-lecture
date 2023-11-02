@@ -1,6 +1,7 @@
 package com.project.lecture.api.study.application;
 
 import com.project.lecture.api.planner.service.PlannerService;
+import com.project.lecture.api.study.dto.StudyDto;
 import com.project.lecture.api.study.dto.StudyRequest.Change;
 import com.project.lecture.api.study.dto.StudyRequest.Create;
 import com.project.lecture.api.study.service.StudyService;
@@ -9,6 +10,8 @@ import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Study;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.type.StudyType;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,14 +38,16 @@ public class StudyApplication {
   public void changeStudyByRequest(Change request) {
     Study study = studyService.getStudyById(request.getId());
 
-    study.changeDate(request);
+    study.changeComplete(request);
   }
 
 
-  public void deleteStudyById(Long studyId) {
-    if (!studyService.existStudy(studyId)) {
+  public void deleteStudyById(Long studyId, String email) {
+    if (!studyService.existStudyByIdAndEmail(studyId,email)) {
       throw new ExceptionNotFoundStudy();
     }
+
+
     studyService.deleteStudy(studyId);
 
     if (plannerService.existStudyId(studyId)) {

@@ -38,11 +38,12 @@ public class StudyService {
         .orElseThrow(ExceptionNotFoundStudy::new);
   }
 
-  public boolean existStudy(Long studyId) {
-    return studyRepository.existsById(studyId);
+  public boolean existStudyByIdAndEmail(Long studyId, String email) {
+    return studyRepository.existsByStudyIdAndMember_Email(studyId,email);
   }
 
   public void deleteStudy(Long studyId) {
     studyRepository.deleteById(studyId);
   }
+
 }
