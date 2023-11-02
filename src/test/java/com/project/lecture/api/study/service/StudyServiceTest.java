@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -115,5 +116,73 @@ class StudyServiceTest {
     // then
     assertEquals(result.getMessage(), "존재하지 않는 개인학습입니다.");
     verify(studyRepository, timeout(1)).findById(anyLong());
+  }
+  @Test
+  @DisplayName("id값을 통해서 Study값을 가져오는 로직 - 성공")
+  void getStudyById_success(){
+    //given
+    Study study = CommonHelper.createStudy();
+    Long id = 1L;
+
+    when(studyRepository.findById(anyLong()))
+        .thenReturn(Optional.of(study));
+    //when
+    Study result = studyService.getStudyById(id);
+
+    //then
+    assertEquals(study.getStudyTitle(),result.getStudyTitle());
+    assertEquals(study.getStudyContent(),result.getStudyContent());
+  }
+  @Test
+  @DisplayName("id값을 통해서 Study값을 가져오는 로직 - 실패")
+  void getStudyById_fail(){
+    //given
+    Long id = 1L;
+
+    when(studyRepository.findById(anyLong()))
+        .thenReturn(Optional.empty());
+    //when
+    SuperException result = assertThrows(ExceptionNotFoundStudy.class,
+        () -> studyService.getStudyById(id));
+
+    //then
+    assertEquals(result.getMessage(),"존재하지 않는 개인학습입니다.");
+  }
+  @Test
+  @DisplayName("id에 해당하는 값이 존재하는지 확인 - true")
+  void existStudy_true(){
+    //given
+    Long id = 1L;
+    when(studyRepository.existsById(id))
+        .thenReturn(true);
+    //when
+    boolean result = studyService.existStudy(id);
+
+    //then
+    assertTrue(result);
+  }
+  @Test
+  @DisplayName("id에 해당하는 값이 존재하는지 확인 - true")
+  void existStudy_false(){
+    //given
+    Long id = 1L;
+    when(studyRepository.existsById(id))
+        .thenReturn(false);
+    //when
+    boolean result = studyService.existStudy(id);
+
+    //then
+    assertFalse(result);
+  }
+  @Test
+  @DisplayName("id를 통해 값을 삭제한다.")
+  void deleteStudy(){
+    //given
+    Long id = 1L;
+    doNothing().when(studyRepository).deleteById(id);
+    //when
+    studyService.deleteStudy(id);
+    //then
+    verify(studyRepository,timeout(1)).deleteById(id);
   }
 }

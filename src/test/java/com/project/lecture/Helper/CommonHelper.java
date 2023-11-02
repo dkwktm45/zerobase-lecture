@@ -111,12 +111,16 @@ public class CommonHelper {
     return planners;
   }
 
-  public static Planner createPlannerForm() {
+  public static Planner createPlannerByCourseForm() {
     return Planner.builder()
         .plannerType(StudyType.COURSE)
         .plannerTypeId(1L).build();
   }
-
+  public static Planner createPlannerByStudyForm() {
+    return Planner.builder()
+        .plannerType(StudyType.STUDY)
+        .plannerTypeId(1L).build();
+  }
   public static List<Planner> createPlannersForm() {
     List<Planner> planners = new ArrayList<>();
 
@@ -200,5 +204,9 @@ public class CommonHelper {
         .member(createMemberForm())
         .studyComplete(true)
         .studyContent("content").build();
+  }
+
+  public static StudyRequest.Change changeStudyForm() {
+    return new StudyRequest.Change(1L,"title","content");
   }
 }
