@@ -13,7 +13,7 @@ public class ListenService {
   private final ListeningRepository listeningRepository;
 
   public boolean existCheck(Long courseId, Long memberId) {
-    return listeningRepository.existsByMemberIdAndCourseId(memberId, courseId);
+    return listeningRepository.existsByMember_MemberIdAndCourse_CourseId(memberId, courseId);
   }
   @Transactional
   public void saveListening(Listening listening) {

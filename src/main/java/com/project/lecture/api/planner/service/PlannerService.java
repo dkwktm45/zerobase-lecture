@@ -44,6 +44,6 @@ public class PlannerService {
   }
 
   public boolean existStudyId(Long id) {
-    return plannerRepository.existsByStudyId(id) >= 1;
+    return plannerRepository.existsByPlannerTypeIdAndPlannerType(id,StudyType.STUDY);
   }
 }
