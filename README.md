@@ -92,7 +92,7 @@
 
 
 ## 📌ERD(해당 사항은 변경이 될 수 있습니다.)
-![Plan Learn Project](https://github.com/dkwktm45/zerobase-lecture/assets/48014869/ff0a28a8-597c-4e8d-aebc-bdc776400382)
+![Plan Learn Project](https://github.com/dkwktm45/zerobase-lecture/assets/48014869/c70a2941-815e-486f-ad92-6754e118c0d1)
 
 
 
