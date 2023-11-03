@@ -38,6 +38,6 @@ public class ReflectionApplication {
       throw new ExceptionNotFoundReflection();
     }
 
-    reflectionService.deleteById(id);
+    reflectionService.deleteReflectionById(id);
   }
 }

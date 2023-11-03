@@ -20,7 +20,7 @@ public class ReflectionService {
         .existsByReflectionIdAndMember_Email(id,email);
   }
 
-  public void deleteById(Long id) {
+  public void deleteReflectionById(Long id) {
     reflectionRepository.deleteById(id);
   }
 }
