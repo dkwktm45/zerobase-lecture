@@ -17,7 +17,7 @@ public class ReflectionApplication {
   private final MemberService memberService;
   private final ReflectionService reflectionService;
   public void createReflectionByDtoAndEmail(Create request, String email) {
-    if (request.validWeek()){
+    if (!request.validWeek()){
       throw new ExceptionNotValidWeekDt(request.getWeekDt());
     }
 
