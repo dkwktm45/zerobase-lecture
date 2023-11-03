@@ -4,12 +4,14 @@ import com.project.lecture.api.course.dto.CourseRequest;
 import com.project.lecture.api.course.dto.CourseRequest.Change;
 import com.project.lecture.api.course.dto.CourseRequest.Create;
 import com.project.lecture.api.course.dto.CreateLecture;
+import com.project.lecture.api.reflection.dto.ReflectionRequest;
 import com.project.lecture.api.study.dto.StudyRequest;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Listening;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Planner;
+import com.project.lecture.entity.Reflection;
 import com.project.lecture.entity.Study;
 import com.project.lecture.type.AuthType;
 import com.project.lecture.type.SocialType;
@@ -67,6 +69,7 @@ public class CommonHelper {
         .courses(createCourseListForm())
         .authType(AuthType.USER.getDescription()).build();
   }
+
   public static Member createOriginMemberForm() {
     return Member.builder()
         .email("planner@gmail.com")
@@ -78,8 +81,9 @@ public class CommonHelper {
   }
 
   public static StudyRequest.Create studyRequestCreate() {
-    return new StudyRequest.Create("title","content");
+    return new StudyRequest.Create("title", "content");
   }
+
   public static Member createMemberAndPlannersForm() {
     return Member.builder()
         .memberId(1L)
@@ -92,7 +96,6 @@ public class CommonHelper {
         .courses(createCourseListForm())
         .authType(AuthType.USER.getDescription()).build();
   }
-
 
 
   public static Course createCourseForm() {
@@ -131,11 +134,13 @@ public class CommonHelper {
         .plannerType(StudyType.COURSE)
         .plannerTypeId(1L).build();
   }
+
   public static Planner createPlannerByStudyForm() {
     return Planner.builder()
         .plannerType(StudyType.STUDY)
         .plannerTypeId(1L).build();
   }
+
   public static List<Planner> createPlannersForm() {
     List<Planner> planners = new ArrayList<>();
 
@@ -169,6 +174,7 @@ public class CommonHelper {
     }
     return list;
   }
+
   public static List<Lecture> createLecturesNoIdForm() {
     List<Lecture> list = new ArrayList<>();
 
@@ -213,6 +219,7 @@ public class CommonHelper {
         .studyComplete(false)
         .studyContent("content").build();
   }
+
   public static Study createStudy() {
     return Study.builder()
         .studyId(1L)
@@ -221,6 +228,7 @@ public class CommonHelper {
         .studyComplete(false)
         .studyContent("content").build();
   }
+
   public static Study createStudyCompleteTrue() {
     return Study.builder()
         .studyTitle("title")
@@ -230,7 +238,7 @@ public class CommonHelper {
   }
 
   public static StudyRequest.Change changeStudyForm() {
-    return new StudyRequest.Change(1L,"title","content");
+    return new StudyRequest.Change(1L, "title", "content");
   }
 
   public static List<Study> createStudyList() {
@@ -247,5 +255,19 @@ public class CommonHelper {
       );
     }
     return studies;
+  }
+
+  public static ReflectionRequest.Create reflectionRequestDto() {
+    return new ReflectionRequest.Create("reTitle", "reContent", "2023-01-01/2023-01-08");
+  }
+  public static ReflectionRequest.Create notValidReflectionRequestDto() {
+    return new ReflectionRequest.Create("reTitle", "reContent", "2023-01-01/2023-01-08");
+  }
+
+  public static Reflection createReflectionByNoId() {
+    return Reflection.builder()
+        .reflectionTitle("reTitle")
+        .member(createMemberFormByNoId())
+        .reflectionContent("reContent").build();
   }
 }
