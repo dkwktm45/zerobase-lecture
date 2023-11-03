@@ -33,4 +33,8 @@ public class Reflection {
   @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
   @JoinColumn(name = "memberId")
   private Member member;
+
+  public void changeComplete() {
+    this.reflectionComplete = true;
+  }
 }
