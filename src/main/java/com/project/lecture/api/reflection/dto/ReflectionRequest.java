@@ -1,6 +1,7 @@
 package com.project.lecture.api.reflection.dto;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,7 @@ public class ReflectionRequest {
         LocalDate startDate = LocalDate.parse(startDateStr);
         LocalDate endDate = LocalDate.parse(endDateStr);
 
-        return isSameWeek(startDate, endDate);
+        return ChronoUnit.DAYS.between(startDate, endDate) == 7;
       }catch (NumberFormatException e){
         log.warn("올바른 숫자 형식이 아닙니다.");
         return false;
@@ -46,12 +47,5 @@ public class ReflectionRequest {
         return false;
       }
     }
-    private boolean isSameWeek(LocalDate date1, LocalDate date2) {
-      LocalDate startOfWeek = date1.minusDays(date1.getDayOfWeek().getValue() - 1);
-      LocalDate endOfWeek = startOfWeek.plusDays(6);
-
-      return date2.isAfter(startOfWeek.minusDays(1)) && date2.isBefore(endOfWeek.plusDays(1));
-    }
-
   }
 }
