@@ -38,6 +38,10 @@ public class ReflectionRequest {
         LocalDate startDate = LocalDate.parse(startDateStr);
         LocalDate endDate = LocalDate.parse(endDateStr);
 
+        if (startDate.isAfter(LocalDate.now())) {
+          return false;
+        }
+
         return ChronoUnit.DAYS.between(startDate, endDate) == 7;
       }catch (NumberFormatException e){
         log.warn("올바른 숫자 형식이 아닙니다.");
