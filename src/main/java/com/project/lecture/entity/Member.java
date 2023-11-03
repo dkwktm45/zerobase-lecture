@@ -59,6 +59,10 @@ public class Member {
 
   @OneToMany(mappedBy = "member")
   @Builder.Default
+  private List<Reflection> reflections = new ArrayList<>();
+
+  @OneToMany(mappedBy = "member")
+  @Builder.Default
   private List<Planner> planners = new ArrayList<>();
 
   @Transactional

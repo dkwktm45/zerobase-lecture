@@ -1,0 +1,9 @@
+POST http://localhost:8080/user/reflection/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5ODk4NDExMCwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.RBeOa-vQKatkwMvgzDXJf5O7UnW2AnAo-BF_1bc-4G4Whok-_6iAphB66v2DajtkqHdCm1CQLhprvmyBzHbt7g
+Content-Type: application/json
+
+{
+  "reflectionTitle": "reflectionTitle_5097ddb230fd",
+  "reflectionContent": "reflectionContent_2de111dffc7b",
+  "weekDt": "2022-01-02/2022-01-09"
+}
