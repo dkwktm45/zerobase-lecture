@@ -66,6 +66,7 @@ public class CommonHelper {
         .socialType(SocialType.PLANNER)
         .socialId("1234")
         .studies(createStudyList())
+        .reflections(createReflections())
         .courses(createCourseListForm())
         .authType(AuthType.USER.getDescription()).build();
   }
@@ -257,17 +258,42 @@ public class CommonHelper {
     return studies;
   }
 
+  public static List<Reflection> createReflections() {
+    List<Reflection> reflections = new ArrayList<>();
+
+    for (int i = 1; i <= 3; i++) {
+      reflections.add(
+          Reflection.builder()
+              .reflectionId((long) i)
+              .reflectionComplete(false)
+              .reflectionTitle("title" + i)
+              .reflectionContent("content" + i).build()
+      );
+    }
+    return reflections;
+  }
+
   public static ReflectionRequest.Create reflectionRequestDto() {
     return new ReflectionRequest.Create("reTitle", "reContent", "2023-01-01/2023-01-08");
   }
   public static ReflectionRequest.Create notValidReflectionRequestDto() {
-    return new ReflectionRequest.Create("reTitle", "reContent", "2023-01-01/2023-01-08");
+    return new ReflectionRequest.Create("reTitle", "reContent", "2023-01-01/2023-01-12");
   }
 
   public static Reflection createReflectionByNoId() {
     return Reflection.builder()
         .reflectionTitle("reTitle")
         .member(createMemberFormByNoId())
+        .reflectionComplete(false)
+        .reflectionContent("reContent").build();
+  }
+
+  public static Reflection createReflectionBy() {
+    return Reflection.builder()
+        .reflectionId(1L)
+        .reflectionTitle("reTitle")
+        .member(createMemberFormByNoId())
+        .reflectionComplete(false)
         .reflectionContent("reContent").build();
   }
 }
