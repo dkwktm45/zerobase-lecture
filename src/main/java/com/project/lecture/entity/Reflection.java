@@ -34,7 +34,7 @@ public class Reflection {
   @JoinColumn(name = "memberId")
   private Member member;
 
-  public void changeComplete() {
+  public void changeCompleteIntoTrue() {
     this.reflectionComplete = true;
   }
 }

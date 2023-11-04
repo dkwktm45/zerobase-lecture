@@ -58,7 +58,7 @@ public class ReflectionApplication {
       throw new ExceptionCompleteReflection();
     }
 
-    reflection.changeComplete();
+    reflection.changeCompleteIntoTrue();
   }
 
   public ReflectionDto getByIdAndEmail(Long id, String email) {
