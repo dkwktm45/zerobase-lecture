@@ -1,17 +1,16 @@
 package com.project.lecture.repository;
 
-import com.project.lecture.type.StudyType;
-import org.awaitility.Awaitility;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.entity.Planner;
+import com.project.lecture.type.StudyType;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +53,7 @@ class PlannerRepositoryTest {
   void deleteLecturesById(){
     // given
     List<Planner> planners = CommonHelper.createPlannersForm();
-    memberRepository.save(CommonHelper.createOriginMemberForm());
+    memberRepository.save(CommonHelper.createOriginMemberFormByNoId());
     plannerRepository.saveAllAndFlush(planners);
     List<Long> longs = planners.stream().map(Planner::getPlannerTypeId)
         .collect(Collectors.toList());
@@ -65,11 +64,6 @@ class PlannerRepositoryTest {
     );
 
     // then
-    Awaitility.await().atMost(100, SECONDS).until(() -> {
-      long count = plannerRepository.count();
-      return count == 0;
-    });
-
     Long count = plannerRepository.count();
     assertEquals(count, 0);
   }
@@ -97,5 +91,12 @@ class PlannerRepositoryTest {
 
     //then
     assertFalse(result);
+  }
+  @Autowired
+  private EntityManager em;
+  @AfterEach
+  void setUp() {
+    em.createNativeQuery("ALTER TABLE member ALTER COLUMN `memberId` RESTART                                                                     WITH 1")
+        .executeUpdate();
   }
 }

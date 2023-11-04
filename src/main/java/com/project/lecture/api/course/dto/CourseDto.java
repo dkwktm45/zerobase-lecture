@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 
 @Getter
 @Setter
@@ -21,5 +22,9 @@ public class CourseDto {
     this.courseContent = course.getCourseContent();
     this.courseId = course.getCourseId();
     this.courseName = course.getCourseName();
+  }
+
+  public static Page<CourseDto> toDotList(Page<Course> courses){
+    return courses.map(CourseDto::new);
   }
 }

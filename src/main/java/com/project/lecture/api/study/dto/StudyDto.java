@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,5 +26,8 @@ public class StudyDto {
     this.studyContent = study.getStudyContent();
     this.studyComplete = study.isStudyComplete();
     this.createDt = study.getCreateDt();
+  }
+  public static Page<StudyDto> toDotList(Page<Study> studies){
+    return studies.map(StudyDto::new);
   }
 }

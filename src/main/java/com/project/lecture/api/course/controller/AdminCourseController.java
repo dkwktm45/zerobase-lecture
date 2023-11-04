@@ -10,10 +10,12 @@ import com.project.lecture.api.course.dto.CourseDto;
 import com.project.lecture.api.course.dto.CourseRequest;
 import com.project.lecture.api.course.service.CourseService;
 import java.security.Principal;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,12 +67,13 @@ public class AdminCourseController {
   }
 
   @PostMapping("")
-  public ResponseEntity<List<CourseDto>> getCourseRequest(
-      Principal principal
+  public ResponseEntity<Page<CourseDto>> getCourseRequest(
+      Principal principal,
+      @PageableDefault(page = 1) Pageable pageable
   ) {
     log.info("getCourseRequest() 수행");
     return ResponseEntity.ok(
-        courseApplication.getCourseList(principal.getName())
+        courseApplication.getCourseList(principal.getName(),pageable)
     );
   }
 }

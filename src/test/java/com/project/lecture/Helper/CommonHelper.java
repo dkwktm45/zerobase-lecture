@@ -4,12 +4,14 @@ import com.project.lecture.api.course.dto.CourseRequest;
 import com.project.lecture.api.course.dto.CourseRequest.Change;
 import com.project.lecture.api.course.dto.CourseRequest.Create;
 import com.project.lecture.api.course.dto.CreateLecture;
+import com.project.lecture.api.reflection.dto.ReflectionRequest;
 import com.project.lecture.api.study.dto.StudyRequest;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Listening;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Planner;
+import com.project.lecture.entity.Reflection;
 import com.project.lecture.entity.Study;
 import com.project.lecture.type.AuthType;
 import com.project.lecture.type.SocialType;
@@ -64,11 +66,23 @@ public class CommonHelper {
         .socialType(SocialType.PLANNER)
         .socialId("1234")
         .studies(createStudyList())
+        .reflections(createReflections())
         .courses(createCourseListForm())
+        .authType(AuthType.USER.getDescription()).build();
+  }
+
+  public static Member createOriginMemberFormByNoId() {
+    return Member.builder()
+        .email("planner@gmail.com")
+        .password("1234")
+        .nickName("게드릉")
+        .socialType(SocialType.PLANNER)
+        .socialId("1234")
         .authType(AuthType.USER.getDescription()).build();
   }
   public static Member createOriginMemberForm() {
     return Member.builder()
+        .memberId(1L)
         .email("planner@gmail.com")
         .password("1234")
         .nickName("게드릉")
@@ -78,8 +92,9 @@ public class CommonHelper {
   }
 
   public static StudyRequest.Create studyRequestCreate() {
-    return new StudyRequest.Create("title","content");
+    return new StudyRequest.Create("title", "content");
   }
+
   public static Member createMemberAndPlannersForm() {
     return Member.builder()
         .memberId(1L)
@@ -94,7 +109,6 @@ public class CommonHelper {
   }
 
 
-
   public static Course createCourseForm() {
 
     return Course.builder()
@@ -107,9 +121,10 @@ public class CommonHelper {
   public static List<Course> createCourseListForm() {
     List<Course> courses = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
-      Course.builder()
+      courses.add(Course.builder()
           .courseName("제로베이스" + i)
-          .courseContent("제로베이스 백앤드" + i).build();
+          .member(createOriginMemberForm())
+          .courseContent("제로베이스 백앤드" + i).build());
     }
     return courses;
   }
@@ -131,11 +146,13 @@ public class CommonHelper {
         .plannerType(StudyType.COURSE)
         .plannerTypeId(1L).build();
   }
+
   public static Planner createPlannerByStudyForm() {
     return Planner.builder()
         .plannerType(StudyType.STUDY)
         .plannerTypeId(1L).build();
   }
+
   public static List<Planner> createPlannersForm() {
     List<Planner> planners = new ArrayList<>();
 
@@ -169,6 +186,7 @@ public class CommonHelper {
     }
     return list;
   }
+
   public static List<Lecture> createLecturesNoIdForm() {
     List<Lecture> list = new ArrayList<>();
 
@@ -201,7 +219,7 @@ public class CommonHelper {
 
   public static Listening createListingForm() {
     return Listening.builder()
-        .member(createOriginMemberForm())
+        .member(createOriginMemberFormByNoId())
         .course(createCourseForm())
         .build();
   }
@@ -213,6 +231,7 @@ public class CommonHelper {
         .studyComplete(false)
         .studyContent("content").build();
   }
+
   public static Study createStudy() {
     return Study.builder()
         .studyId(1L)
@@ -221,6 +240,7 @@ public class CommonHelper {
         .studyComplete(false)
         .studyContent("content").build();
   }
+
   public static Study createStudyCompleteTrue() {
     return Study.builder()
         .studyTitle("title")
@@ -230,7 +250,7 @@ public class CommonHelper {
   }
 
   public static StudyRequest.Change changeStudyForm() {
-    return new StudyRequest.Change(1L,"title","content");
+    return new StudyRequest.Change(1L, "title", "content");
   }
 
   public static List<Study> createStudyList() {
@@ -247,5 +267,55 @@ public class CommonHelper {
       );
     }
     return studies;
+  }
+  public static List<Study> createStudyListByNoId() {
+    List<Study> studies = new ArrayList<>();
+
+    for (int i = 1; i <= 3; i++) {
+      studies.add(
+          Study.builder()
+              .studyTitle("title" + i)
+              .studyComplete(false)
+              .member(createOriginMemberForm())
+              .studyContent("content" + i)
+              .build()
+      );
+    }
+    return studies;
+  }
+  public static List<Reflection> createReflections() {
+    List<Reflection> reflections = new ArrayList<>();
+
+    for (int i = 1; i <= 3; i++) {
+      reflections.add(
+          Reflection.builder()
+              .reflectionComplete(false)
+              .reflectionTitle("title" + i)
+              .member(createOriginMemberForm())
+              .reflectionContent("content" + i).build()
+      );
+    }
+    return reflections;
+  }
+
+  public static ReflectionRequest.Create reflectionRequestDto() {
+    return new ReflectionRequest.Create("reTitle", "reContent", "2023-01-01/2023-01-08");
+  }
+
+  public static Reflection createReflectionByNoId() {
+    return Reflection.builder()
+        .reflectionTitle("reTitle")
+        .member(createOriginMemberForm())
+        .reflectionComplete(false)
+        .reflectionContent("reContent").build();
+  }
+
+  public static Reflection createReflectionBy() {
+    return Reflection.builder()
+        .reflectionId(1L)
+        .reflectionTitle("reTitle")
+        .member(createMemberFormByNoId())
+        .reflectionComplete(false)
+        .reflectionContent("reContent").build();
   }
 }

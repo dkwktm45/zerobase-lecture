@@ -1,0 +1,26 @@
+### 생성 api
+POST http://localhost:8080/user/reflection/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5OTA5MDg5NCwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.4OMOh9PqRFlokkuyzyvkaCxrI_N7qLGwDQfLoV19vtaulGrW5oX-AA3HqQsZ1mwmEGtaW--6bjO1UkKDhMZx9A
+Content-Type: application/json
+
+{
+  "reflectionTitle": "reflectionTitle_5097ddb230fd",
+  "reflectionContent": "reflectionContent_2de111dffc7b",
+  "weekDt": "2022-01-02/2022-01-09"
+}
+
+### 삭제 api
+DELETE http://localhost:8080/user/reflection/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5ODk5NzgwOSwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.JN-C2sWfwf29EOgrD4COFQpzVzT1ckKFCBk-wrqlgRcUW4uuRlEbuX7EhT-MpMb95FXZKHiyhgBCrcFelvcu9Q
+
+### 완료 api
+PUT http://localhost:8080/user/reflection/complete?id=3
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5ODk5NzgwOSwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.JN-C2sWfwf29EOgrD4COFQpzVzT1ckKFCBk-wrqlgRcUW4uuRlEbuX7EhT-MpMb95FXZKHiyhgBCrcFelvcu9Q
+
+### 단건 조회 api
+GET http://localhost:8080/user/reflection/3
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5ODk5NzgwOSwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.JN-C2sWfwf29EOgrD4COFQpzVzT1ckKFCBk-wrqlgRcUW4uuRlEbuX7EhT-MpMb95FXZKHiyhgBCrcFelvcu9Q
+
+### 여러 건 조회 api
+GET http://localhost:8080/user/reflection/list?page=0&size=2
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5OTA5MDg5NCwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.4OMOh9PqRFlokkuyzyvkaCxrI_N7qLGwDQfLoV19vtaulGrW5oX-AA3HqQsZ1mwmEGtaW--6bjO1UkKDhMZx9A

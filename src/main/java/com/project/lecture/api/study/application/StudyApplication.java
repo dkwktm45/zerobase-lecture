@@ -11,9 +11,9 @@ import com.project.lecture.entity.Study;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.exception.kind.ExceptionNotValidUser;
 import com.project.lecture.type.StudyType;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,12 +56,9 @@ public class StudyApplication {
 
   }
 
-  public List<StudyDto> getStudiesByEmail(String email) {
-    Member member = memberService.getMemberByEmail(email);
-
-    return member.getStudies()
-        .stream().map(StudyDto::new)
-        .collect(Collectors.toList());
+  public Page<StudyDto> getStudiesByEmail(String email, Pageable pageable) {
+    Page<Study> studies = studyService.getListByEmailAndPage(email,pageable);
+    return StudyDto.toDotList(studies);
   }
 
   public StudyDto getStudyByEmail(Long id, String email) {

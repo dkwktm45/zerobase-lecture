@@ -31,6 +31,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 @ExtendWith(MockitoExtension.class)
 class StudyApplicationTest {
@@ -147,23 +149,23 @@ class StudyApplicationTest {
   @DisplayName("email을 통한 Study 여러건 조회")
   void getStudiesByEmail() {
     //given
-    Member member = CommonHelper.createMemberForm();
-    String email = "planner@gmail.com";
-    when(memberService.getMemberByEmail(any()))
-        .thenReturn(member);
+    List<Study> studies = CommonHelper.createStudyList();
+    Page<Study> studyPage = new PageImpl<>(studies);
+    when(studyService.getListByEmailAndPage(any(),any()))
+        .thenReturn(studyPage);
 
     //when
-    List<StudyDto> result = studyApplication.getStudiesByEmail(email);
+    Page<StudyDto> studyDtoPage = studyApplication.getStudiesByEmail(any(),any());
 
     //then
-    List<Study> studies = member.getStudies();
+    List<StudyDto> result = studyDtoPage.getContent();
     for (int i = 0; i < result.size(); i++) {
       assertEquals(result.get(i).getId(), studies.get(i).getStudyId());
       assertEquals(result.get(i).getStudyContent(), studies.get(i).getStudyContent());
       assertEquals(result.get(i).getStudyTitle(), studies.get(i).getStudyTitle());
       assertEquals(result.get(i).isStudyComplete(), studies.get(i).isStudyComplete());
     }
-    verify(memberService, timeout(1)).getMemberByEmail(any());
+    verify(studyService, timeout(1)).getListByEmailAndPage(any(),any());
   }
 
   @Test
@@ -202,4 +204,5 @@ class StudyApplicationTest {
     //then
     assertEquals(result.getMessage(),"일치하지 않는 회원입니다.");
   }
+
 }
