@@ -4,6 +4,8 @@ import com.project.lecture.entity.Reflection;
 import com.project.lecture.exception.kind.ExceptionNotFoundReflection;
 import com.project.lecture.repository.ReflectionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,5 +30,9 @@ public class ReflectionService {
   public Reflection getReflectionById(Long id) {
     return reflectionRepository.findById(id)
         .orElseThrow(ExceptionNotFoundReflection::new);
+  }
+
+  public Page<Reflection> getListByEmailAndPage(String email, Pageable pageable) {
+    return reflectionRepository.findByMember_Email(email,pageable);
   }
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 @Getter
 @NoArgsConstructor
@@ -25,5 +26,9 @@ public class ReflectionDto {
         .reflectionId(reflection.getReflectionId())
         .weekDt(reflection.getWeekDt())
         .build();
+  }
+
+  public static Page<ReflectionDto> toDotList(Page<Reflection> reflections){
+    return reflections.map(ReflectionDto::toDto);
   }
 }

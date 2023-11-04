@@ -5,9 +5,11 @@ import com.project.lecture.api.reflection.dto.ReflectionDto;
 import com.project.lecture.api.reflection.dto.ReflectionRequest;
 import com.project.lecture.type.ResponseType;
 import java.security.Principal;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -75,11 +77,12 @@ public class ReflectionController {
   }
 
   @GetMapping("/list")
-  public ResponseEntity<List<ReflectionDto>> getReflectionsRequest(
-      Principal principal
+  public ResponseEntity<Page<ReflectionDto>> getReflectionsRequest(
+      Principal principal,
+      @PageableDefault(page = 1) Pageable pageable
   ) {
     return ResponseEntity.ok(
-        reflectionApplication.getListByEmail(principal.getName())
+        reflectionApplication.getListByEmail(principal.getName(), pageable)
     );
   }
 }

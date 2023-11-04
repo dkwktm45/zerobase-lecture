@@ -8,10 +8,9 @@ import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reflection;
 import com.project.lecture.exception.kind.ExceptionCompleteReflection;
 import com.project.lecture.exception.kind.ExceptionNotFoundReflection;
-import com.project.lecture.exception.kind.ExceptionNotValidWeekDt;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +21,7 @@ public class ReflectionApplication {
 
   private final MemberService memberService;
   private final ReflectionService reflectionService;
-
   public void createReflectionByDtoAndEmail(Create request, String email) {
-    if (!request.validWeek()) {
-      throw new ExceptionNotValidWeekDt(request.getWeekDt());
-    }
-
     Member member = memberService.getMemberByEmail(email);
 
     reflectionService.createByEntity(
@@ -71,12 +65,8 @@ public class ReflectionApplication {
     );
   }
 
-  public List<ReflectionDto> getListByEmail(String email) {
-    Member member = memberService.getMemberByEmail(email);
-
-    return member.getReflections()
-        .stream()
-        .map(ReflectionDto::toDto)
-        .collect(Collectors.toList());
+  public Page<ReflectionDto> getListByEmail(String email, Pageable pageable) {
+    Page<Reflection> result = reflectionService.getListByEmailAndPage(email, pageable);
+    return ReflectionDto.toDotList(result);
   }
 }
