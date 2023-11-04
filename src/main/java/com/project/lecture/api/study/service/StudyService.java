@@ -6,6 +6,8 @@ import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.exception.kind.ExceptionNotValidUser;
 import com.project.lecture.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,4 +48,7 @@ public class StudyService {
     studyRepository.deleteById(studyId);
   }
 
+  public Page<Study> getListByEmailAndPage(String email, Pageable pageable) {
+    return studyRepository.findByMember_Email(email,pageable);
+  }
 }

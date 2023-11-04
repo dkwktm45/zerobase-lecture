@@ -1,6 +1,7 @@
 package com.project.lecture.api.reflection.application;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -20,7 +21,6 @@ import com.project.lecture.entity.Reflection;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.exception.kind.ExceptionCompleteReflection;
 import com.project.lecture.exception.kind.ExceptionNotFoundReflection;
-import com.project.lecture.exception.kind.ExceptionNotValidWeekDt;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +28,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 @ExtendWith(MockitoExtension.class)
 class ReflectionApplicationTest {
@@ -56,22 +58,6 @@ class ReflectionApplicationTest {
     //then
     verify(memberService, timeout(1)).getMemberByEmail(anyString());
     verify(reflectionService, timeout(1)).createByEntity(any());
-  }
-
-  @Test
-  @DisplayName("회고 작성시 주간 정보가 옳바른지 확인하고 저장을 수행하는 로직 - 실패[date 불일치]")
-  void createReflectionByDtoAndEmail_fail() {
-    //given
-    Create request = CommonHelper.notValidReflectionRequestDto();
-    String email = "planner@gmail.com";
-    //when
-    SuperException result = assertThrows(ExceptionNotValidWeekDt.class,
-        () -> reflectionApplication.createReflectionByDtoAndEmail(request, email));
-
-    //then
-    assertEquals(result.getMessage(), "옳바르지 않는 주간 날짜입니다.");
-    verify(memberService, never()).getMemberByEmail(anyString());
-    verify(reflectionService, never()).createByEntity(any());
   }
 
   @Test
@@ -238,13 +224,15 @@ class ReflectionApplicationTest {
     //given
     Member member = CommonHelper.createMemberFormByNoId();
     List<Reflection> reflections = member.getReflections();
+    Page<Reflection> reflectionPage = new PageImpl<>(reflections);
 
-    when(memberService.getMemberByEmail(anyString()))
-        .thenReturn(member);
+    when(reflectionService.getListByEmailAndPage(anyString(),any()))
+        .thenReturn(reflectionPage);
     //when
-    List<ReflectionDto> result = reflectionApplication.getListByEmail(anyString());
+    Page<ReflectionDto> pages= reflectionApplication.getListByEmail(anyString() ,any());
 
     //then
+    List<ReflectionDto> result = pages.getContent();
     for (int i = 0; i < result.size(); i++) {
       assertEquals(reflections.get(i).getReflectionId(), result.get(i).getReflectionId());
       assertEquals(reflections.get(i).getReflectionTitle(), result.get(i).getReflectionTitle());

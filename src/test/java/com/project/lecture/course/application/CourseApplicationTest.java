@@ -24,6 +24,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 @ExtendWith(MockitoExtension.class)
 class CourseApplicationTest {
@@ -63,16 +65,18 @@ class CourseApplicationTest {
   @DisplayName("강좌 리스트를 반환 - 성공")
   void getCourseList(){
     //given
-    String email = "planner@gmail.com";
     Member member = CommonHelper.createMemberForm();
-    List<Course> courses = member.getCourses();
 
-    when(memberService.getMemberByEmail(anyString()))
-        .thenReturn(member);
+    List<Course> courses = member.getCourses();
+    Page<Course> coursePage = new PageImpl<>(courses);
+    when(courseService.getListByEmailAndPage(anyString(),any()))
+        .thenReturn(coursePage);
 
     //when
-    List<CourseDto> result = courseApplication.getCourseList(email);
+    Page<CourseDto> courseDtoPage = courseApplication.getCourseList(anyString(),any());
+
     //then
+    List<CourseDto> result = courseDtoPage.getContent();
     for (int i = 0; i < courses.size(); i++) {
       assertEquals(result.get(i).getCourseId(), courses.get(i).getCourseId());
       assertEquals(result.get(i).getCourseContent(), courses.get(i).getCourseContent());
