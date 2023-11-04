@@ -1,4 +1,4 @@
-package com.project.lecture.course.application;
+package com.project.lecture.api.course.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -9,14 +9,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
-import com.project.lecture.api.course.application.CourseApplication;
 import com.project.lecture.api.course.dto.CourseDto;
 import com.project.lecture.api.course.dto.CourseRequest;
 import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.api.course.service.LectureService;
+import com.project.lecture.api.user.service.MemberService;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
-import com.project.lecture.api.user.service.MemberService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.project.lecture.planner.service;
+package com.project.lecture.api.planner.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -11,7 +11,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.project.lecture.Helper.CommonHelper;
-import com.project.lecture.api.planner.service.PlannerService;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.repository.PlannerRepository;

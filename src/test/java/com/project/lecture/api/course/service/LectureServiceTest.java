@@ -1,4 +1,4 @@
-package com.project.lecture.course.service;
+package com.project.lecture.api.course.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.timeout;
@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
-import com.project.lecture.api.course.service.LectureService;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.repository.LectureRepository;
 import java.util.List;

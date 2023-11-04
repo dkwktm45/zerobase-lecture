@@ -1,4 +1,4 @@
-package com.project.lecture.course.service;
+package com.project.lecture.api.course.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,7 +13,6 @@ import static org.mockito.Mockito.when;
 import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.api.course.dto.CourseRequest;
 import com.project.lecture.api.course.dto.CourseRequest.Change;
-import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.SuperException;

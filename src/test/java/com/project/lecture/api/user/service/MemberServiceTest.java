@@ -1,4 +1,4 @@
-package com.project.lecture.user.service;
+package com.project.lecture.api.user.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
-import com.project.lecture.api.user.service.MemberService;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.repository.MemberRepository;

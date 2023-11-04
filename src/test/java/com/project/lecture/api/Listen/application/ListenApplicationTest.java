@@ -1,4 +1,4 @@
-package com.project.lecture.Listen.application;
+package com.project.lecture.api.Listen.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,7 +10,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
-import com.project.lecture.api.Listen.application.ListenApplication;
 import com.project.lecture.api.Listen.service.ListenService;
 import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.entity.Course;

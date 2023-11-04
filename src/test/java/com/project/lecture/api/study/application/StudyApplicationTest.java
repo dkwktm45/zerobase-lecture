@@ -204,4 +204,5 @@ class StudyApplicationTest {
     //then
     assertEquals(result.getMessage(),"일치하지 않는 회원입니다.");
   }
+
 }
