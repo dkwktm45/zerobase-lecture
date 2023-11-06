@@ -43,7 +43,8 @@ public class PlannerService {
     plannerRepository.deleteLecturesById(lectureIdx, memberId);
   }
 
-  public boolean existStudyId(Long id) {
-    return plannerRepository.existsByPlannerTypeIdAndPlannerType(id,StudyType.STUDY);
+  public boolean existByStudyIdAndType(Long id,StudyType studyType) {
+    return plannerRepository.existsByPlannerTypeIdAndPlannerType(id,studyType);
   }
+
 }
