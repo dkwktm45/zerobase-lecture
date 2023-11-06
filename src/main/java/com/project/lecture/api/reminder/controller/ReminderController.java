@@ -54,5 +54,15 @@ public class ReminderController {
     );
   }
 
+  @PutMapping("/complete")
+  public ResponseEntity<String> completeReflectionRequest(
+      @RequestParam("id") Long id,
+      Principal principal
+  ) {
+    reminderApplication.completeByIdAndEmail(id, principal.getName());
+    return ResponseEntity.ok(
+        ResponseType.COMPLETE_SUCCESS.getDescription()
+    );
+  }
 
 }

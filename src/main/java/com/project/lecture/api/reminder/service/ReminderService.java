@@ -28,4 +28,8 @@ public class ReminderService {
     reminderRepository.deleteById(id);
   }
 
+  public Reminder getReminderById(Long id) {
+    return reminderRepository.findById(id)
+        .orElseThrow(ExceptionNotFoundReminder::new);
+  }
 }
