@@ -349,4 +349,11 @@ public class CommonHelper {
         .reminderComplete(true)
         .build();
   }
+
+  public static Lecture createLecture() {
+    return Lecture.builder()
+        .lectureId(1L)
+        .lectureName("planner")
+        .lectureTime(10).build();
+  }
 }

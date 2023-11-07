@@ -12,11 +12,14 @@ import static org.mockito.Mockito.when;
 
 import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.api.planner.service.PlannerService;
+import com.project.lecture.api.reminder.dto.ReminderDto;
 import com.project.lecture.api.reminder.dto.ReminderRequest;
 import com.project.lecture.api.reminder.service.ReminderService;
+import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.api.user.service.MemberService;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
+import com.project.lecture.entity.Study;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.exception.kind.ExceptionCompleteReminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
@@ -36,6 +39,8 @@ class ReminderApplicationTest {
   private ReminderService reminderService;
   @Mock
   private PlannerService plannerService;
+  @Mock
+  private StudyService studyService;
 
   @InjectMocks
   private ReminderApplication reminderApplication;
@@ -185,5 +190,31 @@ class ReminderApplicationTest {
     assertEquals(result.getMessage(),"이미 완료한 리마인드입니다.");
     verify(reminderService, timeout(1)).existsByIdAndEmail(anyLong(), anyString());
     verify(reminderService, timeout(1)).getReminderById(anyLong());
+  }
+
+  @Test
+  @DisplayName("id, email을 통한 조회 로직 - 성공")
+  void getByIdAndEmail(){
+    //given
+    Long id = 1L;
+    String email = "planner@gmail.com";
+    Reminder reminder = CommonHelper.createReminder();
+    Study study = CommonHelper.createStudy();
+
+    when(reminderService.existsByIdAndEmail(anyLong(), anyString()))
+        .thenReturn(true);
+    when(reminderService.getReminderById(anyLong()))
+        .thenReturn(reminder);
+    when(studyService.getStudyById(anyLong()))
+        .thenReturn(study);
+    //when
+    ReminderDto result = reminderApplication.getByIdAndEmail(id, email);
+
+    //then
+    assertEquals(result.getReminderId(),reminder.getReminderId());
+    assertEquals(result.getReminderTypeId(),reminder.getReminderTypeId());
+    assertEquals(result.getTitle(),study.getStudyTitle());
+    assertEquals(result.getContent(),study.getStudyContent());
+    assertEquals(result.getReminderType(),reminder.getReminderType());
   }
 }
