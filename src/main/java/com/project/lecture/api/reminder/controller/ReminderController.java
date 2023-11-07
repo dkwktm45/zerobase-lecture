@@ -52,7 +52,7 @@ public class ReminderController {
     );
   }
 
-  @PutMapping("/complete")
+  @PostMapping("/complete")
   public ResponseEntity<String> completeReflectionRequest(
       @RequestParam("id") Long id,
       Principal principal

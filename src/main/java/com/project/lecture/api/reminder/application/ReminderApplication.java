@@ -1,9 +1,5 @@
 package com.project.lecture.api.reminder.application;
 
-import static com.project.lecture.type.StudyType.COURSE;
-import static com.project.lecture.type.StudyType.LECTURE;
-import static com.project.lecture.type.StudyType.STUDY;
-
 import com.project.lecture.api.Listen.service.ListenService;
 import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.api.course.service.LectureService;
@@ -24,8 +20,18 @@ import com.project.lecture.exception.kind.ExceptionExistListening;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.type.StudyType;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import com.project.lecture.type.adapter.CourseAdapter;
+import com.project.lecture.type.adapter.LectureAdapter;
+import com.project.lecture.type.adapter.StudyAdapter;
+import com.project.lecture.type.adapter.TypeAdapter;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,14 +49,25 @@ public class ReminderApplication {
 
   private final PlannerService plannerService;
   private final StudyService studyService;
-  private final CourseService courseService;
   private final LectureService lectureService;
+  private final CourseService courseService;
   private final ListenService listenService;
+  private Map<StudyType, TypeAdapter> adapters;
 
+  @PostConstruct
+  public void setUp() {
+    adapters = new HashMap<>();
+    adapters.put(StudyType.STUDY, new StudyAdapter(studyService));
+    adapters.put(StudyType.COURSE, new CourseAdapter(listenService));
+    adapters.put(StudyType.LECTURE, new LectureAdapter(listenService, lectureService));
+  }
   public void createReminderByRequestAndEmail(Create request, String email) {
     Member member = memberService.getMemberByEmail(email);
 
-    existsTypeCheck(request, email, member.getMemberId());
+    TypeAdapter adapter = adapters.get(request.getReminderType());
+    if (adapter != null && !adapter.existCheck(request, email, member.getMemberId())) {
+      handleReminderNotFound(request.getReminderType());
+    }
 
     reminderService.saveReminderByEntity(
         Reminder.builder()
@@ -61,30 +78,16 @@ public class ReminderApplication {
     );
   }
 
-  private void existsTypeCheck(Create request, String email, Long id) {
-    if (request.getReminderType().equals(STUDY)) {
-      if (!studyService.existStudyByIdAndEmail(
-          request.getReminderTypeId(),
-          email
-      )) {
+  private void handleReminderNotFound(StudyType studyType) {
+    switch (studyType) {
+      case STUDY:
         throw new ExceptionNotFoundStudy();
-      }
-    } else if (request.getReminderType().equals(COURSE)) {
-      if (!listenService.existCheck(
-          request.getReminderTypeId(),
-          id
-      )) {
+      case COURSE:
         throw new ExceptionExistListening();
-      }
-    } else if (request.getReminderType().equals(LECTURE)) {
-      Lecture lecture = lectureService.getLectureById(request.getReminderTypeId());
-
-      if (!listenService.existCheck(
-          lecture.getCourse().getCourseId(),
-          id
-      )) {
+      case LECTURE:
         throw new ExceptionExistListening();
-      }
+      default:
+        throw new UnsupportedOperationException("타당하지 않는 타입입니다.");
     }
   }
 
