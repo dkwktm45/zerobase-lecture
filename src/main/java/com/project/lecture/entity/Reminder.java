@@ -1,5 +1,6 @@
 package com.project.lecture.entity;
 
+import com.project.lecture.type.StudyType;
 import com.project.lecture.type.converter.StudyConverter;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -25,10 +27,16 @@ public class Reminder {
   private Long reminderId;
   private Long reminderTypeId;
   @Convert(converter = StudyConverter.class)
-  private StudyConverter reminderType;
+  private StudyType reminderType;
+
+  @ColumnDefault("0")
   private boolean reminderComplete;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "memberId")
   private Member member;
+
+  public void changeCompleteIntoTrue() {
+    this.reminderComplete = true;
+  }
 }

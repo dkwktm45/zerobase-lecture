@@ -1,0 +1,20 @@
+POST localhost:8080/user/reminder/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5OTMyOTk2MywiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.lhc0YsXLNKekPaEgF1Ch_qAj_-h5bkKzOJ3ADuRJll2fxyKoZB8ij6vrMbhL8EG6QQ1K7-MXio_0yQ-4i8GGQQ
+Content-Type: application/json
+
+{
+  "reminderTypeId": 1,
+  "reminderType": "STUDY"
+}
+
+### 삭제 api
+DELETE localhost:8080/user/reminder/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5OTMyOTk2MywiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.lhc0YsXLNKekPaEgF1Ch_qAj_-h5bkKzOJ3ADuRJll2fxyKoZB8ij6vrMbhL8EG6QQ1K7-MXio_0yQ-4i8GGQQ
+
+### 완료 api
+PUT localhost:8080/user/reminder/complete?id=2
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5OTMyOTk2MywiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.lhc0YsXLNKekPaEgF1Ch_qAj_-h5bkKzOJ3ADuRJll2fxyKoZB8ij6vrMbhL8EG6QQ1K7-MXio_0yQ-4i8GGQQ
+
+### 단건 조회 api
+GET localhost:8080/user/reminder/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5OTMyOTk2MywiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.lhc0YsXLNKekPaEgF1Ch_qAj_-h5bkKzOJ3ADuRJll2fxyKoZB8ij6vrMbhL8EG6QQ1K7-MXio_0yQ-4i8GGQQ

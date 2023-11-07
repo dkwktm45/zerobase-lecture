@@ -89,7 +89,7 @@ class StudyApplicationTest {
     when(studyService.existStudyByIdAndEmail(anyLong(),anyString()))
         .thenReturn(true);
     doNothing().when(studyService).deleteStudy(anyLong());
-    when(plannerService.existStudyId(anyLong()))
+    when(plannerService.existByStudyIdAndType(anyLong(),any()))
         .thenReturn(true);
     doNothing().when(plannerService).deletePlanner(anyLong(), any());
     // when
@@ -98,7 +98,7 @@ class StudyApplicationTest {
     // then
     verify(studyService, timeout(1)).existStudyByIdAndEmail(anyLong(),anyString());
     verify(studyService, timeout(1)).deleteStudy(anyLong());
-    verify(plannerService, timeout(1)).existStudyId(anyLong());
+    verify(plannerService, timeout(1)).existByStudyIdAndType(anyLong(),any());
     verify(plannerService, timeout(1)).deletePlanner(anyLong(), any());
   }
 
@@ -112,7 +112,7 @@ class StudyApplicationTest {
     when(studyService.existStudyByIdAndEmail(anyLong(),anyString()))
         .thenReturn(true);
     doNothing().when(studyService).deleteStudy(anyLong());
-    when(plannerService.existStudyId(anyLong()))
+    when(plannerService.existByStudyIdAndType(anyLong(),any()))
         .thenReturn(false);
     // when
     studyApplication.deleteStudyById(id, email);
@@ -120,7 +120,7 @@ class StudyApplicationTest {
     // then
     verify(studyService, timeout(1)).existStudyByIdAndEmail(anyLong(),anyString());
     verify(studyService, timeout(1)).deleteStudy(anyLong());
-    verify(plannerService, timeout(1)).existStudyId(anyLong());
+    verify(plannerService, timeout(1)).existByStudyIdAndType(anyLong(),any());
     verify(plannerService, never()).deletePlanner(anyLong(), any());
   }
 
@@ -141,7 +141,7 @@ class StudyApplicationTest {
     assertEquals(result.getMessage(), "존재하지 않는 개인학습입니다.");
     verify(studyService, timeout(1)).existStudyByIdAndEmail(anyLong(),anyString());
     verify(studyService, never()).deleteStudy(anyLong());
-    verify(plannerService, never()).existStudyId(anyLong());
+    verify(plannerService, never()).existByStudyIdAndType(anyLong(),any());
     verify(plannerService, never()).deletePlanner(anyLong(), any());
   }
 

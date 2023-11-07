@@ -50,7 +50,7 @@ public class StudyApplication {
 
     studyService.deleteStudy(studyId);
 
-    if (plannerService.existStudyId(studyId)) {
+    if (plannerService.existByStudyIdAndType(studyId, StudyType.STUDY)) {
       plannerService.deletePlanner(studyId, StudyType.STUDY);
     }
 

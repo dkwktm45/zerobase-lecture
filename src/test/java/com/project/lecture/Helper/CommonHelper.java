@@ -5,6 +5,7 @@ import com.project.lecture.api.course.dto.CourseRequest.Change;
 import com.project.lecture.api.course.dto.CourseRequest.Create;
 import com.project.lecture.api.course.dto.CreateLecture;
 import com.project.lecture.api.reflection.dto.ReflectionRequest;
+import com.project.lecture.api.reminder.dto.ReminderRequest;
 import com.project.lecture.api.study.dto.StudyRequest;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
@@ -12,6 +13,7 @@ import com.project.lecture.entity.Listening;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.entity.Reflection;
+import com.project.lecture.entity.Reminder;
 import com.project.lecture.entity.Study;
 import com.project.lecture.type.AuthType;
 import com.project.lecture.type.SocialType;
@@ -317,5 +319,41 @@ public class CommonHelper {
         .member(createMemberFormByNoId())
         .reflectionComplete(false)
         .reflectionContent("reContent").build();
+  }
+
+  public static ReminderRequest.Create createReminderRequest() {
+    return new ReminderRequest.Create(1L,StudyType.REMINDER);
+  }
+
+  public static Reminder createReminder() {
+    return Reminder.builder()
+        .reminderId(1L)
+        .reminderTypeId(1L)
+        .reminderType(StudyType.STUDY)
+        .reminderComplete(false)
+        .build();
+  }
+  public static Reminder createReminderByNoId() {
+    return Reminder.builder()
+        .reminderTypeId(1L)
+        .reminderType(StudyType.STUDY)
+        .member(createOriginMemberForm())
+        .reminderComplete(false)
+        .build();
+  }
+  public static Reminder createReminderByCompleteTrue() {
+    return Reminder.builder()
+        .reminderId(1L)
+        .reminderTypeId(1L)
+        .reminderType(StudyType.STUDY)
+        .reminderComplete(true)
+        .build();
+  }
+
+  public static Lecture createLecture() {
+    return Lecture.builder()
+        .lectureId(1L)
+        .lectureName("planner")
+        .lectureTime(10).build();
   }
 }
