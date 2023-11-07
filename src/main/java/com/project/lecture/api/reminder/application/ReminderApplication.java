@@ -145,8 +145,23 @@ public class ReminderApplication {
     Reminder reminder = reminderService.getReminderById(id);
     TypeContent typeContent = getTypeContent(reminder);
 
-
     return ReminderDto.toDto(reminder, typeContent.getTitle(), typeContent.getContent());
   }
 
+  public Page<ReminderDto> getListByEmail(String email, Pageable pageable) {
+    Page<Reminder> reminderPage = reminderService.getListByEmailAndPage(email, pageable);
+
+    List<Reminder> reminders = reminderPage.getContent();
+    List<ReminderDto> reminderDtos = new ArrayList<>();
+
+    for (Reminder reminder : reminders) {
+
+      TypeContent typeContent = getTypeContent(reminder);
+
+      reminderDtos.add(
+          ReminderDto.toDto(reminder, typeContent.getTitle(), typeContent.getContent())
+          );
+    }
+    return new PageImpl<>(reminderDtos);
+  }
 }

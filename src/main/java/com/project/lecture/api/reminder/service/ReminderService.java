@@ -1,6 +1,5 @@
 package com.project.lecture.api.reminder.service;
 
-import com.project.lecture.api.reminder.dto.ReminderDto;
 import com.project.lecture.entity.Reminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
 import com.project.lecture.repository.ReminderRepository;
@@ -32,4 +31,9 @@ public class ReminderService {
     return reminderRepository.findById(id)
         .orElseThrow(ExceptionNotFoundReminder::new);
   }
+
+  public Page<Reminder> getListByEmailAndPage(String email, Pageable pageable) {
+    return reminderRepository.findByMember_Email(email,pageable);
+  }
+
 }
