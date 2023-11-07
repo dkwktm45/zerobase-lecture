@@ -341,6 +341,21 @@ public class CommonHelper {
         .reminderComplete(false)
         .build();
   }
+
+  public static List<Reminder> createRemindersByNoId(){
+    List<Reminder> reminders = new ArrayList<>();
+    for (int i = 0; i < 3; i++) {
+      reminders.add(
+          Reminder.builder()
+              .reminderTypeId((long) i)
+              .reminderType(StudyType.STUDY)
+              .member(createOriginMemberForm())
+              .reminderComplete(false)
+              .build()
+      );
+    }
+    return reminders;
+  }
   public static Reminder createReminderByCompleteTrue() {
     return Reminder.builder()
         .reminderId(1L)
