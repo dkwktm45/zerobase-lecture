@@ -1,6 +1,7 @@
 package com.project.lecture.api.course.service;
 
 import com.project.lecture.entity.Lecture;
+import com.project.lecture.exception.kind.ExceptionNotFoundLecture;
 import com.project.lecture.repository.LectureRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,5 +17,10 @@ public class LectureService {
   @Transactional
   public void ListInsert(List<Lecture> lectureList) {
     lectureRepository.saveAll(lectureList);
+  }
+
+  public Lecture getLectureById(Long id) {
+    return lectureRepository.findById(id)
+        .orElseThrow(ExceptionNotFoundLecture::new);
   }
 }
