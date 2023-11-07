@@ -10,6 +10,7 @@ import com.project.lecture.api.course.service.LectureService;
 import com.project.lecture.api.planner.service.PlannerService;
 import com.project.lecture.api.reminder.dto.ReminderDto;
 import com.project.lecture.api.reminder.dto.ReminderRequest.Create;
+import com.project.lecture.api.reminder.dto.TypeContent;
 import com.project.lecture.api.reminder.service.ReminderService;
 import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.api.user.service.MemberService;
@@ -23,7 +24,12 @@ import com.project.lecture.exception.kind.ExceptionExistListening;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.type.StudyType;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,15 +114,9 @@ public class ReminderApplication {
     reminder.changeCompleteIntoTrue();
   }
 
-  public ReminderDto getByIdAndEmail(Long id, String email) {
-    if (!reminderService.existsByIdAndEmail(id, email)) {
-      throw new ExceptionNotFoundReminder();
-    }
-
-    Reminder reminder = reminderService.getReminderById(id);
+  private TypeContent getTypeContent(Reminder reminder) {
     String title = "";
     String content = "";
-
     switch (reminder.getReminderType()) {
       case STUDY:
         Study study = studyService.getStudyById(reminder.getReminderTypeId());
@@ -134,7 +134,19 @@ public class ReminderApplication {
         break;
     }
 
-    return ReminderDto.toDto(reminder,title,content);
+    return new TypeContent(title, content);
+  }
+
+  public ReminderDto getByIdAndEmail(Long id, String email) {
+    if (!reminderService.existsByIdAndEmail(id, email)) {
+      throw new ExceptionNotFoundReminder();
+    }
+
+    Reminder reminder = reminderService.getReminderById(id);
+    TypeContent typeContent = getTypeContent(reminder);
+
+
+    return ReminderDto.toDto(reminder, typeContent.getTitle(), typeContent.getContent());
   }
 
 }
