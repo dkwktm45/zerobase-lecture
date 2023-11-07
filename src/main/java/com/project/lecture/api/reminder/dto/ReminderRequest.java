@@ -16,7 +16,7 @@ public class ReminderRequest {
   @NoArgsConstructor
   @AllArgsConstructor
   @Builder
-  public class Create {
+  public static class Create {
     @NotNull(message = "빈 값은 들어올 수 없습니다.")
     private Long reminderTypeId;
     @ValidEnum(enumClass = StudyType.class)
