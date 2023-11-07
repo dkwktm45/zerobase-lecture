@@ -29,8 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasAuthority('USER')")
 public class ReminderController {
 
-  private ReminderApplication reminderApplication;
-
+  private final ReminderApplication reminderApplication;
 
   @PostMapping("")
   public ResponseEntity<String> createReminderRequest(
