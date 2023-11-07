@@ -29,4 +29,9 @@ public class ReminderService {
     return reminderRepository.findById(id)
         .orElseThrow(ExceptionNotFoundReminder::new);
   }
+
+  public Page<Reminder> getListByEmailAndPage(String email, Pageable pageable) {
+    return reminderRepository.findByMember_Email(email,pageable);
+  }
+
 }

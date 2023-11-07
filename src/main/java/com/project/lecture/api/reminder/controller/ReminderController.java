@@ -72,4 +72,13 @@ public class ReminderController {
     );
   }
 
+  @GetMapping("/list")
+  public ResponseEntity<Page<ReminderDto>> getReflectionsRequest(
+      Principal principal,
+      @PageableDefault(page = 1) Pageable pageable
+  ) {
+    return ResponseEntity.ok(
+        reminderApplication.getListByEmail(principal.getName(), pageable)
+    );
+  }
 }

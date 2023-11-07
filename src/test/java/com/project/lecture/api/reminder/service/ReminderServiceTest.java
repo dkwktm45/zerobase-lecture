@@ -1,6 +1,7 @@
 package com.project.lecture.api.reminder.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -13,6 +14,7 @@ import com.project.lecture.entity.Reminder;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
 import com.project.lecture.repository.ReminderRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 @ExtendWith(MockitoExtension.class)
 class ReminderServiceTest {
@@ -106,5 +110,27 @@ class ReminderServiceTest {
 
     //then
     assertEquals(result.getMessage(),"존재하지 않는 리마인드입니다.");
+  }
+
+  @Test
+  @DisplayName("email 에 해당하는 여러 값 가져오기")
+  void getListByEmailAndPage() {
+    //given
+    Page<Reminder> returnPage = new PageImpl<>(CommonHelper.createRemindersByNoId());
+
+    when(reminderRepository.findByMember_Email(anyString(),any()))
+        .thenReturn(returnPage);
+
+    //when
+    Page<Reminder> reminderPage = reminderService.getListByEmailAndPage(anyString(), any());
+
+    //then
+    List<Reminder> result = reminderPage.getContent();
+    List<Reminder> reminders = returnPage.getContent();
+    for (int i = 0; i < reminderPage.getSize(); i++) {
+      assertEquals(result.get(i).getReminderId(), reminders.get(i).getReminderId());
+      assertEquals(result.get(i).getReminderTypeId(), reminders.get(i).getReminderTypeId());
+      assertEquals(result.get(i).getReminderType(), reminders.get(i).getReminderType());
+    }
   }
 }

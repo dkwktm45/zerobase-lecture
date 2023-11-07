@@ -1,6 +1,7 @@
 package com.project.lecture.api.reminder.application;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -23,12 +24,15 @@ import com.project.lecture.entity.Study;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.exception.kind.ExceptionCompleteReminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 @ExtendWith(MockitoExtension.class)
 class ReminderApplicationTest {
@@ -216,5 +220,30 @@ class ReminderApplicationTest {
     assertEquals(result.getTitle(),study.getStudyTitle());
     assertEquals(result.getContent(),study.getStudyContent());
     assertEquals(result.getReminderType(),reminder.getReminderType());
+  }
+
+  @Test
+  @DisplayName("id, email을 통한 여러 건 조회 로직 - 성공")
+  void getListByEmail(){
+    //given
+    Study study = CommonHelper.createStudy();
+    Page<Reminder> reminderPage = new PageImpl<>(CommonHelper.createRemindersByNoId());
+    when(reminderService.getListByEmailAndPage(anyString(), any()))
+        .thenReturn(reminderPage);
+    when(studyService.getStudyById(anyLong()))
+        .thenReturn(study);
+    //when
+    Page<ReminderDto> reminderDtoPage = reminderApplication.getListByEmail(anyString(), any());
+
+    //then
+    List<ReminderDto> result = reminderDtoPage.getContent();
+    List<Reminder> reminders = reminderPage.getContent();
+    for (int i = 0; i < reminderPage.getSize(); i++) {
+      assertEquals(result.get(i).getReminderId(), reminders.get(i).getReminderId());
+      assertEquals(result.get(i).getReminderTypeId(), reminders.get(i).getReminderTypeId());
+      assertEquals(result.get(i).getTitle(), study.getStudyTitle());
+      assertEquals(result.get(i).getContent(), study.getStudyContent());
+      assertEquals(result.get(i).getReminderType(), reminders.get(i).getReminderType());
+    }
   }
 }
