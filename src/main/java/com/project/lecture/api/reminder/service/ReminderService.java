@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReminderService {
 
-  private ReminderRepository reminderRepository;
+  private final ReminderRepository reminderRepository;
 
   public void saveReminderByEntity(Reminder reminder) {
     reminderRepository.save(reminder);
