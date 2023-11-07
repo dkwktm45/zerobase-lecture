@@ -13,6 +13,7 @@ import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
 import com.project.lecture.entity.Study;
+import com.project.lecture.exception.kind.ExceptionCompleteReminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
 import com.project.lecture.type.StudyType;
 import java.util.ArrayList;
@@ -61,7 +62,19 @@ public class ReminderApplication {
     }
   }
 
+  public void completeByIdAndEmail(Long id, String email) {
+    if (!reminderService.existsByIdAndEmail(id, email)) {
+      throw new ExceptionNotFoundReminder();
+    }
 
+    Reminder reminder = reminderService.getReminderById(id);
+
+    if (reminder.isReminderComplete()) {
+      throw new ExceptionCompleteReminder();
+    }
+
+    reminder.changeCompleteIntoTrue();
+  }
 
 
 }
