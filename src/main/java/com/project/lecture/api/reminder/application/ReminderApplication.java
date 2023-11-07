@@ -12,22 +12,15 @@ import com.project.lecture.api.reminder.dto.ReminderRequest.Create;
 import com.project.lecture.api.reminder.service.ReminderService;
 import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.api.user.service.MemberService;
-import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
-import com.project.lecture.entity.Study;
 import com.project.lecture.exception.kind.ExceptionCompleteReminder;
 import com.project.lecture.exception.kind.ExceptionExistListening;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.type.StudyType;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +41,7 @@ public class ReminderApplication {
   public void createReminderByRequestAndEmail(Create request, String email) {
     Member member = memberService.getMemberByEmail(email);
 
-    existsCheck(request, email, member.getMemberId());
+    existsTypeCheck(request, email, member.getMemberId());
 
     reminderService.saveReminderByEntity(
         Reminder.builder()
@@ -59,7 +52,7 @@ public class ReminderApplication {
     );
   }
 
-  private void existsCheck(Create request, String email, Long id) {
+  private void existsTypeCheck(Create request, String email, Long id) {
     if (request.getReminderType().equals(STUDY)) {
       if (!studyService.existStudyByIdAndEmail(
           request.getReminderTypeId(),
