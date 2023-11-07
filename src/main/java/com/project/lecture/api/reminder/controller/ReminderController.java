@@ -1,6 +1,5 @@
 package com.project.lecture.api.reminder.controller;
 
-import com.project.lecture.api.reflection.dto.ReflectionDto;
 import com.project.lecture.api.reminder.application.ReminderApplication;
 import com.project.lecture.api.reminder.dto.ReminderDto;
 import com.project.lecture.api.reminder.dto.ReminderRequest;
@@ -61,6 +60,15 @@ public class ReminderController {
     reminderApplication.completeByIdAndEmail(id, principal.getName());
     return ResponseEntity.ok(
         ResponseType.COMPLETE_SUCCESS.getDescription()
+    );
+  }
+  @GetMapping("{id}")
+  public ResponseEntity<ReminderDto> getReflectionRequest(
+      @PathVariable Long id,
+      Principal principal
+  ) {
+    return ResponseEntity.ok(
+        reminderApplication.getByIdAndEmail(id, principal.getName())
     );
   }
 

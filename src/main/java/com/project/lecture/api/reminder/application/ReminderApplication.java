@@ -8,13 +8,16 @@ import com.project.lecture.api.Listen.service.ListenService;
 import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.api.course.service.LectureService;
 import com.project.lecture.api.planner.service.PlannerService;
+import com.project.lecture.api.reminder.dto.ReminderDto;
 import com.project.lecture.api.reminder.dto.ReminderRequest.Create;
 import com.project.lecture.api.reminder.service.ReminderService;
 import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.api.user.service.MemberService;
+import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
+import com.project.lecture.entity.Study;
 import com.project.lecture.exception.kind.ExceptionCompleteReminder;
 import com.project.lecture.exception.kind.ExceptionExistListening;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
@@ -105,5 +108,33 @@ public class ReminderApplication {
     reminder.changeCompleteIntoTrue();
   }
 
+  public ReminderDto getByIdAndEmail(Long id, String email) {
+    if (!reminderService.existsByIdAndEmail(id, email)) {
+      throw new ExceptionNotFoundReminder();
+    }
+
+    Reminder reminder = reminderService.getReminderById(id);
+    String title = "";
+    String content = "";
+
+    switch (reminder.getReminderType()) {
+      case STUDY:
+        Study study = studyService.getStudyById(reminder.getReminderTypeId());
+        title = study.getStudyTitle();
+        content = study.getStudyContent();
+        break;
+      case COURSE:
+        Course course = courseService.getCourseById(reminder.getReminderTypeId());
+        title = course.getCourseName();
+        content = course.getCourseContent();
+        break;
+      case LECTURE:
+        Lecture lecture = lectureService.getLectureById(reminder.getReminderTypeId());
+        title = lecture.getLectureName();
+        break;
+    }
+
+    return ReminderDto.toDto(reminder,title,content);
+  }
 
 }
