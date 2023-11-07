@@ -78,7 +78,7 @@ public class ReminderApplication {
       case LECTURE:
         throw new ExceptionExistListening();
       default:
-        throw new UnsupportedOperationException("Invalid reminder type");
+        throw new UnsupportedOperationException("타당하지 않는 타입입니다.");
     }
   }
 
