@@ -45,7 +45,7 @@ public class CompleteApplication {
       MemberCourseLecture memberCourseLecture = courseLectureService
           .getCourseLectureByMemberAndId(member, course.getCourseId());
 
-      AddMemberLecture addMemberLecture = addMemberLecture = updateMemberCourseLecture(lectures,
+      AddMemberLecture addMemberLecture = updateMemberCourseLecture(lectures,
           memberCourseLecture.getMemberLectures());
 
       totalTime = addMemberLecture.getTime();
