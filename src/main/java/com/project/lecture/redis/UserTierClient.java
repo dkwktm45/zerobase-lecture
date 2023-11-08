@@ -1,22 +1,24 @@
 package com.project.lecture.redis;
 
+import com.project.lecture.redis.dto.UserTier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserTierClient {
 
-  private final RedisTemplate<String, String> redisTemplate;
+  private final RedisTemplate<String, Object> userTierTemplate;
 
-  public String get(String key) {
-    return redisTemplate.opsForValue().get(key);
+
+  public UserTier getUserTier(String key) {
+    return (UserTier) userTierTemplate.opsForValue().get(key);
   }
 
-  public void put(String key, String UserTierClient) {
-    redisTemplate.opsForValue().set(key, UserTierClient);
+  public void putUserTier(String key, UserTier userTier) {
+    userTierTemplate.opsForValue().set(key, userTier);
   }
 }

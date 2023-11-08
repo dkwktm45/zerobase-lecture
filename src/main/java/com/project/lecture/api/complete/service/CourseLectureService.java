@@ -1,7 +1,5 @@
 package com.project.lecture.api.complete.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.MemberCourseLecture;
 import com.project.lecture.redis.UserTierClient;
@@ -15,37 +13,33 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class CourseLectureService {
+
   private final MemberCourseRepository memberCourseRepository;
   private final UserTierClient userTierClient;
-  private final ObjectMapper objectMapper;
+
   public void saveEntity(MemberCourseLecture memberCourseLecture) {
     memberCourseRepository.save(memberCourseLecture);
   }
 
   public void completePlusTierByEmailAndTime(String email, int totalTime) {
-    String stringTypeUserTier = userTierClient.get(email);
-    try {
+    UserTier userTier = userTierClient.getUserTier(email);
+    if (userTier == null) {
+      userTierClient.putUserTier(email,
+          new UserTier(totalTime)
+      );
+    } else {
+      userTier.plusTime(totalTime);
 
-      if (stringTypeUserTier == null) {
-        userTierClient.put(email,
-            objectMapper.writeValueAsString(new UserTier(totalTime))
-        );
-      } else {
-        UserTier userTier = objectMapper.readValue(stringTypeUserTier, UserTier.class);
-        userTier.plusTime(totalTime);
-
-        userTierClient.put(email,objectMapper.writeValueAsString(userTier));
-      }
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
+      userTierClient.putUserTier(email, userTier);
     }
   }
+
   public boolean existCourseIdByMemberAndId(Member member, Long courseId) {
-    return memberCourseRepository.existsByCourseIdAndMember(courseId,member);
+    return memberCourseRepository.existsByCourseIdAndMember(courseId, member);
   }
 
   public MemberCourseLecture getCourseLectureByMemberAndId(Member member, Long courseId) {
-    return memberCourseRepository.findByMemberAndCourseId(member,courseId);
+    return memberCourseRepository.findByMemberAndCourseId(member, courseId);
   }
 
 
