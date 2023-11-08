@@ -26,4 +26,13 @@ public class CompleteController {
     completeApplication.completeCourseByIdAndEmail(courseId, principal.getName());
     return ResponseEntity.ok().build();
   }
+
+  @PostMapping("/lecture")
+  public ResponseEntity<Void> completeLectureRequest(
+      @RequestParam("lectureId") Long lectureId,
+      Principal principal
+  ) {
+    completeApplication.completeLectureByIdAndEmail(lectureId, principal.getName());
+    return ResponseEntity.ok().build();
+  }
 }

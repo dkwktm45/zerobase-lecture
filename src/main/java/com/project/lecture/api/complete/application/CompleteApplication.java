@@ -25,6 +25,7 @@ public class CompleteApplication {
 
 
   private final CourseService courseService;
+  private final LectureService lectureService;
   private final ListenService listenService;
   private final MemberService memberService;
   private final CourseLectureService courseLectureService;
@@ -68,24 +69,8 @@ public class CompleteApplication {
       );
     }
 
-    List<MemberLecture> memberLectures = new ArrayList<>();
-    List<Lecture> lectures = course.getLectures();
-    int totalTime = 0;
-    for (Lecture lecture : lectures) {
-      memberLectures.add(new MemberLecture(
-          lecture.getLectureId()
-          , lecture.getLectureTime(),
-          LocalDateTime.now()));
-      totalTime += lecture.getLectureTime();
-    }
-
     courseLectureService.completePlusTierByEmailAndTime(member.getEmail(), totalTime);
 
-    courseLectureService.saveEntity(
-        MemberCourseLecture.builder()
-            .member(member).memberLectures(memberLectures)
-            .build()
-    );
   }
 
   public AddMemberLecture updateMemberCourseLecture(
@@ -104,4 +89,40 @@ public class CompleteApplication {
     return new AddMemberLecture(time, memberLectures);
   }
 
+  @Transactional
+  public void completeLectureByIdAndEmail(Long lectureId, String email) {
+    Member member = memberService.getMemberByEmail(email);
+    Lecture lecture = lectureService.getLectureById(lectureId);
+    Course course = lecture.getCourse();
+
+    if (!listenService.existCheckByMemberAndCourse(member, course)) {
+      throw new ExceptionExistListening();
+    }
+    int plusTime = 0;
+    if (courseLectureService.existCourseIdByMemberAndId(member, course.getCourseId())) {
+      MemberCourseLecture memberCourseLecture = courseLectureService
+          .getCourseLectureByMemberAndId(member, course.getCourseId());
+
+      if (!memberCourseLecture.getMemberLectures()
+          .containsKey(lectureId)) {
+
+        memberCourseLecture.getMemberLectures()
+            .put(lectureId, new MemberLecture(lecture.getLectureTime(), LocalDateTime.now()));
+      }
+    } else {
+      HashMap<Long, MemberLecture> memberLectureHashMap = new HashMap<>();
+      memberLectureHashMap.put(lectureId,
+          new MemberLecture(lecture.getLectureTime(), LocalDateTime.now()));
+
+      courseLectureService.saveEntity(
+          MemberCourseLecture.builder()
+              .member(member)
+              .courseId(course.getCourseId())
+              .memberLectures(memberLectureHashMap)
+              .build()
+      );
+    }
+    plusTime += lecture.getLectureTime();
+    courseLectureService.completePlusTierByEmailAndTime(member.getEmail(), plusTime);
+  }
 }

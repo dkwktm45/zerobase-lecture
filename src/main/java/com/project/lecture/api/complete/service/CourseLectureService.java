@@ -43,4 +43,10 @@ public class CourseLectureService {
   public boolean existCourseIdByMemberAndId(Member member, Long courseId) {
     return memberCourseRepository.existsByCourseIdAndMember(courseId,member);
   }
+
+  public MemberCourseLecture getCourseLectureByMemberAndId(Member member, Long courseId) {
+    return memberCourseRepository.findByMemberAndCourseId(member,courseId);
+  }
+
+
 }
