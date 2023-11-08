@@ -2,8 +2,7 @@ package com.project.lecture.entity;
 
 import com.project.lecture.entity.json.MemberLecture;
 import com.vladmihalcea.hibernate.type.json.JsonType;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,9 +34,12 @@ public class MemberCourseLecture {
   private Member member;
 
   @Type(type = "json")
-  @Column(columnDefinition = "json")
-  private List<MemberLecture> memberLectures = new ArrayList<>();
+  @Column(columnDefinition = "longtext")
+  private HashMap<Long, MemberLecture> memberLectures = new HashMap<>();
 
   private Long courseId;
 
+  public void updateMemberLecture(HashMap<Long, MemberLecture> memberLectures) {
+    this.memberLectures = memberLectures;
+  }
 }

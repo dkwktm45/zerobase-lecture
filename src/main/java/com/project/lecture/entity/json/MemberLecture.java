@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberLecture {
-  private Long id;
   private int time;
   private LocalDateTime localDate;
 }
