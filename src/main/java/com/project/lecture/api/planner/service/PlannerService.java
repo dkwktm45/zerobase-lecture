@@ -1,7 +1,9 @@
 package com.project.lecture.api.planner.service;
 
+import com.project.lecture.api.planner.dto.PlannerRequest.Update;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Planner;
+import com.project.lecture.exception.kind.ExceptionNotFoundPlanner;
 import com.project.lecture.repository.PlannerRepository;
 import com.project.lecture.type.StudyType;
 import java.util.List;
@@ -47,4 +49,18 @@ public class PlannerService {
     return plannerRepository.existsByPlannerTypeIdAndPlannerType(id,studyType);
   }
 
+  public void saveEntity(Planner planner) {
+    plannerRepository.save(planner);
+
+  }
+
+  public boolean existPlannerByIdAndEmail(Long id, String email) {
+    return plannerRepository.existsByPlannerIdAndMember_Email(id,email);
+  }
+
+  public void changeDate(Update request) {
+    Planner planner = plannerRepository.findById(request.getPlannerId())
+        .orElseThrow(ExceptionNotFoundPlanner::new);
+    planner.updateDate(request.getPlannerDt());
+  }
 }

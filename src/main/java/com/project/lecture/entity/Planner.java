@@ -1,5 +1,6 @@
 package com.project.lecture.entity;
 
+import com.project.lecture.type.TypeRequest;
 import com.project.lecture.type.StudyType;
 import com.project.lecture.type.converter.StudyConverter;
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Planner {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long plannerId;
@@ -35,8 +37,16 @@ public class Planner {
   @JoinColumn(name = "memberId")
   private Member member;
 
-  public Planner(Long id, StudyType studyType) {
-    this.plannerTypeId = id;
-    this.plannerType = studyType;
+  public static Planner toEntity(TypeRequest.Create dto, Member member) {
+    return Planner.builder()
+        .plannerType(dto.getType())
+        .plannerTypeId(dto.getTypeId())
+        .member(member)
+        .plannerDt(dto.getPlannerDt())
+        .build();
+  }
+
+  public void updateDate(LocalDate plannerDt) {
+    this.plannerDt = plannerDt;
   }
 }
