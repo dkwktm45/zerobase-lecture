@@ -18,4 +18,6 @@ public interface PlannerRepository extends JpaRepository<Planner,Long> {
       + "and p.member.memberId = :memberId")
   void deleteLecturesById(@Param("lecturesIdx") List<Long> lecturesIdx, Long memberId);
   boolean existsByPlannerTypeIdAndPlannerType(Long studyId,StudyType studyType);
+
+  boolean existsByPlannerIdAndMember_Email(Long id, String email);
 }

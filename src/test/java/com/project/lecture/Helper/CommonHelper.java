@@ -5,7 +5,7 @@ import com.project.lecture.api.course.dto.CourseRequest.Change;
 import com.project.lecture.api.course.dto.CourseRequest.Create;
 import com.project.lecture.api.course.dto.CreateLecture;
 import com.project.lecture.api.reflection.dto.ReflectionRequest;
-import com.project.lecture.api.reminder.dto.ReminderRequest;
+import com.project.lecture.type.TypeRequest;
 import com.project.lecture.api.study.dto.StudyRequest;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
@@ -323,8 +323,8 @@ public class CommonHelper {
         .reflectionContent("reContent").build();
   }
 
-  public static ReminderRequest.Create createReminderRequest() {
-    return new ReminderRequest.Create(1L,StudyType.REMINDER);
+  public static TypeRequest.Create createReminderRequest() {
+    return new TypeRequest.Create(1L,StudyType.REMINDER,null);
   }
 
   public static Reminder createReminder() {

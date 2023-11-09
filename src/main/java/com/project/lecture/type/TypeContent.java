@@ -1,4 +1,4 @@
-package com.project.lecture.api.reminder.dto;
+package com.project.lecture.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

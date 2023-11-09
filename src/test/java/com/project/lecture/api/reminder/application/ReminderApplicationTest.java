@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.api.planner.service.PlannerService;
 import com.project.lecture.api.reminder.dto.ReminderDto;
-import com.project.lecture.api.reminder.dto.ReminderRequest;
+import com.project.lecture.type.TypeRequest;
 import com.project.lecture.api.reminder.service.ReminderService;
 import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.api.user.service.MemberService;
@@ -54,7 +54,7 @@ class ReminderApplicationTest {
   void createReminderByRequestAndEmail() {
     //given
     Member member = CommonHelper.createOriginMemberForm();
-    ReminderRequest.Create request = CommonHelper.createReminderRequest();
+    TypeRequest.Create request = CommonHelper.createReminderRequest();
     String email = "planner@gmail.com";
     when(memberService.getMemberByEmail(anyString()))
         .thenReturn(member);
