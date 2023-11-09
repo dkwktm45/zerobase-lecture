@@ -1,6 +1,8 @@
 package com.project.lecture.repository;
 
+import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Listening;
+import com.project.lecture.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +18,5 @@ public interface ListeningRepository extends JpaRepository<Listening,Long> {
   @Modifying(clearAutomatically = true)
   void deleteByMemberIdAndCourseId(Long memberId, Long courseId);
 
+  boolean existsByMemberAndCourse(Member member, Course course);
 }

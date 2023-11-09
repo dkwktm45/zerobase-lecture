@@ -5,7 +5,7 @@ import static com.project.lecture.type.ResponseType.CHANGE_SUCCESS;
 import static com.project.lecture.type.ResponseType.INSERT_SUCCESS;
 import static com.project.lecture.type.ResponseType.DELETE_SUCCESS;
 
-import com.project.lecture.api.course.application.CourseApplication;
+import com.project.lecture.api.course.application.AdminCourseApplication;
 import com.project.lecture.api.course.dto.CourseDto;
 import com.project.lecture.api.course.dto.CourseRequest;
 import com.project.lecture.api.course.service.CourseService;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminCourseController {
 
-  private final CourseApplication courseApplication;
+  private final AdminCourseApplication adminCourseApplication;
   private final CourseService courseService;
 
   @PostMapping("/create")
@@ -43,7 +43,7 @@ public class AdminCourseController {
       Principal principal
   ) {
     log.info("createCourseRequest() 수행");
-    courseApplication.createCourseAndLecture(request, principal.getName());
+    adminCourseApplication.createCourseAndLecture(request, principal.getName());
     return ResponseEntity.ok(INSERT_SUCCESS.getDescription());
   }
 
@@ -73,7 +73,7 @@ public class AdminCourseController {
   ) {
     log.info("getCourseRequest() 수행");
     return ResponseEntity.ok(
-        courseApplication.getCourseList(principal.getName(),pageable)
+        adminCourseApplication.getCourseList(principal.getName(),pageable)
     );
   }
 }

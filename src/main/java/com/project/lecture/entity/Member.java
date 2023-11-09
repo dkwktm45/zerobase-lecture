@@ -65,6 +65,9 @@ public class Member {
   @Builder.Default
   private List<Planner> planners = new ArrayList<>();
 
+  @OneToMany(mappedBy = "member")
+  @Builder.Default
+  private List<MemberCourseLecture> memberCourses = new ArrayList<>();
   @Transactional
   public void setPassword(String password) {
     this.password = password;

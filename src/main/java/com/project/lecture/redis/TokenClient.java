@@ -25,8 +25,4 @@ public class TokenClient {
   public void put(String key, String refreshToken) {
     redisTemplate.opsForValue().set(key, refreshToken, TTL, TimeUnit.MICROSECONDS);
   }
-
-  private void deleteObject(String key) {
-    redisTemplate.delete(key);
-  }
 }

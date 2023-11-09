@@ -1,15 +1,16 @@
 package com.project.lecture.config;
 
-import com.project.lecture.redis.dto.RefreshToken;
+import com.project.lecture.redis.dto.UserTier;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
@@ -20,13 +21,21 @@ public class RedisConfig {
   @Bean
   public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
     RedisTemplate<String,String> redisTemplate = new RedisTemplate<>();
-    StringRedisSerializer serializer = new StringRedisSerializer();
 
     redisTemplate.setConnectionFactory(redisConnectionFactory);
-    redisTemplate.setKeySerializer(serializer);
-    redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(RefreshToken.class));
-    redisTemplate.setHashKeySerializer(serializer);
-    redisTemplate.setHashValueSerializer(serializer);
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(new StringRedisSerializer());
+    redisTemplate.setDefaultSerializer(RedisSerializer.string());
+    return redisTemplate;
+  }
+  @Bean
+  public RedisTemplate<String, Object> userTierTemplate(RedisConnectionFactory connectionFactory) {
+    RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+    redisTemplate.setConnectionFactory(connectionFactory);
+    redisTemplate.setDefaultSerializer(new GenericJackson2JsonRedisSerializer());
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(UserTier.class));
+    redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(UserTier.class));
     return redisTemplate;
   }
   @Bean

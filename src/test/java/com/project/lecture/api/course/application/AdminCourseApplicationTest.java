@@ -27,7 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 @ExtendWith(MockitoExtension.class)
-class CourseApplicationTest {
+class AdminCourseApplicationTest {
 
   @Mock
   private CourseService courseService;
@@ -36,7 +36,7 @@ class CourseApplicationTest {
   @Mock
   private LectureService lectureService;
   @InjectMocks
-  private CourseApplication courseApplication;
+  private AdminCourseApplication adminCourseApplication;
 
   @Test
   @DisplayName("강좌 생성시 관리자 유저를 넣는다. - 성공")
@@ -52,7 +52,7 @@ class CourseApplicationTest {
         .thenReturn(course);
     doNothing().when(lectureService).ListInsert(any());
 
-    courseApplication.createCourseAndLecture(req, member.getEmail());
+    adminCourseApplication.createCourseAndLecture(req, member.getEmail());
 
     // then
     verify(memberService, timeout(1)).getMemberByEmail(any());
@@ -72,7 +72,7 @@ class CourseApplicationTest {
         .thenReturn(coursePage);
 
     //when
-    Page<CourseDto> courseDtoPage = courseApplication.getCourseList(anyString(),any());
+    Page<CourseDto> courseDtoPage = adminCourseApplication.getCourseList(anyString(),any());
 
     //then
     List<CourseDto> result = courseDtoPage.getContent();

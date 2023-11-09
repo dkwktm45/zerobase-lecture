@@ -11,6 +11,7 @@ import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Listening;
 import com.project.lecture.entity.Member;
+import com.project.lecture.entity.MemberCourseLecture;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.entity.Reflection;
 import com.project.lecture.entity.Reminder;
@@ -20,6 +21,7 @@ import com.project.lecture.type.SocialType;
 import com.project.lecture.type.StudyType;
 import com.project.lecture.api.user.dto.UserRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CommonHelper {
@@ -112,8 +114,8 @@ public class CommonHelper {
 
 
   public static Course createCourseForm() {
-
     return Course.builder()
+        .courseId(1L)
         .lectures(createLecturesNoIdForm())
         .courseName("제로베이스")
         .courseContent("제로베이스 백앤드").build();
@@ -368,7 +370,24 @@ public class CommonHelper {
   public static Lecture createLecture() {
     return Lecture.builder()
         .lectureId(1L)
+        .course(createCourseByNoLecture())
         .lectureName("planner")
         .lectureTime(10).build();
+  }
+
+  private static Course createCourseByNoLecture() {
+      return Course.builder()
+          .courseId(1L)
+          .courseName("제로베이스")
+          .courseContent("제로베이스 백앤드").build();
+  }
+
+  public static MemberCourseLecture createMemberCourseLecture() {
+    return MemberCourseLecture
+        .builder()
+        .memberLectures(new HashMap<>())
+        .id(1L)
+        .member(createOriginMemberForm())
+        .build();
   }
 }

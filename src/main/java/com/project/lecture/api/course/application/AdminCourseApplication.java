@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class CourseApplication {
+public class AdminCourseApplication {
 
   private final CourseService courseService;
   private final MemberService memberService;

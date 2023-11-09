@@ -1,6 +1,8 @@
 package com.project.lecture.api.Listen.service;
 
+import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Listening;
+import com.project.lecture.entity.Member;
 import com.project.lecture.repository.ListeningRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,5 +24,9 @@ public class ListenService {
   @Transactional
   public void deleteListing(Long courseId, Long memberId) {
     listeningRepository.deleteByMemberIdAndCourseId(memberId, courseId);
+  }
+
+  public boolean existCheckByMemberAndCourse(Member member, Course course) {
+    return listeningRepository.existsByMemberAndCourse(member, course);
   }
 }
