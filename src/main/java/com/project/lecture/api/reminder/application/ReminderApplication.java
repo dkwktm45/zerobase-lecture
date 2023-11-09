@@ -5,33 +5,25 @@ import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.api.course.service.LectureService;
 import com.project.lecture.api.planner.service.PlannerService;
 import com.project.lecture.api.reminder.dto.ReminderDto;
-import com.project.lecture.api.reminder.dto.ReminderRequest.Create;
-import com.project.lecture.api.reminder.dto.TypeContent;
 import com.project.lecture.api.reminder.service.ReminderService;
 import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.api.user.service.MemberService;
-import com.project.lecture.entity.Course;
-import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
-import com.project.lecture.entity.Study;
 import com.project.lecture.exception.kind.ExceptionCompleteReminder;
-import com.project.lecture.exception.kind.ExceptionExistListening;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
-import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.type.StudyType;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.project.lecture.type.TypeContent;
+import com.project.lecture.type.TypeRequest.Create;
 import com.project.lecture.type.adapter.CourseAdapter;
 import com.project.lecture.type.adapter.LectureAdapter;
 import com.project.lecture.type.adapter.StudyAdapter;
 import com.project.lecture.type.adapter.TypeAdapter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -58,37 +50,29 @@ public class ReminderApplication {
   public void setUp() {
     adapters = new HashMap<>();
     adapters.put(StudyType.STUDY, new StudyAdapter(studyService));
-    adapters.put(StudyType.COURSE, new CourseAdapter(listenService));
+    adapters.put(StudyType.COURSE, new CourseAdapter(listenService, courseService));
     adapters.put(StudyType.LECTURE, new LectureAdapter(listenService, lectureService));
   }
+
   public void createReminderByRequestAndEmail(Create request, String email) {
     Member member = memberService.getMemberByEmail(email);
 
-    TypeAdapter adapter = adapters.get(request.getReminderType());
-    if (adapter != null && !adapter.existCheck(request, email, member.getMemberId())) {
-      handleReminderNotFound(request.getReminderType());
+    TypeAdapter adapter = adapters.get(request.getType());
+
+    if (adapter == null){
+      throw new UnsupportedOperationException("타당하지 않는 타입입니다.");
+    }
+    if (!adapter.existCheck(request, email, member.getMemberId())) {
+      adapter.exceptionThrow();
     }
 
     reminderService.saveReminderByEntity(
         Reminder.builder()
             .member(member)
-            .reminderType(request.getReminderType())
-            .reminderTypeId(request.getReminderTypeId())
+            .reminderType(request.getType())
+            .reminderTypeId(request.getTypeId())
             .build()
     );
-  }
-
-  private void handleReminderNotFound(StudyType studyType) {
-    switch (studyType) {
-      case STUDY:
-        throw new ExceptionNotFoundStudy();
-      case COURSE:
-        throw new ExceptionExistListening();
-      case LECTURE:
-        throw new ExceptionExistListening();
-      default:
-        throw new UnsupportedOperationException("타당하지 않는 타입입니다.");
-    }
   }
 
   public void deleteReminderByIdAndEmail(Long id, String email) {
@@ -117,36 +101,14 @@ public class ReminderApplication {
     reminder.changeCompleteIntoTrue();
   }
 
-  private TypeContent getTypeContent(Reminder reminder) {
-    String title = "";
-    String content = "";
-    switch (reminder.getReminderType()) {
-      case STUDY:
-        Study study = studyService.getStudyById(reminder.getReminderTypeId());
-        title = study.getStudyTitle();
-        content = study.getStudyContent();
-        break;
-      case COURSE:
-        Course course = courseService.getCourseById(reminder.getReminderTypeId());
-        title = course.getCourseName();
-        content = course.getCourseContent();
-        break;
-      case LECTURE:
-        Lecture lecture = lectureService.getLectureById(reminder.getReminderTypeId());
-        title = lecture.getLectureName();
-        break;
-    }
-
-    return new TypeContent(title, content);
-  }
-
   public ReminderDto getByIdAndEmail(Long id, String email) {
     if (!reminderService.existsByIdAndEmail(id, email)) {
       throw new ExceptionNotFoundReminder();
     }
 
     Reminder reminder = reminderService.getReminderById(id);
-    TypeContent typeContent = getTypeContent(reminder);
+    TypeContent typeContent = adapters.get(reminder.getReminderType())
+        .getContent(reminder.getReminderTypeId());
 
     return ReminderDto.toDto(reminder, typeContent.getTitle(), typeContent.getContent());
   }
@@ -159,11 +121,12 @@ public class ReminderApplication {
 
     for (Reminder reminder : reminders) {
 
-      TypeContent typeContent = getTypeContent(reminder);
+      TypeContent typeContent = adapters.get(reminder.getReminderType())
+          .getContent(reminder.getReminderTypeId());
 
       reminderDtos.add(
           ReminderDto.toDto(reminder, typeContent.getTitle(), typeContent.getContent())
-          );
+      );
     }
     return new PageImpl<>(reminderDtos);
   }

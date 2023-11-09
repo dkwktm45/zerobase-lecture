@@ -1,8 +1,8 @@
-package com.project.lecture.api.reminder.dto;
+package com.project.lecture.type;
 
 
-import com.project.lecture.type.StudyType;
 import com.project.lecture.type.valid.ValidEnum;
+import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class ReminderRequest {
+public class TypeRequest {
   @Getter
   @Setter
   @NoArgsConstructor
@@ -18,9 +18,10 @@ public class ReminderRequest {
   @Builder
   public static class Create {
     @NotNull(message = "빈 값은 들어올 수 없습니다.")
-    private Long reminderTypeId;
+    private Long typeId;
     @ValidEnum(enumClass = StudyType.class)
     @NotNull(message = "빈 값은 들어올 수 없습니다.")
-    private StudyType reminderType;
+    private StudyType type;
+    private LocalDate plannerDt;
   }
 }
