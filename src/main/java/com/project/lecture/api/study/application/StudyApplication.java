@@ -50,10 +50,8 @@ public class StudyApplication {
 
     studyService.deleteStudy(studyId);
 
-    if (plannerService.existByStudyIdAndType(studyId, StudyType.STUDY)) {
-      plannerService.deletePlanner(studyId, StudyType.STUDY);
-    }
-
+    plannerService.getPlannerByStudyIdAndType(studyId, StudyType.STUDY)
+        .ifPresent(plannerService::deletePlanner);
   }
 
   public Page<StudyDto> getStudiesByEmail(String email, Pageable pageable) {

@@ -3,7 +3,6 @@ package com.project.lecture.api.planner.service;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.timeout;
@@ -14,7 +13,6 @@ import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.repository.PlannerRepository;
-import com.project.lecture.type.StudyType;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,18 +33,16 @@ class PlannerServiceTest {
   @Test
   @DisplayName("플레너 테이블에서 타입에 맞는 컬럼 삭제")
   void deletePlanner() {
-    Long id = 1L;
-    StudyType studyType = StudyType.LECTURE;
-
+    Planner planner = CommonHelper.createPlannerByStudyForm();
     // given
     doNothing().when(plannerRepository)
-        .deleteByPlannerTypeAndPlannerTypeId(any(), anyLong());
+        .delete(any());
     // when
-    plannerService.deletePlanner(id, studyType);
+    plannerService.deletePlanner(planner);
 
     // then
     verify(plannerRepository, timeout(1))
-        .deleteByPlannerTypeAndPlannerTypeId(any(), anyLong());
+        .delete(any());
   }
 
   @Test
@@ -55,12 +51,14 @@ class PlannerServiceTest {
     // given
     Long courseId = 1L;
     List<Planner> planners = CommonHelper.createPlannersAndCourseForm();
+    doNothing().when(plannerRepository).delete(any());
+
     // when
     plannerService.deleteIfExistCourse(courseId, planners);
 
     // then
     verify(plannerRepository, times(1))
-        .deleteByPlannerTypeAndPlannerTypeId(eq(StudyType.COURSE), eq(courseId));
+        .delete(any());
   }
 
   @Test
@@ -74,7 +72,7 @@ class PlannerServiceTest {
 
     // then
     verify(plannerRepository, never())
-        .deleteByPlannerTypeAndPlannerTypeId(any(), any());
+        .delete(any());
   }
 
   @Test

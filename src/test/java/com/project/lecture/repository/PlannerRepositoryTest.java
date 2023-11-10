@@ -1,13 +1,14 @@
 package com.project.lecture.repository;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.type.StudyType;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
@@ -37,11 +38,11 @@ class PlannerRepositoryTest {
   void deleteByPlannerTypeAndPlannerTypeId() {
     // given
     Planner planner = CommonHelper.createPlannerByCourseForm();
-    plannerRepository.save(planner);
+    Planner request = plannerRepository.save(planner);
 
     // when
-    plannerRepository.deleteByPlannerTypeAndPlannerTypeId(
-        planner.getPlannerType(), planner.getPlannerTypeId()
+    plannerRepository.delete(
+        request
     );
 
     Long count = plannerRepository.count();
@@ -50,7 +51,7 @@ class PlannerRepositoryTest {
 
   @Test
   @DisplayName("planner_type 과 planner_type_id에 맞는 컬럼 여러 개를 삭제한다. - lecture")
-  void deleteLecturesById(){
+  void deleteLecturesById() {
     // given
     List<Planner> planners = CommonHelper.createPlannersForm();
     memberRepository.save(CommonHelper.createOriginMemberFormByNoId());
@@ -70,33 +71,38 @@ class PlannerRepositoryTest {
 
   @Test
   @DisplayName("개인학습 타입과 id가 일치하는 컬럼 삭제 - true")
-  void existsByStudyId_true(){
+  void existsByStudyId_true() {
     //given
     Planner planner = CommonHelper.createPlannerByStudyForm();
     plannerRepository.save(planner);
     //when
-    boolean result = plannerRepository
-        .existsByPlannerTypeIdAndPlannerType(1L, StudyType.STUDY);
+    Planner result = plannerRepository
+        .findByAndPlannerTypeIdAndPlannerType(1L, StudyType.STUDY)
+        .orElse(null);
 
     //then
-    assertTrue(result);
+    assertNotNull(result);
   }
+
   @Test
   @DisplayName("개인학습 타입과 id가 일치하는 컬럼 삭제 - false")
-  void existsByStudyId_false(){
+  void existsByStudyId_false() {
     //given
     //when
-    boolean result = plannerRepository
-        .existsByPlannerTypeIdAndPlannerType(1L, StudyType.STUDY);
+    Optional<Planner> result = plannerRepository
+        .findByAndPlannerTypeIdAndPlannerType(1L, StudyType.STUDY);
 
     //then
-    assertFalse(result);
+    assertTrue(result.isEmpty());
   }
+
   @Autowired
   private EntityManager em;
+
   @AfterEach
   void setUp() {
-    em.createNativeQuery("ALTER TABLE member ALTER COLUMN `memberId` RESTART                                                                     WITH 1")
+    em.createNativeQuery(
+            "ALTER TABLE member ALTER COLUMN `memberId` RESTART                                                                     WITH 1")
         .executeUpdate();
   }
 }

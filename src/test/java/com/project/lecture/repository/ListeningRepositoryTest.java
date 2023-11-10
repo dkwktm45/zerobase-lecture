@@ -1,18 +1,23 @@
 package com.project.lecture.repository;
 
+import static com.project.lecture.Helper.CommonHelper.createListingByMemberAndCourse;
+import static com.project.lecture.Helper.CommonHelper.createListingForm;
+import static com.project.lecture.Helper.CommonHelper.createOnlyCourseForm;
+import static com.project.lecture.Helper.CommonHelper.createOriginMemberFormByNoId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.project.lecture.Helper.CommonHelper;
+import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Listening;
-import org.junit.jupiter.api.BeforeEach;
+import com.project.lecture.entity.Member;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -24,19 +29,20 @@ class ListeningRepositoryTest {
   @Autowired
   private ListeningRepository listeningRepository;
   @Autowired
-  private TestEntityManager em;
-  private Listening listening;
+  private MemberRepository memberRepository;
+  @Autowired
+  private CourseRepository courseRepository;
 
-  @BeforeEach
-  void setUp() {
-    listening = CommonHelper.createListingForm();
-    em.persistAndFlush(listening.getCourse());
-    em.persistAndFlush(listening.getMember());
-  }
+
   @Test
   @DisplayName("member_id 및 course_id를 통한 값이 존재하는지 여부 - true")
   void existsByMemberIdAndCourseId_true() {
     // given
+    Listening listening = createListingForm();
+    Member member = createOriginMemberFormByNoId();
+    Course course = createOnlyCourseForm();
+    memberRepository.save(member);
+    courseRepository.save(course);
     listeningRepository.save(listening);
 
     // when
@@ -53,8 +59,8 @@ class ListeningRepositoryTest {
     // given
     // when
     boolean result = listeningRepository.existsByMember_MemberIdAndCourse_CourseId(
-        listening.getMember().getMemberId()
-        , listening.getCourse().getCourseId());
+        1L
+        , 1L);
 
     // then
     assertFalse(result);
@@ -63,14 +69,31 @@ class ListeningRepositoryTest {
   @DisplayName("member_id와 course_id에 맞는 컬럼 삭제")
   void deleteByMemberIdAndCourseId() {
     // given
+    Listening listening = createListingByMemberAndCourse();
+    Member member = createOriginMemberFormByNoId();
+    Course course = createOnlyCourseForm();
+    memberRepository.save(member);
+    courseRepository.save(course);
     listeningRepository.save(listening);
-
     // when
     listeningRepository.deleteByMemberIdAndCourseId(
-        listening.getMember().getMemberId()
-        , listening.getCourse().getCourseId());
+       1L
+        , 1L);
     // then
     Long count = listeningRepository.count();
     assertEquals(count,0L);
+  }
+  @Autowired
+  private EntityManager em;
+
+  @AfterEach
+  void setUp() {
+    em.createNativeQuery(
+            "ALTER TABLE member ALTER COLUMN `memberId` RESTART                                                                     WITH 1")
+        .executeUpdate();
+    em.createNativeQuery(
+            "ALTER TABLE course ALTER COLUMN `courseId` RESTART                                                                     WITH 1")
+        .executeUpdate();
+
   }
 }

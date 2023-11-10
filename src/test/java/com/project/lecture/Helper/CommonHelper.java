@@ -223,10 +223,17 @@ public class CommonHelper {
 
   public static Listening createListingForm() {
     return Listening.builder()
-        .member(createOriginMemberFormByNoId())
+        .member(createOriginMemberForm())
         .course(createCourseForm())
         .build();
   }
+  public static Listening createListingByMemberAndCourse() {
+    return Listening.builder()
+        .member(createOriginMemberForm())
+        .course(createCourseByNoLecture())
+        .build();
+  }
+
 
   public static Study createStudyByNoId() {
     return Study.builder()
