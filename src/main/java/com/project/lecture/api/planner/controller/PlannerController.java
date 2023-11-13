@@ -7,9 +7,11 @@ import java.security.Principal;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,6 +36,15 @@ public class PlannerController {
       Principal principal
   ) {
     plannerApplication.updatePlannerByRequestAndEmail(request, principal.getName());
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("")
+  public ResponseEntity<Void> completePlannerRequest(
+      @RequestParam("plannerId") Long id,
+      Principal principal
+  ) {
+    plannerApplication.completePlannerByIdAndEmail(id, principal.getName());
     return ResponseEntity.ok().build();
   }
 }

@@ -22,6 +22,7 @@ public class PlannerService {
   private final PlannerRepository plannerRepository;
 
 
+
   public void deletePlanner(Planner planner) {
     plannerRepository.delete(planner);
   }
@@ -63,5 +64,11 @@ public class PlannerService {
     Planner planner = plannerRepository.findById(request.getPlannerId())
         .orElseThrow(ExceptionNotFoundPlanner::new);
     planner.updateDate(request.getPlannerDt());
+  }
+
+
+  public Planner getPlannerById(Long id) {
+    return plannerRepository.findById(id)
+        .orElseThrow(ExceptionNotFoundPlanner::new);
   }
 }

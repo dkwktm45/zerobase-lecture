@@ -1,6 +1,7 @@
 package com.project.lecture.config;
 
 import com.project.lecture.api.Listen.service.ListenService;
+import com.project.lecture.api.complete.service.CourseLectureService;
 import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.api.course.service.LectureService;
 import com.project.lecture.api.study.service.StudyService;
@@ -21,21 +22,24 @@ public class AdapterConfig {
   private final LectureService lectureService;
   private final CourseService courseService;
   private final ListenService listenService;
+  private final CourseLectureService courseLectureService;
 
   public AdapterConfig(StudyService studyService,
-      LectureService lectureService, CourseService courseService, ListenService listenService) {
+      LectureService lectureService, CourseService courseService, ListenService listenService,
+      CourseLectureService courseLectureService) {
     this.studyService = studyService;
     this.lectureService = lectureService;
     this.courseService = courseService;
     this.listenService = listenService;
+    this.courseLectureService = courseLectureService;
   }
 
   @Bean
   public Map<StudyType, TypeAdapter> adapterMap(){
     Map<StudyType, TypeAdapter> adapters = new HashMap<>();
     adapters.put(StudyType.STUDY, new StudyAdapter(studyService));
-    adapters.put(StudyType.COURSE, new CourseAdapter(listenService, courseService));
-    adapters.put(StudyType.LECTURE, new LectureAdapter(listenService, lectureService));
+    adapters.put(StudyType.COURSE, new CourseAdapter(listenService, courseService,courseLectureService));
+    adapters.put(StudyType.LECTURE, new LectureAdapter(listenService, lectureService,courseLectureService));
     return adapters;
   }
 }

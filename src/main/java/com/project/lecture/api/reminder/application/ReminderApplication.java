@@ -1,16 +1,11 @@
 package com.project.lecture.api.reminder.application;
 
-import com.project.lecture.api.Listen.service.ListenService;
-import com.project.lecture.api.course.service.CourseService;
-import com.project.lecture.api.course.service.LectureService;
 import com.project.lecture.api.planner.service.PlannerService;
 import com.project.lecture.api.reminder.dto.ReminderDto;
 import com.project.lecture.api.reminder.service.ReminderService;
-import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.api.user.service.MemberService;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
-import com.project.lecture.exception.kind.ExceptionCompleteReminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
 import com.project.lecture.type.StudyType;
 import com.project.lecture.type.TypeContent;
@@ -35,10 +30,6 @@ public class ReminderApplication {
   private final MemberService memberService;
 
   private final PlannerService plannerService;
-  private final StudyService studyService;
-  private final LectureService lectureService;
-  private final CourseService courseService;
-  private final ListenService listenService;
   private final Map<StudyType, TypeAdapter> adapterMap;
 
 
@@ -47,7 +38,7 @@ public class ReminderApplication {
 
     TypeAdapter adapter = adapterMap.get(request.getType());
 
-    if (adapter == null){
+    if (adapter == null) {
       throw new UnsupportedOperationException("타당하지 않는 타입입니다.");
     }
     if (!adapter.existCheck(request, email, member.getMemberId())) {
@@ -75,17 +66,10 @@ public class ReminderApplication {
   }
 
   public void completeByIdAndEmail(Long id, String email) {
-    if (!reminderService.existsByIdAndEmail(id, email)) {
-      throw new ExceptionNotFoundReminder();
-    }
+    TypeAdapter typeAdapter = adapterMap.get(StudyType.REMINDER);
 
-    Reminder reminder = reminderService.getReminderById(id);
-
-    if (reminder.isReminderComplete()) {
-      throw new ExceptionCompleteReminder();
-    }
-
-    reminder.changeCompleteIntoTrue();
+    Member member = Member.builder().email(email).build();
+    typeAdapter.complete(id,member);
   }
 
   public ReminderDto getByIdAndEmail(Long id, String email) {

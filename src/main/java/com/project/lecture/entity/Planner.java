@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -36,6 +37,8 @@ public class Planner {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "memberId")
   private Member member;
+  @ColumnDefault(value = "0")
+  private boolean plannerComplete;
 
   public static Planner toEntity(TypeRequest.Create dto, Member member) {
     return Planner.builder()
@@ -48,5 +51,9 @@ public class Planner {
 
   public void updateDate(LocalDate plannerDt) {
     this.plannerDt = plannerDt;
+  }
+
+  public void changeComplete() {
+    this.plannerComplete = true;
   }
 }

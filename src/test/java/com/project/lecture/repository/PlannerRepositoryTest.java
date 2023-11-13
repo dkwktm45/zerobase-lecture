@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.type.StudyType;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -94,6 +95,23 @@ class PlannerRepositoryTest {
 
     //then
     assertTrue(result.isEmpty());
+  }
+
+  @Test
+  void findByPlannersByNotComplete() {
+    //given
+    String email = "planner@gmail.com";
+    List<Planner> planners = CommonHelper.createPlannersForm();
+    memberRepository.save(CommonHelper.createOriginMemberFormByNoId());
+    plannerRepository.saveAllAndFlush(planners);
+    LocalDate start = LocalDate.now();
+    LocalDate end = start.plusDays(1);
+    //when
+    List<Planner> result = plannerRepository
+        .findByPlannersByNotComplete(start, end, email, false);
+
+    //then
+    assertNotNull(result);
   }
 
   @Autowired
