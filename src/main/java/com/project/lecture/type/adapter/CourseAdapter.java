@@ -17,6 +17,7 @@ import com.project.lecture.exception.kind.ExceptionExistListening;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ public class CourseAdapter implements TypeAdapter {
   private final ListenService listenService;
   private final CourseService courseService;
   private final CourseLectureService courseLectureService;
+  private static int totalTime;
   @Override
   public boolean existCheck(Create create, String email, Long memberId) {
     return listenService.existCheck(create.getTypeId(), memberId);
@@ -46,37 +48,40 @@ public class CourseAdapter implements TypeAdapter {
   @Override
   public void complete(Long id, Member member) {
     log.info("complete 수행");
-    HashMap<Long, MemberLecture> memberLectures = new HashMap<>();
     Course course = courseService.getCourseById(id);
     List<Lecture> lectures = course.getLectures();
-    int totalTime = 0;
+    Optional<MemberCourseLecture> memberCourseLecture = courseLectureService
+        .getCourseLectureByMemberAndId(member, course.getCourseId());
+    totalTime = 0;
 
-    if (courseLectureService.existCourseIdByMemberAndId(member, course.getCourseId())) {
-      MemberCourseLecture memberCourseLecture = courseLectureService
-          .getCourseLectureByMemberAndId(member, course.getCourseId());
+    memberCourseLecture.ifPresentOrElse(
+        info -> {
+          HashMap<Long, MemberLecture> memberLectures;
+          AddMemberLecture addMemberLecture = updateMemberCourseLecture(lectures,
+              info.getMemberLectureMap());
 
-      AddMemberLecture addMemberLecture = updateMemberCourseLecture(lectures,
-          memberCourseLecture.getMemberLectures());
+          totalTime = addMemberLecture.getTime();
+          memberLectures = addMemberLecture.getMemberLectures();
 
-      totalTime = addMemberLecture.getTime();
-      memberLectures = addMemberLecture.getMemberLectures();
+          info.updateMemberLecture(memberLectures);
+        }, () -> {
+          HashMap<Long, MemberLecture> memberLectures = new HashMap<>();
 
-      memberCourseLecture.updateMemberLecture(memberLectures);
-    } else {
-      for (Lecture lecture : lectures) {
-        memberLectures.put(lecture.getLectureId(),
-            new MemberLecture(lecture.getLectureTime(), LocalDateTime.now()));
-        totalTime += lecture.getLectureTime();
-      }
+          for (Lecture lecture : lectures) {
+            memberLectures.put(lecture.getLectureId(),
+                new MemberLecture(lecture.getLectureTime(), LocalDateTime.now()));
+            totalTime += lecture.getLectureTime();
+          }
 
-      courseLectureService.saveEntity(
-          MemberCourseLecture.builder()
-              .member(member)
-              .courseId(course.getCourseId())
-              .memberLectures(memberLectures)
-              .build()
-      );
-    }
+          courseLectureService.saveEntity(
+              MemberCourseLecture.builder()
+                  .member(member)
+                  .courseId(course.getCourseId())
+                  .memberLectureMap(memberLectures)
+                  .build()
+          );
+        }
+    );
 
     courseLectureService.completePlusTierByEmailAndTime(member.getEmail(), totalTime);
     log.info("complete 마침");

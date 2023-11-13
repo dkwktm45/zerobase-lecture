@@ -5,6 +5,7 @@ import com.project.lecture.api.user.service.MemberService;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.json.MemberLecture;
+import com.project.lecture.exception.kind.ExceptionCompleteCourse;
 import com.project.lecture.type.StudyType;
 import com.project.lecture.type.adapter.TypeAdapter;
 import java.util.HashMap;
@@ -39,6 +40,9 @@ public class CompleteApplication {
         memberLectures.put(lecture.getLectureId(), new MemberLecture());
         time += lecture.getLectureTime();
       }
+    }
+    if (time == 0){
+      throw new ExceptionCompleteCourse();
     }
 
     return new AddMemberLecture(time, memberLectures);

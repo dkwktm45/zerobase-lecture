@@ -35,11 +35,11 @@ public class MemberCourseLecture {
 
   @Type(type = "json")
   @Column(columnDefinition = "longtext")
-  private HashMap<Long, MemberLecture> memberLectures = new HashMap<>();
+  private HashMap<Long, MemberLecture> memberLectureMap = new HashMap<>();
 
   private Long courseId;
 
-  public void updateMemberLecture(HashMap<Long, MemberLecture> memberLectures) {
-    this.memberLectures = memberLectures;
+  public void updateMemberLecture(HashMap<Long, MemberLecture> memberLectureMap) {
+    this.memberLectureMap = memberLectureMap;
   }
 }

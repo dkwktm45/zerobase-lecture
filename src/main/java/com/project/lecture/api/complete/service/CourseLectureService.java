@@ -5,6 +5,7 @@ import com.project.lecture.entity.MemberCourseLecture;
 import com.project.lecture.redis.UserTierClient;
 import com.project.lecture.redis.dto.UserTier;
 import com.project.lecture.repository.MemberCourseRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,7 @@ public class CourseLectureService {
     return memberCourseRepository.existsByCourseIdAndMember(courseId, member);
   }
 
-  public MemberCourseLecture getCourseLectureByMemberAndId(Member member, Long courseId) {
+  public Optional<MemberCourseLecture> getCourseLectureByMemberAndId(Member member, Long courseId) {
     return memberCourseRepository.findByMemberAndCourseId(member, courseId);
   }
 
