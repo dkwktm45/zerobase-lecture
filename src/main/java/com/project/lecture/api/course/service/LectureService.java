@@ -15,8 +15,8 @@ public class LectureService {
   private final LectureRepository lectureRepository;
 
   @Transactional
-  public void ListInsert(List<Lecture> lectureList) {
-    lectureRepository.saveAll(lectureList);
+  public List<Lecture> ListInsert(List<Lecture> lectureList) {
+    return lectureRepository.saveAll(lectureList);
   }
 
   public Lecture getLectureById(Long id) {

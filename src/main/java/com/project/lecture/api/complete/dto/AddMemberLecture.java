@@ -1,6 +1,6 @@
 package com.project.lecture.api.complete.dto;
 
-import com.project.lecture.entity.json.MemberLecture;
+import java.time.LocalDate;
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,5 +12,5 @@ import lombok.Setter;
 public class AddMemberLecture {
 
   private int time;
-  private HashMap<Long , MemberLecture> memberLectures;
+  private HashMap<Long , LocalDate> memberLectures;
 }

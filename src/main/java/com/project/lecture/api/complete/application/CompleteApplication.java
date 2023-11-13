@@ -1,15 +1,9 @@
 package com.project.lecture.api.complete.application;
 
-import com.project.lecture.api.complete.dto.AddMemberLecture;
 import com.project.lecture.api.user.service.MemberService;
-import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
-import com.project.lecture.entity.json.MemberLecture;
-import com.project.lecture.exception.kind.ExceptionCompleteCourse;
 import com.project.lecture.type.StudyType;
 import com.project.lecture.type.adapter.TypeAdapter;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,24 +23,7 @@ public class CompleteApplication {
     typeAdapter.complete(courseId, member);
   }
 
-  public static AddMemberLecture updateMemberCourseLecture(
-      List<Lecture> lectures,
-      HashMap<Long, MemberLecture> memberLectures
-  ) {
 
-    int time = 0;
-    for (Lecture lecture : lectures) {
-      if (!memberLectures.containsKey(lecture.getLectureId())) {
-        memberLectures.put(lecture.getLectureId(), new MemberLecture());
-        time += lecture.getLectureTime();
-      }
-    }
-    if (time == 0){
-      throw new ExceptionCompleteCourse();
-    }
-
-    return new AddMemberLecture(time, memberLectures);
-  }
 
   @Transactional
   public void completeLectureByIdAndEmail(Long lectureId, String email) {

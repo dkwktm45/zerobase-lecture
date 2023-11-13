@@ -1,20 +1,19 @@
 package com.project.lecture.type.adapter;
 
-import static com.project.lecture.api.complete.application.CompleteApplication.updateMemberCourseLecture;
 
 import com.project.lecture.api.Listen.service.ListenService;
 import com.project.lecture.api.complete.dto.AddMemberLecture;
 import com.project.lecture.api.complete.service.CourseLectureService;
 import com.project.lecture.api.course.service.CourseService;
-import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.MemberCourseLecture;
-import com.project.lecture.entity.json.MemberLecture;
+import com.project.lecture.exception.kind.ExceptionCompleteCourse;
+import com.project.lecture.redis.LectureClient;
 import com.project.lecture.type.TypeRequest.Create;
 import com.project.lecture.type.TypeContent;
 import com.project.lecture.entity.Course;
 import com.project.lecture.exception.kind.ExceptionExistListening;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -26,10 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Transactional
 public class CourseAdapter implements TypeAdapter {
+
   private final ListenService listenService;
   private final CourseService courseService;
   private final CourseLectureService courseLectureService;
+  private final LectureClient lectureClient;
   private static int totalTime;
+
   @Override
   public boolean existCheck(Create create, String email, Long memberId) {
     return listenService.existCheck(create.getTypeId(), memberId);
@@ -38,10 +40,11 @@ public class CourseAdapter implements TypeAdapter {
   @Override
   public TypeContent getContent(Long id) {
     Course course = courseService.getCourseById(id);
-    return new TypeContent(course.getCourseName(),course.getCourseContent());
+    return new TypeContent(course.getCourseName(), course.getCourseContent());
   }
+
   @Override
-  public void exceptionThrow(){
+  public void exceptionThrow() {
     throw new ExceptionExistListening();
   }
 
@@ -49,28 +52,33 @@ public class CourseAdapter implements TypeAdapter {
   public void complete(Long id, Member member) {
     log.info("complete 수행");
     Course course = courseService.getCourseById(id);
-    List<Lecture> lectures = course.getLectures();
+    List<Integer> lectureKeys = lectureClient.getKeys(course.getCourseId());
     Optional<MemberCourseLecture> memberCourseLecture = courseLectureService
         .getCourseLectureByMemberAndId(member, course.getCourseId());
     totalTime = 0;
 
     memberCourseLecture.ifPresentOrElse(
         info -> {
-          HashMap<Long, MemberLecture> memberLectures;
-          AddMemberLecture addMemberLecture = updateMemberCourseLecture(lectures,
-              info.getMemberLectureMap());
+          HashMap<Long, LocalDate> memberLectures;
+
+          AddMemberLecture addMemberLecture = updateMemberCourseLecture
+              (
+                  id,
+                  lectureKeys,
+                  info.getMemberLectureMap()
+              );
 
           totalTime = addMemberLecture.getTime();
           memberLectures = addMemberLecture.getMemberLectures();
 
           info.updateMemberLecture(memberLectures);
         }, () -> {
-          HashMap<Long, MemberLecture> memberLectures = new HashMap<>();
+          HashMap<Long, LocalDate> memberLectures = new HashMap<>();
 
-          for (Lecture lecture : lectures) {
-            memberLectures.put(lecture.getLectureId(),
-                new MemberLecture(lecture.getLectureTime(), LocalDateTime.now()));
-            totalTime += lecture.getLectureTime();
+          for (long keyId : lectureKeys) {
+            int time = lectureClient.getLectureTime(course.getCourseId(), keyId);
+            memberLectures.put(keyId, LocalDate.now());
+            totalTime += time;
           }
 
           courseLectureService.saveEntity(
@@ -85,5 +93,25 @@ public class CourseAdapter implements TypeAdapter {
 
     courseLectureService.completePlusTierByEmailAndTime(member.getEmail(), totalTime);
     log.info("complete 마침");
+  }
+
+  private AddMemberLecture updateMemberCourseLecture(
+      Long courseId, List<Integer> lectures,
+      HashMap<Long, LocalDate> memberLectures
+  ) {
+
+    int time = 0;
+    for (long keyId : lectures) {
+      if (!memberLectures.containsKey(keyId)) {
+        int currTime = lectureClient.getLectureTime(courseId, keyId);
+        memberLectures.put(keyId,LocalDate.now());
+        time += currTime;
+      }
+    }
+    if (time == 0) {
+      throw new ExceptionCompleteCourse();
+    }
+
+    return new AddMemberLecture(time, memberLectures);
   }
 }
