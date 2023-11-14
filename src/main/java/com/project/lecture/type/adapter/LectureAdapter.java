@@ -11,6 +11,7 @@ import com.project.lecture.entity.MemberCourseLecture;
 import com.project.lecture.exception.kind.ExceptionCompleteLecture;
 import com.project.lecture.exception.kind.ExceptionExistListening;
 import com.project.lecture.redis.LectureClient;
+import com.project.lecture.type.StudyType;
 import com.project.lecture.type.TypeContent;
 import com.project.lecture.type.TypeRequest.Create;
 import java.time.LocalDate;
@@ -18,10 +19,12 @@ import java.util.HashMap;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Slf4j
+@Component
 @Transactional
 public class LectureAdapter implements TypeAdapter {
 
@@ -85,5 +88,10 @@ public class LectureAdapter implements TypeAdapter {
 
     courseLectureService.completePlusTierByEmailAndTime(member.getEmail(), plusTime);
     log.info("complete 마침");
+  }
+
+  @Override
+  public StudyType getStudyType() {
+    return StudyType.LECTURE;
   }
 }

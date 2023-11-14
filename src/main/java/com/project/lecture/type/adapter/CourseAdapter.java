@@ -9,6 +9,7 @@ import com.project.lecture.entity.Member;
 import com.project.lecture.entity.MemberCourseLecture;
 import com.project.lecture.exception.kind.ExceptionCompleteCourse;
 import com.project.lecture.redis.LectureClient;
+import com.project.lecture.type.StudyType;
 import com.project.lecture.type.TypeRequest.Create;
 import com.project.lecture.type.TypeContent;
 import com.project.lecture.entity.Course;
@@ -19,11 +20,13 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
+@Component
 public class CourseAdapter implements TypeAdapter {
 
   private final ListenService listenService;
@@ -76,11 +79,9 @@ public class CourseAdapter implements TypeAdapter {
           HashMap<Long, LocalDate> memberLectures = new HashMap<>();
 
           for (long keyId : lectureKeys) {
-            int time = lectureClient.getLectureTime(course.getCourseId(), keyId);
             memberLectures.put(keyId, LocalDate.now());
-            totalTime += time;
           }
-
+          totalTime = lectureClient.getLecturesTime(id);
           courseLectureService.saveEntity(
               MemberCourseLecture.builder()
                   .member(member)
@@ -93,6 +94,11 @@ public class CourseAdapter implements TypeAdapter {
 
     courseLectureService.completePlusTierByEmailAndTime(member.getEmail(), totalTime);
     log.info("complete 마침");
+  }
+
+  @Override
+  public StudyType getStudyType() {
+    return StudyType.COURSE;
   }
 
   private AddMemberLecture updateMemberCourseLecture(

@@ -394,7 +394,7 @@ public class CommonHelper {
   public static MemberCourseLecture createMemberCourseLecture() {
     return MemberCourseLecture
         .builder()
-        .memberLectures(new HashMap<>())
+        .memberLectureMap(new HashMap<>())
         .id(1L)
         .member(createOriginMemberForm())
         .build();

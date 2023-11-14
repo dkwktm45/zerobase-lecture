@@ -22,6 +22,7 @@ import com.project.lecture.entity.Member;
 import com.project.lecture.entity.MemberCourseLecture;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.exception.kind.ExceptionExistListening;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,7 +65,7 @@ class CompleteApplicationTest {
     when(courseLectureService.existCourseIdByMemberAndId(member, id))
         .thenReturn(true);
     when(courseLectureService.getCourseLectureByMemberAndId(any(), anyLong()))
-        .thenReturn(memberCourseLecture);
+        .thenReturn(Optional.of(memberCourseLecture));
     //when
     completeApplication.completeCourseByIdAndEmail(id, email);
 
@@ -153,7 +154,7 @@ class CompleteApplicationTest {
     when(courseLectureService.existCourseIdByMemberAndId(any(), anyLong()))
         .thenReturn(true);
     when(courseLectureService.getCourseLectureByMemberAndId(any(), anyLong()))
-        .thenReturn(memberCourseLecture);
+        .thenReturn(Optional.of(memberCourseLecture));
 
     //then
     completeApplication.completeLectureByIdAndEmail(id, email);

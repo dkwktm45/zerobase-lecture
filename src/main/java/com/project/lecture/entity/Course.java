@@ -30,6 +30,7 @@ public class Course {
   private String courseName;
   @Lob
   private String courseContent;
+  private int totalTime;
 
   @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
   @Builder.Default

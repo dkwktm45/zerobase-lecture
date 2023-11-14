@@ -25,8 +25,18 @@ public class PlannerApplication {
   private final PlannerService plannerService;
   private final MemberService memberService;
 
-  private final Map<StudyType, TypeAdapter> adapters;
+  private final List<TypeAdapter> typeAdapters;
+  private Map<StudyType, TypeAdapter> typeAdapterMap;
 
+  @PostConstruct
+  public void setUp(){
+    typeAdapterMap = new HashMap<>();
+
+    for (TypeAdapter adapter : typeAdapters) {
+      StudyType studyType = adapter.getStudyType();
+      typeAdapterMap.put(studyType, adapter);
+    }
+  }
   public void createPlannerByRequestAndEmail(Create request, String email) {
     if (request.getPlannerDt() == null) {
       throw new NullPointerException("날짜가 존재하지 않습니다.");
@@ -34,7 +44,7 @@ public class PlannerApplication {
 
     Member member = memberService.getMemberByEmail(email);
 
-    TypeAdapter adapter = adapters.get(request.getType());
+    TypeAdapter adapter = typeAdapterMap.get(request.getType());
 
     if (adapter == null){
       throw new UnsupportedOperationException("타당하지 않는 타입입니다.");
@@ -70,7 +80,7 @@ public class PlannerApplication {
     planner.changeComplete();
 
     Member member = planner.getMember();
-    TypeAdapter typeAdapter = adapters.get(planner.getPlannerType());
+    TypeAdapter typeAdapter = typeAdapterMap.get(planner.getPlannerType());
     typeAdapter.complete(planner.getPlannerTypeId(), member);
   }
 }

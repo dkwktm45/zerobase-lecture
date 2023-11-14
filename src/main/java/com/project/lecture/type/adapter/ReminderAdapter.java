@@ -5,15 +5,18 @@ import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
 import com.project.lecture.exception.kind.ExceptionCompleteReminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
+import com.project.lecture.type.StudyType;
 import com.project.lecture.type.TypeContent;
 import com.project.lecture.type.TypeRequest.Create;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
+@Component
 public class ReminderAdapter implements TypeAdapter {
 
   private final ReminderService reminderService;
@@ -48,5 +51,10 @@ public class ReminderAdapter implements TypeAdapter {
 
     reminder.changeCompleteIntoTrue();
     log.info("complete 마침");
+  }
+
+  @Override
+  public StudyType getStudyType() {
+    return StudyType.REMINDER;
   }
 }

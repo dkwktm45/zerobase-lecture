@@ -22,6 +22,10 @@ public class LectureClient {
   public List<Integer> getKeys(Long courseId){
     return new ArrayList<>(opsHashLectureTime.keys(String.valueOf(courseId)));
   }
+  public int getLecturesTime(Long courseId){
+    return opsHashLectureTime.values(String.valueOf(courseId))
+        .stream().mapToInt(i -> (Integer) i).sum();
+  }
 
   public void putLecture(Long courseId, Long lectureId, Integer lectureTime) {
     String courseKey = String.valueOf(courseId);

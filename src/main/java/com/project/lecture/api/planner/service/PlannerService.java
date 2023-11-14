@@ -6,6 +6,7 @@ import com.project.lecture.entity.Planner;
 import com.project.lecture.exception.kind.ExceptionNotFoundPlanner;
 import com.project.lecture.repository.PlannerRepository;
 import com.project.lecture.type.StudyType;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlannerService {
 
   private final PlannerRepository plannerRepository;
-
 
 
   public void deletePlanner(Planner planner) {
@@ -47,8 +47,8 @@ public class PlannerService {
     plannerRepository.deleteLecturesById(lectureIdx, memberId);
   }
 
-  public Optional<Planner> getPlannerByStudyIdAndType(Long id,StudyType studyType) {
-    return plannerRepository.findByAndPlannerTypeIdAndPlannerType(id,studyType);
+  public Optional<Planner> getPlannerByStudyIdAndType(Long id, StudyType studyType) {
+    return plannerRepository.findByAndPlannerTypeIdAndPlannerType(id, studyType);
   }
 
   public void saveEntity(Planner planner) {
@@ -57,7 +57,7 @@ public class PlannerService {
   }
 
   public boolean existPlannerByIdAndEmail(Long id, String email) {
-    return plannerRepository.existsByPlannerIdAndMember_Email(id,email);
+    return plannerRepository.existsByPlannerIdAndMember_Email(id, email);
   }
 
   public void changeDate(Update request) {
