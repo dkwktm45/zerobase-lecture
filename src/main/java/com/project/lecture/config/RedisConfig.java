@@ -38,6 +38,17 @@ public class RedisConfig {
     redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(UserTier.class));
     return redisTemplate;
   }
+
+  @Bean
+  public RedisTemplate<String, Object> lectureTimeTemplate(RedisConnectionFactory connectionFactory) {
+    RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+    redisTemplate.setConnectionFactory(connectionFactory);
+    redisTemplate.setDefaultSerializer(new GenericJackson2JsonRedisSerializer());
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Integer.class));
+    redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Integer.class));
+    return redisTemplate;
+  }
   @Bean
   public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory redisConnectionFactory) {
     RedisMessageListenerContainer container = new RedisMessageListenerContainer();

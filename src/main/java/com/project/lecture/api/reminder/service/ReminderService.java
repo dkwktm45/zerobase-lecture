@@ -20,7 +20,7 @@ public class ReminderService {
 
   public boolean existsByIdAndEmail(Long id, String email) {
     return reminderRepository
-        .existsByReminderIdAndMember_Email(id,email);
+        .existsByReminderIdAndMember_Email(id, email);
   }
 
   public void deleteReminderById(Long id) {
@@ -33,7 +33,7 @@ public class ReminderService {
   }
 
   public Page<Reminder> getListByEmailAndPage(String email, Pageable pageable) {
-    return reminderRepository.findByMember_Email(email,pageable);
+    return reminderRepository.findByMember_Email(email, pageable);
   }
 
 }

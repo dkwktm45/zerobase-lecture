@@ -6,8 +6,10 @@ import com.project.lecture.entity.Planner;
 import com.project.lecture.exception.kind.ExceptionNotFoundPlanner;
 import com.project.lecture.repository.PlannerRepository;
 import com.project.lecture.type.StudyType;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,8 @@ public class PlannerService {
   private final PlannerRepository plannerRepository;
 
 
-  public void deletePlanner(Long id, StudyType studyType) {
-    plannerRepository.deleteByPlannerTypeAndPlannerTypeId(studyType, id);
+  public void deletePlanner(Planner planner) {
+    plannerRepository.delete(planner);
   }
 
   public void deleteIfExistCourse(Long courseId, List<Planner> planners) {
@@ -34,7 +36,7 @@ public class PlannerService {
 
     // todo 추후 정말 하나의 값만 있는지를 검토 : DB 데이터가 여러개 있을경우가 있는지
     if (!Objects.isNull(infoByPlanner)) {
-      deletePlanner(infoByPlanner.getPlannerTypeId(), infoByPlanner.getPlannerType());
+      deletePlanner(infoByPlanner);
     }
   }
 
@@ -45,8 +47,8 @@ public class PlannerService {
     plannerRepository.deleteLecturesById(lectureIdx, memberId);
   }
 
-  public boolean existByStudyIdAndType(Long id,StudyType studyType) {
-    return plannerRepository.existsByPlannerTypeIdAndPlannerType(id,studyType);
+  public Optional<Planner> getPlannerByStudyIdAndType(Long id, StudyType studyType) {
+    return plannerRepository.findByAndPlannerTypeIdAndPlannerType(id, studyType);
   }
 
   public void saveEntity(Planner planner) {
@@ -55,12 +57,18 @@ public class PlannerService {
   }
 
   public boolean existPlannerByIdAndEmail(Long id, String email) {
-    return plannerRepository.existsByPlannerIdAndMember_Email(id,email);
+    return plannerRepository.existsByPlannerIdAndMember_Email(id, email);
   }
 
   public void changeDate(Update request) {
     Planner planner = plannerRepository.findById(request.getPlannerId())
         .orElseThrow(ExceptionNotFoundPlanner::new);
     planner.updateDate(request.getPlannerDt());
+  }
+
+
+  public Planner getPlannerById(Long id) {
+    return plannerRepository.findById(id)
+        .orElseThrow(ExceptionNotFoundPlanner::new);
   }
 }
