@@ -56,4 +56,12 @@ public class Planner {
   public void changeComplete() {
     this.plannerComplete = true;
   }
+
+  public void plusDay(long plusDay) {
+    this.plannerDt = plannerDt.plusDays(plusDay);
+  }
+
+  public void changeDate(LocalDate date) {
+    this.plannerDt = date;
+  }
 }
