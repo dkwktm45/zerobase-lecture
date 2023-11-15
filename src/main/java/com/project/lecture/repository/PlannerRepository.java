@@ -23,10 +23,11 @@ public interface PlannerRepository extends JpaRepository<Planner, Long> {
 
   boolean existsByPlannerIdAndMember_Email(Long id, String email);
 
-  @Modifying
   @Query(value = "select * from Planner p "
-      + "where p.plannerDt between :startDate and :endDate "
-      + "and p.memberId = (select memberId from member m where m.email = :email limit 1) "
-      + "and p.plannerComplete = :flag order by p.plannerDt",nativeQuery = true)
+      + "JOIN Member m ON p.memberId = m.memberId " +
+      "WHERE p.plannerDt BETWEEN :startDate AND :endDate " +
+      "AND m.email = :email " +
+      "AND p.plannerComplete = :flag " +
+      "ORDER BY p.plannerDt",nativeQuery = true)
   List<Planner> findByPlannersByNotComplete(LocalDate startDate, LocalDate endDate, String email, boolean flag);
 }
