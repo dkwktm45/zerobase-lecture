@@ -81,7 +81,7 @@ public class PlannerApplication {
     // 오늘과 약속한 날의 이전의 약속날 과의 차이
     if (ChronoUnit.DAYS.between(currentDate, planners.get(0).getPlannerDt()) > 0) {
       return planners.stream()
-          .filter(i -> i.getPlannerDt().compareTo(firstDayOfNextMonth) <= 0)
+          .filter(i -> i.getPlannerDt().compareTo(firstDayOfNextMonth) < 0)
           .map(PlannerDto::toDto)
           .collect(Collectors.toList());
     }
@@ -115,7 +115,7 @@ public class PlannerApplication {
     }
 
     return planners.stream()
-        .filter(i -> i.getPlannerDt().compareTo(firstDayOfNextMonth) <= 0)
+        .filter(i -> i.getPlannerDt().compareTo(firstDayOfNextMonth) < 0)
         .map(PlannerDto::toDto)
         .collect(Collectors.toList());
   }
