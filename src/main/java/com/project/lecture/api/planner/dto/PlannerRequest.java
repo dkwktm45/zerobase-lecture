@@ -22,4 +22,15 @@ public class PlannerRequest {
     private LocalDate plannerDt;
   }
 
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
+  public static class Monthly{
+    @NotNull(message = "빈 값은 들어올 수 없습니다.")
+    private LocalDate startDt;
+    @NotNull(message = "빈 값은 들어올 수 없습니다.")
+    private LocalDate endDt;
+  }
 }

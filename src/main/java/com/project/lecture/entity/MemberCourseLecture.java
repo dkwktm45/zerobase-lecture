@@ -1,7 +1,7 @@
 package com.project.lecture.entity;
 
-import com.project.lecture.entity.json.MemberLecture;
 import com.vladmihalcea.hibernate.type.json.JsonType;
+import java.time.LocalDate;
 import java.util.HashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,11 +35,11 @@ public class MemberCourseLecture {
 
   @Type(type = "json")
   @Column(columnDefinition = "longtext")
-  private HashMap<Long, MemberLecture> memberLectures = new HashMap<>();
+  private HashMap<Long, LocalDate> memberLectureMap = new HashMap<>();
 
   private Long courseId;
 
-  public void updateMemberLecture(HashMap<Long, MemberLecture> memberLectures) {
-    this.memberLectures = memberLectures;
+  public void updateMemberLecture(HashMap<Long, LocalDate> memberLectureMap) {
+    this.memberLectureMap = memberLectureMap;
   }
 }

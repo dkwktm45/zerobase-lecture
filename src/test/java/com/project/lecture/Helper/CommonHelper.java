@@ -20,6 +20,7 @@ import com.project.lecture.type.AuthType;
 import com.project.lecture.type.SocialType;
 import com.project.lecture.type.StudyType;
 import com.project.lecture.api.user.dto.UserRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -159,12 +160,13 @@ public class CommonHelper {
 
   public static List<Planner> createPlannersForm() {
     List<Planner> planners = new ArrayList<>();
-
+    LocalDate date = LocalDate.now();
     for (int i = 0; i < 3; i++) {
       planners.add(
           Planner.builder()
               .plannerTypeId((long) i)
               .member(createMemberForm())
+              .plannerDt(date.plusDays(i))
               .plannerType(StudyType.LECTURE)
               .build()
       );
@@ -223,10 +225,17 @@ public class CommonHelper {
 
   public static Listening createListingForm() {
     return Listening.builder()
-        .member(createOriginMemberFormByNoId())
+        .member(createOriginMemberForm())
         .course(createCourseForm())
         .build();
   }
+  public static Listening createListingByMemberAndCourse() {
+    return Listening.builder()
+        .member(createOriginMemberForm())
+        .course(createCourseByNoLecture())
+        .build();
+  }
+
 
   public static Study createStudyByNoId() {
     return Study.builder()
@@ -385,7 +394,7 @@ public class CommonHelper {
   public static MemberCourseLecture createMemberCourseLecture() {
     return MemberCourseLecture
         .builder()
-        .memberLectures(new HashMap<>())
+        .memberLectureMap(new HashMap<>())
         .id(1L)
         .member(createOriginMemberForm())
         .build();

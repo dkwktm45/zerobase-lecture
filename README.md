@@ -99,7 +99,7 @@
 <br>
 
 ## 📌ERD(해당 사항은 변경이 될 수 있습니다.)
-![image](https://github.com/dkwktm45/zerobase-lecture/assets/48014869/5b8a3433-b803-4b6c-bc55-efdd13fa46f0)
+![Plan Learn Project](https://github.com/dkwktm45/zerobase-lecture/assets/48014869/c786d197-7e22-4037-a052-3ed8e19237f1)
 
 
 

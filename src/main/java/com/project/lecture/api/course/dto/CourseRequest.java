@@ -30,6 +30,9 @@ public class CourseRequest {
       return Course.builder()
           .courseContent(newCourse.courseContent)
           .courseName(newCourse.courseName)
+          .totalTime(newCourse.getLectures()
+              .stream()
+              .mapToInt(CreateLecture::getLectureTime).sum())
           .build();
     }
   }

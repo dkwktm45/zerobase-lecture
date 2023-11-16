@@ -49,4 +49,9 @@ public class CourseService {
   public Page<Course> getListByEmailAndPage(String email, Pageable pageable) {
     return courseRepository.findByMember_Email(email,pageable);
   }
+
+  public Course getCourseByLectureId(Long lectureId) {
+    return courseRepository.findByLectures_LectureId(lectureId)
+        .orElseThrow(ExceptionNotFoundCourse::new);
+  }
 }

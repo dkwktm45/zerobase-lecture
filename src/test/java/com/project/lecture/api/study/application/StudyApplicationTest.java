@@ -19,11 +19,13 @@ import com.project.lecture.api.study.dto.StudyRequest.Create;
 import com.project.lecture.api.study.service.StudyService;
 import com.project.lecture.api.user.service.MemberService;
 import com.project.lecture.entity.Member;
+import com.project.lecture.entity.Planner;
 import com.project.lecture.entity.Study;
 import com.project.lecture.exception.SuperException;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.exception.kind.ExceptionNotValidUser;
 import java.util.List;
+import java.util.Optional;
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,17 +91,16 @@ class StudyApplicationTest {
     when(studyService.existStudyByIdAndEmail(anyLong(),anyString()))
         .thenReturn(true);
     doNothing().when(studyService).deleteStudy(anyLong());
-    when(plannerService.existByStudyIdAndType(anyLong(),any()))
-        .thenReturn(true);
-    doNothing().when(plannerService).deletePlanner(anyLong(), any());
+    when(plannerService.getPlannerByStudyIdAndType(anyLong(),any()))
+        .thenReturn(Optional.empty());
     // when
     studyApplication.deleteStudyById(id, email);
 
     // then
     verify(studyService, timeout(1)).existStudyByIdAndEmail(anyLong(),anyString());
     verify(studyService, timeout(1)).deleteStudy(anyLong());
-    verify(plannerService, timeout(1)).existByStudyIdAndType(anyLong(),any());
-    verify(plannerService, timeout(1)).deletePlanner(anyLong(), any());
+    verify(plannerService, timeout(1)).getPlannerByStudyIdAndType(anyLong(),any());
+    verify(plannerService, never()).deletePlanner(any());
   }
 
   @Test
@@ -108,20 +109,23 @@ class StudyApplicationTest {
     // given
     Long id = 1L;
     String email = "planner@gmail.com";
+    Planner planner = CommonHelper.createPlannerByCourseForm();
 
     when(studyService.existStudyByIdAndEmail(anyLong(),anyString()))
         .thenReturn(true);
     doNothing().when(studyService).deleteStudy(anyLong());
-    when(plannerService.existByStudyIdAndType(anyLong(),any()))
-        .thenReturn(false);
+    when(plannerService.getPlannerByStudyIdAndType(anyLong(),any()))
+        .thenReturn(Optional.of(planner));
+    doNothing().when(plannerService).deletePlanner(any());
+
     // when
     studyApplication.deleteStudyById(id, email);
 
     // then
     verify(studyService, timeout(1)).existStudyByIdAndEmail(anyLong(),anyString());
     verify(studyService, timeout(1)).deleteStudy(anyLong());
-    verify(plannerService, timeout(1)).existByStudyIdAndType(anyLong(),any());
-    verify(plannerService, never()).deletePlanner(anyLong(), any());
+    verify(plannerService, timeout(1)).getPlannerByStudyIdAndType(anyLong(),any());
+    verify(plannerService, timeout(1)).deletePlanner(any());
   }
 
   @Test
@@ -141,8 +145,8 @@ class StudyApplicationTest {
     assertEquals(result.getMessage(), "존재하지 않는 개인학습입니다.");
     verify(studyService, timeout(1)).existStudyByIdAndEmail(anyLong(),anyString());
     verify(studyService, never()).deleteStudy(anyLong());
-    verify(plannerService, never()).existByStudyIdAndType(anyLong(),any());
-    verify(plannerService, never()).deletePlanner(anyLong(), any());
+    verify(plannerService, never()).getPlannerByStudyIdAndType(anyLong(),any());
+    verify(plannerService, never()).deletePlanner(any());
   }
 
   @Test

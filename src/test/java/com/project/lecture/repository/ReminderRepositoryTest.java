@@ -6,6 +6,8 @@ import com.project.lecture.Helper.CommonHelper;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
 import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,7 @@ class ReminderRepositoryTest {
   }
 
   @Test
-  @DisplayName("id,email 에 해당하는 값이 있는지 확인 - true")
+  @DisplayName("id,email 에 해당하는 값이 있는지 확인 - false")
   void existsByReminderIdAndMember_Email_false() {
     //given
     String email = "planner@gmail.com";
@@ -57,6 +59,38 @@ class ReminderRepositoryTest {
     assertFalse(result);
   }
 
+  @Test
+  @DisplayName("id,memberId 에 해당하는 값이 있는지 확인 - true")
+  void existsByReminderIdAndMemberId_true() {
+    //given
+    Long memberId = 1L;
+    Long id = 1L;
+
+    Member member = CommonHelper.createMemberFormByNoId();
+    Reminder reminder = CommonHelper.createReminderByNoId();
+    memberRepository.save(member);
+    reminderRepository.save(reminder);
+
+    //when
+    Reminder result = reminderRepository.getIfExistsByReminderIdAndMemberId(id, memberId);
+
+    //then
+    assertNotNull(result);
+  }
+
+  @Test
+  @DisplayName("id,email 에 해당하는 값이 있는지 확인 - false")
+  void existsByReminderIdAndMemberId_false() {
+    //given
+    Long memberId = 1L;
+    Long id = 1L;
+
+    //when
+    Reminder result = reminderRepository.getIfExistsByReminderIdAndMemberId(id, memberId);
+
+    //then
+    assertNull(result);
+  }
   @Test
   @DisplayName("email 에 해당하는 여러 값이 있는지 확인 ")
   void findByMember_Email() {
@@ -81,5 +115,14 @@ class ReminderRepositoryTest {
       assertEquals(reminders.get(i).isReminderComplete(),
           returnReminders.get(i).isReminderComplete());
     }
+  }
+  @Autowired
+  private EntityManager em;
+  @AfterEach
+  void setUp() {
+    em.createNativeQuery("ALTER TABLE member ALTER COLUMN `memberId` RESTART                                                                     WITH 1")
+        .executeUpdate();
+    em.createNativeQuery("ALTER TABLE reminder ALTER COLUMN `reminderId` RESTART                                                                     WITH 1")
+        .executeUpdate();
   }
 }
