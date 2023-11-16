@@ -2,6 +2,7 @@ package com.project.lecture.repository;
 
 import com.project.lecture.entity.Planner;
 import com.project.lecture.type.StudyType;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,12 @@ public interface PlannerRepository extends JpaRepository<Planner, Long> {
   Optional<Planner> findByAndPlannerTypeIdAndPlannerType(Long studyId, StudyType studyType);
 
   boolean existsByPlannerIdAndMember_Email(Long id, String email);
+
+  @Query(value = "select * from Planner p "
+      + "JOIN Member m ON p.memberId = m.memberId " +
+      "WHERE p.plannerDt BETWEEN :startDate AND :endDate " +
+      "AND m.email = :email " +
+      "AND p.plannerComplete = :flag " +
+      "ORDER BY p.plannerDt",nativeQuery = true)
+  List<Planner> findByPlannersByNotComplete(LocalDate startDate, LocalDate endDate, String email, boolean flag);
 }

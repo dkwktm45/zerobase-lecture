@@ -1,5 +1,6 @@
 package com.project.lecture.api.planner.application;
 
+import com.project.lecture.api.planner.dto.PlannerDto;
 import com.project.lecture.api.planner.dto.PlannerRequest.Update;
 import com.project.lecture.api.planner.service.PlannerService;
 import com.project.lecture.api.user.service.MemberService;
@@ -11,7 +12,13 @@ import com.project.lecture.exception.kind.ExceptionNotValidUser;
 import com.project.lecture.type.StudyType;
 import com.project.lecture.type.TypeRequest.Create;
 import com.project.lecture.type.adapter.TypeAdapter;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +70,55 @@ public class PlannerApplication {
 
     plannerService.changeDate(request);
   }
+  @Transactional
+  public List<PlannerDto> getMonthlyPlannerByRequestAndEmail(LocalDate currentDate, String email) {
+    LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
+    LocalDate firstDayOfNextMonth = currentDate.plusMonths(1).withDayOfMonth(1);
+    LocalDate lastDayOfNextMonth = firstDayOfNextMonth.withDayOfMonth(firstDayOfNextMonth.lengthOfMonth());
+    List<Planner> planners = plannerService
+        .getPlannersByNotComplete(firstDayOfMonth, lastDayOfNextMonth, email,FALSE_FLAG);
 
+    // 오늘과 약속한 날의 이전의 약속날 과의 차이
+    if (ChronoUnit.DAYS.between(currentDate, planners.get(0).getPlannerDt()) > 0) {
+      return planners.stream()
+          .filter(i -> i.getPlannerDt().compareTo(firstDayOfNextMonth) < 0)
+          .map(PlannerDto::toDto)
+          .collect(Collectors.toList());
+    }
+
+    // init
+    LocalDate changeDt = LocalDate.now();
+    LocalDate beforeDate = planners.get(0).getPlannerDt();
+    planners.get(0).changeDate(changeDt);
+    for (int i = 1; i < planners.size(); i++) {
+      Planner planner = planners.get(i);
+      Planner previousPlanner = planners.get(i - 1);
+      // 같은 값인 경우
+      if (planner.getPlannerDt().isEqual(beforeDate)) {
+        planner.changeDate(changeDt);
+      }
+      // 현재 날짜보다 작거나 같은 경우는 or 이전 값이 현재 값보다 작을 경우
+      else if (planner.getPlannerDt().compareTo(currentDate) <= 0 ||
+          previousPlanner.getPlannerDt().isAfter(planner.getPlannerDt())) {
+        changeDt = planners.get(i - 1).getPlannerDt().plusDays(1);
+        beforeDate = planner.getPlannerDt();
+        planner.changeDate(changeDt);
+      }
+      // 만약 이전 index 날짜와 현재 index 날짜가 같은 경우는 값을 1씩 증가하고 값을 갱신
+      else if (previousPlanner.getPlannerDt().isEqual(planner.getPlannerDt())) {
+        beforeDate = previousPlanner.getPlannerDt();
+        changeDt = beforeDate.plusDays(1);
+        planner.plusDay(1);
+      } else {
+        break;
+      }
+    }
+
+    return planners.stream()
+        .filter(i -> i.getPlannerDt().compareTo(firstDayOfNextMonth) < 0)
+        .map(PlannerDto::toDto)
+        .collect(Collectors.toList());
+  }
 
 
   @Transactional

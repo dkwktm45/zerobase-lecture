@@ -71,4 +71,9 @@ public class PlannerService {
     return plannerRepository.findById(id)
         .orElseThrow(ExceptionNotFoundPlanner::new);
   }
+
+  public List<Planner> getPlannersByNotComplete(LocalDate startDate, LocalDate endDate,
+      String email, boolean flag) {
+    return plannerRepository.findByPlannersByNotComplete(startDate, endDate, email, flag);
+  }
 }

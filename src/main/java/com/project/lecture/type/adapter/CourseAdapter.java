@@ -81,7 +81,7 @@ public class CourseAdapter implements TypeAdapter {
           for (long keyId : lectureKeys) {
             memberLectures.put(keyId, LocalDate.now());
           }
-          totalTime = lectureClient.getLecturesTime(id);
+          totalTime = course.getTotalTime();
           courseLectureService.saveEntity(
               MemberCourseLecture.builder()
                   .member(member)
