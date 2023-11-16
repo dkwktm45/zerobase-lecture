@@ -27,7 +27,7 @@ public class ReviewDto {
     this.createdEmail = review.getCreatedEmail();
     this.createDt = review.getCreateDt();
   }
-  public static Page<ReviewDto> toDotList(Page<Review> studies){
+  public static Page<ReviewDto> toDtoList(Page<Review> studies){
     return studies.map(ReviewDto::new);
   }
 }

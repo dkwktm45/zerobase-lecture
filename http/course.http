@@ -23,3 +23,7 @@ Content-Type: application/json
   "courseName": "수정",
   "courseContent": "수정"
 }
+
+### 강좌 조회(USER)
+GET localhost:8080/user/course/inquiry/list?page=0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDEzMTE2MSwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.ywus2ETKJXG4HyxXz8feYAGZyeVOv8trFulcnkUd5BRexaxHnuavamwg2vDyhjBlKdWMUYM8jS0Xp7AQDHU8bQ

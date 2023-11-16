@@ -1,7 +1,6 @@
 package com.project.lecture.api.review.service;
 
 import com.project.lecture.entity.Review;
-import com.project.lecture.entity.Study;
 import com.project.lecture.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,7 @@ public class ReviewService {
     reviewRepository.save(review);
   }
 
-  public Page<Review> getListByEmailAndPage(Long id, Pageable pageable) {
+  public Page<Review> getListByCourseIdAndPage(Long id, Pageable pageable) {
     return reviewRepository.findByCourse_CourseId(id,pageable);
   }
 }
