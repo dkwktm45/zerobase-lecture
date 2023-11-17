@@ -23,7 +23,7 @@ public class CourseController {
   public ResponseEntity<Page<CourseDto>> getCoursesRequest(
       Pageable pageable
   ) {
-    log.info("getCourseRequest() 수행");
+    log.info("getCoursesRequest() 수행");
     return ResponseEntity.ok(
         courseApplication.getCoursesList(pageable)
     );
