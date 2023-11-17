@@ -16,12 +16,13 @@ public class CourseDto {
   private Long courseId;
   private String courseName;
   private String courseContent;
-
+  private int listeningSize;
 
   public CourseDto(Course course) {
     this.courseContent = course.getCourseContent();
     this.courseId = course.getCourseId();
     this.courseName = course.getCourseName();
+    this.listeningSize = course.getListenings().size();
   }
 
   public static Page<CourseDto> toDotList(Page<Course> courses){

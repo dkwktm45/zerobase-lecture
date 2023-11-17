@@ -20,6 +20,7 @@ public class ReviewService {
     reviewRepository.save(review);
   }
 
+
   public Page<Review> getListByCourseIdAndPage(Long id, Pageable pageable) {
     return reviewRepository.findByCourse_CourseId(id,pageable);
   }

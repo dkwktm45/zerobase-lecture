@@ -54,4 +54,7 @@ public class CourseService {
     return courseRepository.findByLectures_LectureId(lectureId)
         .orElseThrow(ExceptionNotFoundCourse::new);
   }
+  public Page<Course> getListByPage(Pageable pageable) {
+    return courseRepository.findAll(pageable);
+  }
 }
