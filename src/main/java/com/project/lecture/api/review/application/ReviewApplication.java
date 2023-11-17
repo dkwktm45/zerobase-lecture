@@ -40,7 +40,7 @@ public class ReviewApplication {
   }
 
   public Page<ReviewDto> getReviewListById(Long courseId, Pageable pageable) {
-    Page<Review> reviews = reviewService.getListByEmailAndPage(courseId, pageable);
-    return ReviewDto.toDotList(reviews);
+    Page<Review> reviews = reviewService.getListByCourseIdAndPage(courseId, pageable);
+    return ReviewDto.toDtoList(reviews);
   }
 }
