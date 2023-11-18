@@ -1,12 +1,17 @@
 package com.project.lecture.type.adapter;
 
-import com.project.lecture.entity.Member;
-import com.project.lecture.type.StudyType;
-import com.project.lecture.type.TypeRequest.Create;
-import com.project.lecture.type.TypeContent;
+import com.project.lecture.api.planner.dto.StudyTypeDto;
+import com.project.lecture.api.planner.service.PlannerService;
 import com.project.lecture.api.study.service.StudyService;
+import com.project.lecture.entity.Member;
+import com.project.lecture.entity.Planner;
 import com.project.lecture.entity.Study;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
+import com.project.lecture.type.StudyType;
+import com.project.lecture.type.TypeContent;
+import com.project.lecture.type.TypeRequest.Create;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudyAdapter implements TypeAdapter {
 
   private final StudyService studyService;
+  private final PlannerService plannerService;
 
   @Override
   public boolean existCheck(Create create, String email, Long id) {
@@ -47,4 +53,18 @@ public class StudyAdapter implements TypeAdapter {
   public StudyType getStudyType() {
     return StudyType.STUDY;
   }
+
+  @Override
+  public List<StudyTypeDto> getTypeStudies(Member member,boolean completeFlag) {
+    List<Study> studies = studyService.getStudiesByNoComplete(member,completeFlag);
+    List<Planner> planners = plannerService
+        .getPlannersByNoComplete(member, getStudyType(), completeFlag);
+    return studies.stream()
+        .filter(study ->
+            planners.stream()
+                .noneMatch(planner -> study.getStudyId().equals(planner.getPlannerTypeId()))
+        ).map(StudyTypeDto::toStudyDto).collect(Collectors.toList());
+  }
+
+
 }

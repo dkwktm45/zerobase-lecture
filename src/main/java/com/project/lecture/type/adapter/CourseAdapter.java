@@ -5,19 +5,22 @@ import com.project.lecture.api.Listen.service.ListenService;
 import com.project.lecture.api.complete.dto.AddMemberLecture;
 import com.project.lecture.api.complete.service.CourseLectureService;
 import com.project.lecture.api.course.service.CourseService;
+import com.project.lecture.api.planner.dto.StudyTypeDto;
+import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
 import com.project.lecture.entity.MemberCourseLecture;
+import com.project.lecture.entity.Planner;
 import com.project.lecture.exception.kind.ExceptionCompleteCourse;
+import com.project.lecture.exception.kind.ExceptionExistListening;
 import com.project.lecture.redis.LectureClient;
 import com.project.lecture.type.StudyType;
-import com.project.lecture.type.TypeRequest.Create;
 import com.project.lecture.type.TypeContent;
-import com.project.lecture.entity.Course;
-import com.project.lecture.exception.kind.ExceptionExistListening;
+import com.project.lecture.type.TypeRequest.Create;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -101,6 +104,18 @@ public class CourseAdapter implements TypeAdapter {
     return StudyType.COURSE;
   }
 
+  @Override
+  public List<StudyTypeDto> getTypeStudies(Member member, boolean completeFlag) {
+    List<Course> courses = courseService.getListByMember(member);
+    List<Planner> planners = member.getPlanners();
+
+    return courses.stream()
+        .filter(course -> planners.stream()
+            .noneMatch(planner -> course.getCourseId().equals(planner.getPlannerTypeId())))
+        .map(StudyTypeDto::toCourseDto)
+        .collect(Collectors.toList());
+  }
+
   private AddMemberLecture updateMemberCourseLecture(
       Long courseId, List<Integer> lectures,
       HashMap<Long, LocalDate> memberLectures
@@ -110,7 +125,7 @@ public class CourseAdapter implements TypeAdapter {
     for (long keyId : lectures) {
       if (!memberLectures.containsKey(keyId)) {
         int currTime = lectureClient.getLectureTime(courseId, keyId);
-        memberLectures.put(keyId,LocalDate.now());
+        memberLectures.put(keyId, LocalDate.now());
         time += currTime;
       }
     }

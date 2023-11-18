@@ -6,6 +6,7 @@ import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Member;
 import com.project.lecture.exception.kind.ExceptionNotFoundCourse;
 import com.project.lecture.repository.CourseRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,5 +57,9 @@ public class CourseService {
   }
   public Page<Course> getListByPage(Pageable pageable) {
     return courseRepository.findAll(pageable);
+  }
+
+  public List<Course> getListByMember(Member member) {
+    return courseRepository.findAllByListenings_Member(member);
   }
 }

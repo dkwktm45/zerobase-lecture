@@ -1,10 +1,12 @@
 package com.project.lecture.api.study.service;
 
+import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Study;
 import com.project.lecture.exception.kind.ExceptionCompleteStudy;
 import com.project.lecture.exception.kind.ExceptionNotFoundStudy;
 import com.project.lecture.exception.kind.ExceptionNotValidUser;
 import com.project.lecture.repository.StudyRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,5 +52,9 @@ public class StudyService {
 
   public Page<Study> getListByEmailAndPage(String email, Pageable pageable) {
     return studyRepository.findByMember_Email(email,pageable);
+  }
+
+  public List<Study> getStudiesByNoComplete(Member member, boolean completeFlag) {
+    return studyRepository.findAllByMemberAndStudyComplete(member,completeFlag);
   }
 }

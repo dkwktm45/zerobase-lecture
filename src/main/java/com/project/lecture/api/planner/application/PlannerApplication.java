@@ -138,4 +138,25 @@ public class PlannerApplication {
     TypeAdapter typeAdapter = typeAdapterMap.get(planner.getPlannerType());
     typeAdapter.complete(planner.getPlannerTypeId(), member);
   }
+
+  public Page<StudyTypeDto> getStudiesList(Pageable pageable, String email) {
+    if (pageable.getPageSize() > 15) {
+      throw new RuntimeException("허용되지 않는 사이즈입니다.");
+    }
+
+    Member member = memberService.getMemberByEmail(email);
+    List<StudyTypeDto> result = new ArrayList<>();
+
+    TypeAdapter studyAdapter = typeAdapterMap.get(StudyType.STUDY);
+    result.addAll(studyAdapter.getTypeStudies(member, false));
+    TypeAdapter reminderAdapter = typeAdapterMap.get(StudyType.REMINDER);
+    result.addAll(reminderAdapter.getTypeStudies(member, false));
+    TypeAdapter courseAdapter = typeAdapterMap.get(StudyType.COURSE);
+    result.addAll(courseAdapter.getTypeStudies(member, false));
+
+    int start = (int) pageable.getOffset();
+    int end = Math.min((start + pageable.getPageSize()), result.size());
+    List<StudyTypeDto> pageList = result.subList(start, end);
+    return new PageImpl<>(pageList, pageable, result.size());
+  }
 }
