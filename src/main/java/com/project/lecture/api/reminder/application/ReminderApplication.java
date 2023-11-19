@@ -12,8 +12,10 @@ import com.project.lecture.type.TypeContent;
 import com.project.lecture.type.TypeRequest.Create;
 import com.project.lecture.type.adapter.TypeAdapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,13 +32,22 @@ public class ReminderApplication {
   private final MemberService memberService;
 
   private final PlannerService plannerService;
-  private final Map<StudyType, TypeAdapter> adapterMap;
+  private final List<TypeAdapter> typeAdapters;
+  private Map<StudyType, TypeAdapter> typeAdapterMap;
 
+  @PostConstruct
+  public void setUp(){
+    typeAdapterMap = new HashMap<>();
 
+    for (TypeAdapter adapter : typeAdapters) {
+      StudyType studyType = adapter.getStudyType();
+      typeAdapterMap.put(studyType, adapter);
+    }
+  }
   public void createReminderByRequestAndEmail(Create request, String email) {
     Member member = memberService.getMemberByEmail(email);
 
-    TypeAdapter adapter = adapterMap.get(request.getType());
+    TypeAdapter adapter = typeAdapterMap.get(request.getType());
 
     if (adapter == null) {
       throw new UnsupportedOperationException("타당하지 않는 타입입니다.");
@@ -66,7 +77,7 @@ public class ReminderApplication {
   }
 
   public void completeByIdAndEmail(Long id, String email) {
-    TypeAdapter typeAdapter = adapterMap.get(StudyType.REMINDER);
+    TypeAdapter typeAdapter = typeAdapterMap.get(StudyType.REMINDER);
 
     Member member = Member.builder().email(email).build();
     typeAdapter.complete(id,member);
@@ -78,7 +89,7 @@ public class ReminderApplication {
     }
 
     Reminder reminder = reminderService.getReminderById(id);
-    TypeContent typeContent = adapterMap.get(reminder.getReminderType())
+    TypeContent typeContent = typeAdapterMap.get(reminder.getReminderType())
         .getContent(reminder.getReminderTypeId());
 
     return ReminderDto.toDto(reminder, typeContent.getTitle(), typeContent.getContent());
@@ -92,7 +103,7 @@ public class ReminderApplication {
 
     for (Reminder reminder : reminders) {
 
-      TypeContent typeContent = adapterMap.get(reminder.getReminderType())
+      TypeContent typeContent = typeAdapterMap.get(reminder.getReminderType())
           .getContent(reminder.getReminderTypeId());
 
       reminderDtos.add(
