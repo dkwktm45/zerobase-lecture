@@ -1,5 +1,6 @@
 package com.project.lecture.repository;
 
+import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.type.StudyType;
 import java.time.LocalDate;
@@ -30,4 +31,6 @@ public interface PlannerRepository extends JpaRepository<Planner, Long> {
       "AND p.plannerComplete = :flag " +
       "ORDER BY p.plannerDt",nativeQuery = true)
   List<Planner> findByPlannersByNotComplete(LocalDate startDate, LocalDate endDate, String email, boolean flag);
+
+  List<Planner> findAllByMemberAndPlannerTypeAndPlannerComplete(Member member,StudyType studyType,boolean flag);
 }

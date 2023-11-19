@@ -2,6 +2,7 @@ package com.project.lecture.api.planner.service;
 
 import com.project.lecture.api.planner.dto.PlannerRequest.Update;
 import com.project.lecture.entity.Lecture;
+import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Planner;
 import com.project.lecture.exception.kind.ExceptionNotFoundPlanner;
 import com.project.lecture.repository.PlannerRepository;
@@ -75,5 +76,9 @@ public class PlannerService {
   public List<Planner> getPlannersByNotComplete(LocalDate startDate, LocalDate endDate,
       String email, boolean flag) {
     return plannerRepository.findByPlannersByNotComplete(startDate, endDate, email, flag);
+  }
+
+  public List<Planner> getPlannersByNoComplete(Member member,StudyType studyType, boolean plannerComplete) {
+    return plannerRepository.findAllByMemberAndPlannerTypeAndPlannerComplete(member,studyType,plannerComplete);
   }
 }

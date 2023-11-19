@@ -63,7 +63,7 @@ class ReminderApplicationTest {
     //given
     Member member = CommonHelper.createOriginMemberForm();
     TypeRequest.Create request = CommonHelper.createReminderRequest();
-    TypeAdapter typeAdapter = new StudyAdapter(studyService);
+    TypeAdapter typeAdapter = new StudyAdapter(studyService,plannerService);
     String email = "planner@gmail.com";
     when(memberService.getMemberByEmail(anyString()))
         .thenReturn(member);
@@ -217,7 +217,7 @@ class ReminderApplicationTest {
     String email = "planner@gmail.com";
     Reminder reminder = CommonHelper.createReminder();
     Study study = CommonHelper.createStudy();
-    TypeAdapter typeAdapter = new StudyAdapter(studyService);
+    TypeAdapter typeAdapter = new StudyAdapter(studyService,plannerService);
 
     when(reminderService.existsByIdAndEmail(anyLong(), anyString()))
         .thenReturn(true);
@@ -244,7 +244,7 @@ class ReminderApplicationTest {
     //given
     Study study = CommonHelper.createStudy();
     Page<Reminder> reminderPage = new PageImpl<>(CommonHelper.createRemindersByNoId());
-    TypeAdapter typeAdapter = new StudyAdapter(studyService);
+    TypeAdapter typeAdapter = new StudyAdapter(studyService,plannerService);
     when(reminderService.getListByEmailAndPage(anyString(), any()))
         .thenReturn(reminderPage);
     when(studyService.getStudyById(anyLong()))

@@ -1,8 +1,10 @@
 package com.project.lecture.api.reminder.service;
 
+import com.project.lecture.entity.Member;
 import com.project.lecture.entity.Reminder;
 import com.project.lecture.exception.kind.ExceptionNotFoundReminder;
 import com.project.lecture.repository.ReminderRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,4 +38,7 @@ public class ReminderService {
     return reminderRepository.findByMember_Email(email, pageable);
   }
 
+  public List<Reminder> getListByNoComplete(Member member, boolean reminderComplete) {
+    return reminderRepository.findAllByMemberAndReminderComplete(member, reminderComplete);
+  }
 }

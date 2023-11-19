@@ -1,11 +1,11 @@
 POST localhost:8080/user/planner/
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTY5OTk1MDkwOSwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.o3mZsWtMPqbV7qE9miNrPrIWoYy7UiIG9In4apMcczDLp4OWCXs0Diw1kO1uxe-0Yq-gcCmvdpM-fyoZe9JsQA
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDQwMjE3MSwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.saT-bZbAN7K3keP7GbAUQcJsODMljBeQiQL_72i_3sR_QpGMZpi49bD8lqJl1KzdfX0EsEby2Csv7UQcBstiGQ
 Content-Type: application/json
 
 {
-  "typeId": 7,
-  "type": "COURSE",
-  "plannerDt": "2023-11-09"
+  "typeId": 1,
+  "type": "STUDY",
+  "plannerDt": "2023-11-19"
 }
 
 ### planner 날짜 변경
@@ -25,3 +25,11 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb
 ### planner 월간 조회 완료
 GET localhost:8080/user/planner/monthly?date=2023-11-15
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDA0MjgxNiwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.4T-iRvEZU9o9NtlWAeOeaxvwmZRJfwwHqQhaNuk95MB03o6Mg6v9xfpDR-XebjXeBKzy-doPSSIUbFfVEjtdfQ
+
+### 유저 공부목록 반환
+GET localhost:8080/user/studies?page=0&size=15
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDQwMjE3MSwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.saT-bZbAN7K3keP7GbAUQcJsODMljBeQiQL_72i_3sR_QpGMZpi49bD8lqJl1KzdfX0EsEby2Csv7UQcBstiGQ
+
+### 유저 공부 타입별로 목록 반환
+GET localhost:8080/user/studies/COURSE?page=0&size=15
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDQwMjE3MSwiZW1haWwiOiJ3cGVrZGwxNTNAZ21haWwuY29tIn0.saT-bZbAN7K3keP7GbAUQcJsODMljBeQiQL_72i_3sR_QpGMZpi49bD8lqJl1KzdfX0EsEby2Csv7UQcBstiGQ

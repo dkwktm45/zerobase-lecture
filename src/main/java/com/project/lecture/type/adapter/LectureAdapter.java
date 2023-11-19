@@ -4,6 +4,7 @@ import com.project.lecture.api.Listen.service.ListenService;
 import com.project.lecture.api.complete.service.CourseLectureService;
 import com.project.lecture.api.course.service.CourseService;
 import com.project.lecture.api.course.service.LectureService;
+import com.project.lecture.api.planner.dto.StudyTypeDto;
 import com.project.lecture.entity.Course;
 import com.project.lecture.entity.Lecture;
 import com.project.lecture.entity.Member;
@@ -16,6 +17,7 @@ import com.project.lecture.type.TypeContent;
 import com.project.lecture.type.TypeRequest.Create;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,5 +95,10 @@ public class LectureAdapter implements TypeAdapter {
   @Override
   public StudyType getStudyType() {
     return StudyType.LECTURE;
+  }
+
+  @Override
+  public List<StudyTypeDto> getTypeStudies(Member member ,boolean completeFlag) {
+    return null;
   }
 }

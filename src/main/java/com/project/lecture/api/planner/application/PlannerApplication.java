@@ -2,6 +2,7 @@ package com.project.lecture.api.planner.application;
 
 import com.project.lecture.api.planner.dto.PlannerDto;
 import com.project.lecture.api.planner.dto.PlannerRequest.Update;
+import com.project.lecture.api.planner.dto.StudyTypeDto;
 import com.project.lecture.api.planner.service.PlannerService;
 import com.project.lecture.api.user.service.MemberService;
 import com.project.lecture.entity.Member;
@@ -14,12 +15,16 @@ import com.project.lecture.type.TypeRequest.Create;
 import com.project.lecture.type.adapter.TypeAdapter;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,5 +142,44 @@ public class PlannerApplication {
     Member member = planner.getMember();
     TypeAdapter typeAdapter = typeAdapterMap.get(planner.getPlannerType());
     typeAdapter.complete(planner.getPlannerTypeId(), member);
+  }
+
+  public Page<StudyTypeDto> getStudiesList(Pageable pageable, String email) {
+    sizeCheck(pageable);
+
+    Member member = memberService.getMemberByEmail(email);
+    List<StudyTypeDto> result = new ArrayList<>();
+
+    TypeAdapter studyAdapter = typeAdapterMap.get(StudyType.STUDY);
+    result.addAll(studyAdapter.getTypeStudies(member, false));
+    TypeAdapter reminderAdapter = typeAdapterMap.get(StudyType.REMINDER);
+    result.addAll(reminderAdapter.getTypeStudies(member, false));
+    TypeAdapter courseAdapter = typeAdapterMap.get(StudyType.COURSE);
+    result.addAll(courseAdapter.getTypeStudies(member, false));
+
+    int start = (int) pageable.getOffset();
+    int end = Math.min((start + pageable.getPageSize()), result.size());
+    List<StudyTypeDto> pageList = result.subList(start, end);
+    return new PageImpl<>(pageList, pageable, result.size());
+  }
+
+  public Page<StudyTypeDto> getTypeStudiesList(StudyType studyType, Pageable pageable, String email) {
+    sizeCheck(pageable);
+
+    Member member = memberService.getMemberByEmail(email);
+
+    TypeAdapter studyAdapter = typeAdapterMap.get(studyType);
+    List<StudyTypeDto> result = studyAdapter.getTypeStudies(member, false);
+
+    int start = (int) pageable.getOffset();
+    int end = Math.min((start + pageable.getPageSize()), result.size());
+    List<StudyTypeDto> pageList = result.subList(start, end);
+    return new PageImpl<>(pageList, pageable, result.size());
+  }
+
+  private void sizeCheck(Pageable pageable) {
+    if (pageable.getPageSize() > 15) {
+      throw new RuntimeException("허용되지 않는 사이즈입니다.");
+    }
   }
 }
