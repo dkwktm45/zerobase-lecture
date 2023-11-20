@@ -25,7 +25,7 @@ public class CourseDto {
     this.listeningSize = course.getListenings().size();
   }
 
-  public static Page<CourseDto> toDotList(Page<Course> courses){
+  public static Page<CourseDto> toDtoList(Page<Course> courses){
     return courses.map(CourseDto::new);
   }
 }

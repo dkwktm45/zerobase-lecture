@@ -51,7 +51,7 @@ public class AdminCourseApplication {
   public Page<CourseDto> getCourseList(String email, Pageable pageable) {
     Page<Course> pageCourse = courseService.getListByEmailAndPage(email, pageable);
 
-    return CourseDto.toDotList(pageCourse);
+    return CourseDto.toDtoList(pageCourse);
   }
 
 }

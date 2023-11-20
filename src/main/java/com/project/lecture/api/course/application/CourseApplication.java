@@ -16,7 +16,7 @@ public class CourseApplication {
 
   public Page<CourseDto> getCoursesList(Pageable pageable) {
     Page<Course> pageCourse = courseService.getListByPage(pageable);
-    return CourseDto.toDotList(pageCourse);
+    return CourseDto.toDtoList(pageCourse);
   }
 
   public CourseDto getCourse(Long id) {
