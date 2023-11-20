@@ -1,0 +1,32 @@
+### 게시판 생성(관리자)
+POST localhost:8080/admin/board/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDQ3NjY1OSwiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.d3-UUyFap8fnMkODZ1EtYoVcj1eO6uWaqbkBXoGJgUgQIRfHl-by7TkFv1d4vSaIU7f0oIID7DmSXQy92p_GsQ
+Content-Type: application/json
+
+{
+  "boardTitle": "boardTitle_8ac5d8cfab06",
+  "boardContent": "boardContent_38278e195fed"
+}
+
+### 게시판 수정(관리자)
+POST localhost:8080/admin/board/update
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDQ2Mjk4NywiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.w_To1VrfYhkxobK1UoikTYD2KFjrO1F5ATSzDXbm5CxRfRfZeyYf5fQoxrhX9alr3X-3R4gRuh2APL-zPG3TGw
+Content-Type: application/json
+
+{
+  "boardId": 2,
+  "boardTitle": "수정2",
+  "boardContent": "boardContent_7b1f10169dec"
+}
+
+### 게시판 삭제(관리자)
+GET localhost:8080/admin/board?boardId=1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDQ2Mjk4NywiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.w_To1VrfYhkxobK1UoikTYD2KFjrO1F5ATSzDXbm5CxRfRfZeyYf5fQoxrhX9alr3X-3R4gRuh2APL-zPG3TGw
+
+### 게시판 다수 건 조회
+GET localhost:8080/board/list?page=0&size=10
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDQ3NjY1OSwiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.d3-UUyFap8fnMkODZ1EtYoVcj1eO6uWaqbkBXoGJgUgQIRfHl-by7TkFv1d4vSaIU7f0oIID7DmSXQy92p_GsQ
+
+### 게시판 단건 조화
+GET localhost:8080/board/4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwMDQ3NjY1OSwiZW1haWwiOiJwbGFubmVyQGdtYWlsLmNvbSJ9.d3-UUyFap8fnMkODZ1EtYoVcj1eO6uWaqbkBXoGJgUgQIRfHl-by7TkFv1d4vSaIU7f0oIID7DmSXQy92p_GsQ
