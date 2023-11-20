@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -59,7 +60,14 @@ public class SecurityConfig {
         .and()
 
         .authorizeRequests()
-        .antMatchers("/join","/login","/oauth2").permitAll()
+        .antMatchers("/v2/api-docs",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/join","/login","/oauth2","/swagger-ui/**").permitAll()
         .antMatchers("/admin/**").hasAnyRole("ADMIN")
         .anyRequest().authenticated()
         .and()
